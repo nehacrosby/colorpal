@@ -1,0 +1,41 @@
+Plan:
+
+How about I operate in RBG but provide colors: Red, Green, Blue, Yellow and White.
+
+Color wheel palette:
+http://www.procato.com/color+wheel/
+
+App 1: It will cover Grades 1 - 5. Just give them, primary + secondary colors. That's it:
+http://cemca.org/maldives/coloursmag.htm
+
+This is a cool palette presentation. The center can be place to mix colors?
+http://www.worqx.com/color/color_wheel.htm
+
+This achieves color mixing for painters, shows the number of times a color was picked:
+http://painting.about.com/library/blpaint/blcolormixingpalette1.htm
+
+This Q&A asks the same question as mine. Maybe I should write a color-math library in Javascript?
+http://stackoverflow.com/questions/8205472/why-wont-my-color-mixing-function-work-as-expected
+
+Library implemented here:
+"The resulting mixtures in RGB color space can reproduce a wide variety of colors (called a gamut); however, the relationship between the constituent amounts of red, green, and blue light and the resulting color is unintuitive, especially for inexperienced users, and for users familiar with subtractive color mixing of paints or traditional artists’ models based on tints and shades (fig. 4)."
+
+HSV MODEL:
+"In an attempt to accommodate more traditional and intuitive color mixing models, computer graphics pioneers at PARC and NYIT developed the HSV model in the mid-1970s, formally described by Alvy Ray Smith in the August 1978 issue of Computer Graphics."
+http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+
+Explains the math behind the mapping:
+http://en.wikipedia.org/wiki/HSL_color_space
+
+This one works:
+http://javascript.about.com/library/blpaint4.htm
+
+http://www.digitalartform.com/archives/2005/06/digital_color_m.html
+
+---
+Cyan (blue): 0, 184, 235. cyan + yellow = green (average/multiply) with subtractive being the best.
+Magenta (red): 255, 0, 144 + cyan gave purple (using opacity)
+---
+SHORTCOMING of CMYK system:
+
+Reproducing color can be problematic with regard to printed, digital media, because what we see is not what is possible to get. Although a monitor may be able to display 'true color' (16,000,000 colors), millions of these colors are outside of the spectrum available to printers. Since digital designs are generated using the RGB color system, colors used in those designs must be part of the CMYK spectrum or they will not be reproduced with proper color rendering. Working within the CMYK color system, or choosing colors from Pantone© palettes insures proper color rendering.
