@@ -2,7 +2,6 @@
 var paletteColorTuple = $.xcolor.test("rgb(255, 0, 0)"),
 ctx = null,
 canvasWidth = null,
-isMixingAreaColorSet = false,
 swatchStartX = 18,
 swatchStartY = 19,
 swatchImageWidth = 93,
@@ -20,6 +19,7 @@ $(document).ready(function() {
 	// Add all the click handlers.
 	$("div.primary-palette-square").click(onPaletteClick);
 	$("div.secondary-palette-square").click(onPaletteClick);
+	$("button[name=clear-mixing-area]").click(onClearButtonClick);
 
 	$('#tutorial').click(onCanvasClick);
 	canvas = $('#tutorial')[0];
@@ -111,22 +111,21 @@ function handleMixingAreaDropEvent(event, ui) {
   // of the palette-square dropped on to it +
   // the color that may already be present.
   $(this).css("background-color", 
-        returnMixedColor(
+        returnMixedColorRGB(
              ui.draggable.css("background-color")));
     
 }
 
 // Returns the mixed color as rgb string by mixing dragged_color
 // with the list of colors already added to the mixing area.
-function returnMixedColor(dragged_color) {
-  mixingAreaColorList.push($.xcolor.test(dragged_color));
-  
-  if (!isMixingAreaColorSet) {
-    isMixingAreaColorSet = true;
+function returnMixedColorRGB(dragged_color) {
+  if (mixingAreaColorList.length == 0) {
+    mixingAreaColorList.push($.xcolor.test(dragged_color));
     return dragged_color;
   }
 
   // Do appropriate color mixing.
+  mixingAreaColorList.push($.xcolor.test(dragged_color));
   var r = g = b = 0;
   for (var i = 0; i < mixingAreaColorList.length; i++) {
         r = r + mixingAreaColorList[i]["r"];
@@ -138,6 +137,28 @@ function returnMixedColor(dragged_color) {
   g = Math.floor(g / mixingAreaColorList.length);
   b = Math.floor(b / mixingAreaColorList.length);
   return "rgb(" + r + "," + g + ","+ b + ")";
+}
+
+function returnMixedColorHSL(dragged_color) {
+  if (mixingAreaColorList.length == 0) {
+     mixingAreaColorList.push($.xcolor.test(dragged_color));
+     return dragged_color;
+   }
+   
+   // Do appropriate color mixing.
+   mixingAreaColorList.push($.xcolor.test(dragged_color));
+   var h = s = l = 0;
+   for (var i = 0; i < mixingAreaColorList.length; i++) {
+         h = h + mixingAreaColorList[i].getHSL()["h"];
+         s = s + mixingAreaColorList[i].getHSL()["s"];
+         l = l + mixingAreaColorList[i].getHSL()["l"];
+     }
+     
+    h = Math.floor(h / mixingAreaColorList.length);
+    s = Math.floor(s / mixingAreaColorList.length);
+    l = Math.floor(l / mixingAreaColorList.length);
+    
+    return $.xcolor.test("hsl(" + h + "," + s + "," + l + ")").getCSS();
 }
 
 // Picks an image and draws it on canvas.
@@ -165,6 +186,14 @@ function onPaletteClick() {
 	// to fill the region.
 	paletteColorTuple = $.xcolor.test($(this).css("background-color"));
 	console.log(paletteColorTuple);
+}
+
+// Clear the mixing area.
+function onClearButtonClick() {
+  // TODO(Neha): Ask Phil why this doesn't work.
+  // $("div.mixing-area").addClass("clear");
+  $("div.mixing-area").css("background-color", "#FFFFFF");
+  mixingAreaColorList = new Array();
 }
 
 // Get x, y coordinates of the mouse-click
@@ -208,6 +237,7 @@ function fillPixel(x, y, pixelData) {
 	if(!isBoundary(x, y + 1, pixelData)) floodfillStack.push([x, y + 1]);
 	if(!isBoundary(x - 1, y, pixelData)) floodfillStack.push([x - 1, y]);
 }
+
 // Helper method that changes the color of pixel 'x, y' to
 // whatever paletteColorTuple is set to.
 function fill(x, y, pixelData) {
