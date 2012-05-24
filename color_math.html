@@ -20,36 +20,40 @@
 	  .primary-palette-square {
 	    width: 40px;
 		  height: 40px;
-		  border: 2px solid black;
 		  float: left;
 		  margin-left: 10px;
 	  }
 	  
+	  .primary-palette-square.ui-draggable-dragging {
+    	border: 2px dotted black;
+    }
+    	
     /* Ask phil how to remove this redundancy */
 	  .secondary-palette-square {
       width: 40px;
       height: 40px;
-      border: 2px dotted black;
       float: left;
       margin-left: 10px;
     }
 	  
-	  .primary-palette-square.ui-draggable-dragging {
-  	   border: 2px dotted black;
+	  .secondary-palette-square-hovered {
+  	   border: 2px solid black;
   	}
   	
 	  .mixing-area {
 	    width: 100px;
 	    height: 40px;
-	    border: 2px solid black;
   		float: left;
   		margin-left: 25px;
 	  }
 	  
-	  .mixing-area-hovered {
-	    border: 1px dotted black;
-	  }
-	  
+	  .mixing-area.ui-draggable-dragging {
+  	   border: 2px dotted black;
+  	   width: 40px;
+   		 height: 40px;
+   		 margin-left: 10px;
+  	}
+  	
     .blue { 
 		  background-color: #0000FF;
 	  }
@@ -70,6 +74,18 @@
   		background-color: #FFFFFF;
   	}
   
+    .dotted-black-border {
+      border: 2px dotted black;
+    }
+    
+    .solid-black-border {
+      border: 2px solid black;
+    }
+    
+    .dotted-red-border {
+      border: 2px dotted rgb(255, 0, 0);
+    }
+    
   	#palette {
   	  height: 168;
   	}
@@ -84,19 +100,19 @@
     <canvas id="tutorial" width="682" height="482"></canvas>
  	  <!-- Provide the Palette -->
  	  <div id="palette">
-	    <div class="primary-palette-square blue"></div>
-	    <div class="primary-palette-square red"></div>
-	    <div class="primary-palette-square yellow"></div>
-	    <div class="primary-palette-square green"></div>
-	    <div class="primary-palette-square clear"></div>
+	    <div class="primary-palette-square blue solid-black-border"></div>
+	    <div class="primary-palette-square red solid-black-border"></div>
+	    <div class="primary-palette-square yellow solid-black-border"></div>
+	    <div class="primary-palette-square green solid-black-border"></div>
+	    <div class="primary-palette-square clear solid-black-border"></div>
 	    <br><br>
-	    <div class="mixing-area" id="clear"></div>
+	    <div class="mixing-area solid-black-border" id="clear"></div>
 	    <br><br>
-	    <div class="secondary-palette-square clear"></div>
-	    <div class="secondary-palette-square clear"></div>
-	    <div class="secondary-palette-square clear"></div>
-	    <div class="secondary-palette-square clear"></div>
-	    <div class="secondary-palette-square clear"></div>
+	    <div class="secondary-palette-square clear dotted-black-border"></div>
+	    <div class="secondary-palette-square clear dotted-black-border"></div>
+	    <div class="secondary-palette-square clear dotted-black-border"></div>
+	    <div class="secondary-palette-square clear dotted-black-border"></div>
+	    <div class="secondary-palette-square clear dotted-black-border"></div>
 	  </div>
 	</div>
 	<br>
