@@ -21,6 +21,10 @@ $(document).ready(function() {
 	$("button[name=clear-mixing-area]").click(onClearButtonClick);
 	$('#tutorial').click(onCanvasClick);
 
+  // Debug handlers.
+  $("button[name=start-recording-action]").click(Debug.onStartRecordButtonClick);
+  $("button[name=stop-recording-action]").click(Debug.onStopRecordButtonClick);
+
 	// Draw the shape now.
 	var image = new Image();
 	image.src = 'images/heart.png';
@@ -207,6 +211,10 @@ function onCanvasClick(event) {
 }
 
 function floodFill(x, y, canvasContext) {
+  if (Debug.isRecording) {
+    Debug.recordData.push({ x: x, y: y, color: paletteColorTuple.getCSS()});
+  }
+  
   var canvasWidth = canvasContext.canvas.width;
   var canvasHeight = canvasContext.canvas.height;
 	// Create an ImageData object.
@@ -216,8 +224,6 @@ function floodFill(x, y, canvasContext) {
 	floodfillStack = [];
 	// TODO: Handle the case when pallete color is not defined.
 	console.log("starting floodfill " + x + "," + y);     
-	window.fillCalled = 0;
-	window.isBoundaryCalled = 0;
 	fillPixel(x, y, imageData.data, canvasWidth, canvasHeight);
 	var duration = time(function() {
 	while(floodfillStack.length > 0) {
@@ -226,8 +232,6 @@ function floodFill(x, y, canvasContext) {
 		}
 	});
 	console.log("flood fill took", duration, "ms");
-	console.log("filled:", window.fillCalled);
-	console.log("isBoundary:", window.isBoundaryCalled);
 	canvasContext.putImageData(imageData, 0, 0);
 }
 
@@ -244,7 +248,6 @@ function fillPixel(x, y, pixelData, canvasWidth, canvasHeight) {
 // Helper method that changes the color of pixel 'x, y' to
 // whatever paletteColorTuple is set to.
 function fill(x, y, pixelData, canvasWidth, canvasHeight) {
-	fillCalled++;
 	var offset = pixelOffset(x, y, canvasWidth);
 	pixelData[offset] = paletteColorTuple.r;
 	pixelData[offset + 1] = paletteColorTuple.g;
