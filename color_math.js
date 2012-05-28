@@ -1,37 +1,48 @@
 // https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
-var paletteColorTuple = $.xcolor.test("rgb(255, 0, 0)"),
-ctx = null,
-canvasWidth = null,
-swatchStartX = 18,
+var swatchStartX = 18,
 swatchStartY = 19,
 swatchImageWidth = 93,
 swatchImageHeight = 46,
 swatchImage = new Image(),
 mixingAreaColorList = new Array(),
+// Hard-coded black boundary color.
+boundaryColor = $.xcolor.test("rgb(0, 0, 0)"),
 colorRed = $.xcolor.test("rgb(255, 0, 0)"),
 colorGreen = $.xcolor.test("rgb(0, 255, 0)"),
 colorBlue = $.xcolor.test("rgb(0, 0, 255)"),
-colorYellow = $.xcolor.test("rgb(255, 255, 0)");
+colorYellow = $.xcolor.test("rgb(255, 255, 0)"),
+paletteColorTuple = $.xcolor.test("rgb(255, 0, 0)");
 
 // TODO: Fix the flood-fill for outside the boundary of image.
-// TODO: Need to differentitate white from erase.
 $(document).ready(function() {
 	// Add all the click handlers.
 	$("div.primary-palette-square").click(onPaletteClick);
 	$("div.secondary-palette-square").click(onPaletteClick);
 	$("button[name=clear-mixing-area]").click(onClearButtonClick);
-
 	$('#tutorial').click(onCanvasClick);
-	canvas = $('#tutorial')[0];
 
-	if (canvas.getContext) {
-		ctx = canvas.getContext('2d');
-		canvasWidth = ctx.canvas.width;
-		drawShapes();
-	}
-	
+	// Draw the shape now.
+	var image = new Image();
+	image.src = 'images/heart.png';
+	image.onload = function() { setupCanvases(image) };
+
 	$(initDragAndDrop);
 });
+
+function setupCanvases(image) {
+  var canvas = $('#tutorial')[0];
+	var imagePreview = $('#image-preview')[0];
+
+	if (!canvas.getContext)
+	  return;
+	ctx = canvas.getContext('2d');
+	// Draw the preview.
+	canvasPreviewCtx = imagePreview.getContext('2d');
+	
+	drawShapes(image, ctx);
+	drawShapes(image, canvasPreviewCtx);
+  displayPreviewImage(heart, canvasPreviewCtx);
+}
 
 function initDragAndDrop() {
 	// Draggable properties for primary colors.
@@ -161,22 +172,12 @@ function returnMixedColorHSL(dragged_color) {
     return $.xcolor.test("hsl(" + h + "," + s + "," + l + ")").getCSS();
 }
 
-// Picks an image and draws it on canvas.
-function drawShapes() {
+// Picks an image and draws it and its preview on canvas.
+function drawShapes(image, canvasContext) {
 	// Fill the background with white then draw an image on top.
-	ctx.fillStyle = "rgb(255, 255, 255)";
-	ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-	// Hard-coded black boundary color.
-	boundaryColor = $.xcolor.test("rgb(0, 0, 0)");
-
-	// Draw the shape now.
-	var img = new Image();
-	img.src = 'images/heart.png';
-	//swatchImage.src = "images/paint-outline.png";
-	img.onload = function(){
-		ctx.drawImage(img, 0, 0);
-	}
+	canvasContext.fillStyle = "rgb(255, 255, 255)";
+	canvasContext.fillRect(0, 0, canvasContext.canvas.width, canvasContext.canvas.height);	
+	canvasContext.drawImage(image, 0, 0);
 }
 
 // Add click handlers.
@@ -202,12 +203,14 @@ function onCanvasClick(event) {
 	var canvas = $('#tutorial')[0];
 	x = event.pageX - canvas.offsetLeft,
 	y = event.pageY - canvas.offsetTop;
-	floodFill(x, y);
+	floodFill(x, y, ctx);
 }
 
-function floodFill(x, y) {
+function floodFill(x, y, canvasContext) {
+  var canvasWidth = canvasContext.canvas.width;
+  var canvasHeight = canvasContext.canvas.height;
 	// Create an ImageData object.
-	var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+	var imageData = canvasContext.getImageData(0, 0, canvasWidth, canvasHeight);
 
 	// Stack stores the (x, y) coordinates of the pixel to color.
 	floodfillStack = [];
@@ -215,53 +218,56 @@ function floodFill(x, y) {
 	console.log("starting floodfill " + x + "," + y);     
 	window.fillCalled = 0;
 	window.isBoundaryCalled = 0;
-	fillPixel(x, y, imageData.data);
+	fillPixel(x, y, imageData.data, canvasWidth, canvasHeight);
 	var duration = time(function() {
-		while(floodfillStack.length > 0) {
+	while(floodfillStack.length > 0) {
 			toFill = floodfillStack.pop();
-			fillPixel(toFill[0], toFill[1], imageData.data);
+			fillPixel(toFill[0], toFill[1], imageData.data, canvasWidth, canvasHeight);
 		}
 	});
 	console.log("flood fill took", duration, "ms");
 	console.log("filled:", window.fillCalled);
 	console.log("isBoundary:", window.isBoundaryCalled);
-	ctx.putImageData(imageData, 0, 0);
+	canvasContext.putImageData(imageData, 0, 0);
 }
 
 // Fills the pixel with paletteColor if it is not boundary pixel.
-function fillPixel(x, y, pixelData) {
-	if(!isBoundary(x, y, pixelData)) fill(x, y, pixelData);
+function fillPixel(x, y, pixelData, canvasWidth, canvasHeight) {
+	if(!isBoundary(x, y, pixelData, canvasWidth, canvasHeight)) fill(x, y, pixelData, canvasWidth);
 
-	if(!isBoundary(x, y - 1, pixelData)) floodfillStack.push([x, y - 1]);
-	if(!isBoundary(x + 1, y, pixelData)) floodfillStack.push([x + 1, y]);
-	if(!isBoundary(x, y + 1, pixelData)) floodfillStack.push([x, y + 1]);
-	if(!isBoundary(x - 1, y, pixelData)) floodfillStack.push([x - 1, y]);
+	if(!isBoundary(x, y - 1, pixelData, canvasWidth, canvasHeight)) floodfillStack.push([x, y - 1]);
+	if(!isBoundary(x + 1, y, pixelData, canvasWidth, canvasHeight)) floodfillStack.push([x + 1, y]);
+	if(!isBoundary(x, y + 1, pixelData, canvasWidth, canvasHeight)) floodfillStack.push([x, y + 1]);
+	if(!isBoundary(x - 1, y, pixelData, canvasWidth, canvasHeight)) floodfillStack.push([x - 1, y]);
 }
 
 // Helper method that changes the color of pixel 'x, y' to
 // whatever paletteColorTuple is set to.
-function fill(x, y, pixelData) {
+function fill(x, y, pixelData, canvasWidth, canvasHeight) {
 	fillCalled++;
-	var offset = pixelOffset(x, y);
+	var offset = pixelOffset(x, y, canvasWidth);
 	pixelData[offset] = paletteColorTuple.r;
 	pixelData[offset + 1] = paletteColorTuple.g;
 	pixelData[offset + 2] = paletteColorTuple.b;
 }
 
 // Returns the index of pixel at (x,y) into the pixel array returned by getImageData().
-function pixelOffset(x, y) { return (y * canvasWidth + x) * 4; }
+function pixelOffset(x, y, canvasWidth) { return (y * canvasWidth + x) * 4; }
 
 // Returns ture if the x, y coordinates are boundary pixels
 // or pixels of the same color as the fill color or we've reached
 // the end of the canvas.
-function isBoundary(x, y, pixelData) {
-	var offset = pixelOffset(x, y);
+function isBoundary(x, y, pixelData, canvasWidth, canvasHeight) {
+  if (x < 0 || x >= canvasWidth || y < 0 || y >= canvasHeight) return true;
+  
+	var offset = pixelOffset(x, y, canvasWidth);
+
 	return ((pixelData[offset] == boundaryColor.r &&
 		pixelData[offset + 1] == boundaryColor.g &&
 		pixelData[offset + 2] == boundaryColor.b) ||
 		(pixelData[offset] == paletteColorTuple.r &&
 			pixelData[offset + 1] == paletteColorTuple.g &&
-			pixelData[offset + 2] == paletteColorTuple.b));
+			pixelData[offset + 2] == paletteColorTuple.b));		
 		}
 
 		function time(fn) {

@@ -5,10 +5,19 @@
     <script type="text/javascript" src="jquery-ui-1.8.20.custom.min.js"></script>
     <script type="text/javascript" src="jquery.xcolor.js"></script>
     <script type="text/javascript" src="color_math.js"></script>
+    <script type="text/javascript" src="preview_image.js"></script>
     <style type="text/css">
-      canvas { 
-        border: 1px solid red; 
-      }
+    canvas { 
+     border: 1px solid red; 
+    }
+    
+    .image-preview {
+      border: 1px solid blue;
+      position: absolute;
+      top: 0;
+      -webkit-transform: scale(0.25, 0.25); /* Safari and Chrome */
+      -webkit-transform-origin:top left;
+    }
 
     #page {
      width: 682px;
@@ -55,15 +64,15 @@
   	}
   	
     .blue { 
-		  background-color: #0000FF;
+		  background-color: rgb(0, 0, 255);
 	  }
 	
    	.red { 
-		  background-color: #FF0000;
+		  background-color: rgb(255, 0, 0);
 	  }
 	
 	  .yellow { 
-		  background-color: #FFFF00;
+		  background-color: rgb(255, 255, 0);
 	  }
 	  
 	  .green { 
@@ -71,7 +80,12 @@
 	  }
 	  
 	  .clear { 
-  		background-color: #FFFFFF;
+  		background-color: rgb(255, 255, 255);
+  	}
+  	
+  	.black { 
+  	  /* Keep it different from boundary color */
+  		background-color: rgb(1, 1, 1);
   	}
   
     .dotted-black-border {
@@ -97,7 +111,9 @@
   <body>
 	<div id="page">
 	  <!-- Draw the canvas-->
-    <canvas id="tutorial" width="682" height="482"></canvas>
+    <canvas id="tutorial" width="552" height="482"></canvas>
+    <!-- Draw the preview on the top right 125, 125 -->
+    <canvas id="image-preview" class="image-preview" width="552" height="482"></canvas>
  	  <!-- Provide the Palette -->
  	  <div id="palette">
 	    <div class="primary-palette-square blue solid-black-border"></div>
@@ -105,6 +121,7 @@
 	    <div class="primary-palette-square yellow solid-black-border"></div>
 	    <div class="primary-palette-square green solid-black-border"></div>
 	    <div class="primary-palette-square clear solid-black-border"></div>
+	    <div class="primary-palette-square black solid-black-border"></div>
 	    <br><br>
 	    <div class="mixing-area clear solid-black-border"></div>
 	    <button type="button" name="clear-mixing-area">Clear</button>
@@ -115,6 +132,10 @@
 	    <div class="secondary-palette-square clear dotted-black-border"></div>
 	    <div class="secondary-palette-square clear dotted-black-border"></div>
 	  </div>
+	 <br>
+	 <div id="debug">
+    <button type="button" name="record-actions">Record</button>
+   </div>
 	</div>
 	<br>
   </body>
