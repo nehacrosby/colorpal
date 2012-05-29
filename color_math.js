@@ -1,5 +1,6 @@
 // https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
-var swatchStartX = 18,
+var imageIndex= 1,  // index into ImageLibrary.
+swatchStartX = 18,
 swatchStartY = 19,
 swatchImageWidth = 93,
 swatchImageHeight = 46,
@@ -27,7 +28,7 @@ $(document).ready(function() {
 
 	// Draw the shape now.
 	var image = new Image();
-	image.src = 'images/heart.png';
+	image.src = ImageLibrary[imageIndex].filename;
 	image.onload = function() { setupCanvases(image) };
 
 	$(initDragAndDrop);
@@ -45,7 +46,7 @@ function setupCanvases(image) {
 	
 	drawShapes(image, ctx);
 	drawShapes(image, canvasPreviewCtx);
-  displayPreviewImage(heart, canvasPreviewCtx);
+  displayPreviewImage(ImageLibrary[imageIndex].jsonRecordedData, canvasPreviewCtx);
 }
 
 function initDragAndDrop() {
@@ -131,6 +132,12 @@ function handleMixingAreaDropEvent(event, ui) {
     
 }
 
+// Returns the rgb string as "rgb(r,g,b)" from the
+// r, g, b values passed in as arguments.
+function getRgbString(r, g, b) {
+  return "rgb(" + r + "," + g + ","+ b + ")";
+}
+
 // Returns the mixed color as rgb string by mixing dragged_color
 // with the list of colors already added to the mixing area.
 function returnMixedColorRGB(dragged_color) {
@@ -151,29 +158,7 @@ function returnMixedColorRGB(dragged_color) {
   r = Math.floor(r / mixingAreaColorList.length);
   g = Math.floor(g / mixingAreaColorList.length);
   b = Math.floor(b / mixingAreaColorList.length);
-  return "rgb(" + r + "," + g + ","+ b + ")";
-}
-
-function returnMixedColorHSL(dragged_color) {
-  if (mixingAreaColorList.length == 0) {
-     mixingAreaColorList.push($.xcolor.test(dragged_color));
-     return dragged_color;
-   }
-   
-   // Do appropriate color mixing.
-   mixingAreaColorList.push($.xcolor.test(dragged_color));
-   var h = s = l = 0;
-   for (var i = 0; i < mixingAreaColorList.length; i++) {
-         h = h + mixingAreaColorList[i].getHSL()["h"];
-         s = s + mixingAreaColorList[i].getHSL()["s"];
-         l = l + mixingAreaColorList[i].getHSL()["l"];
-     }
-     
-    h = Math.floor(h / mixingAreaColorList.length);
-    s = Math.floor(s / mixingAreaColorList.length);
-    l = Math.floor(l / mixingAreaColorList.length);
-    
-    return $.xcolor.test("hsl(" + h + "," + s + "," + l + ")").getCSS();
+  return getRgbString(r, g, b);
 }
 
 // Picks an image and draws it and its preview on canvas.
@@ -201,13 +186,38 @@ function onClearButtonClick() {
   mixingAreaColorList = new Array();
 }
 
-// Get x, y coordinates of the mouse-click
-// and start flood-fill of the color from there.
+// Get x, y coordinates of the mouse-click.
+// Taken from:
+// http://stackoverflow.com/questions/1114465/getting-mouse-location-in-canvas
+function getMouseClickCoordinates(event) {
+   var targ;
+   if (!event) targ = window.event;
+   else if (event.target) targ = event.target;
+   else if (event.srcElement) targ = event.srcElement;  
+   // defeat Safari bug
+   if (targ.nodeType == 3) targ = targ.parentNode;
+   
+   var x = event.pageX - $(targ).offset().left;
+   var y = event.pageY - $(targ).offset().top;
+   return {"x": x, "y": y};
+}
+
+// Start flood-fill of the color from where the mouse click event
+// happened.
 function onCanvasClick(event) {
 	var canvas = $('#tutorial')[0];
-	x = event.pageX - canvas.offsetLeft,
-	y = event.pageY - canvas.offsetTop;
-	floodFill(x, y, ctx);
+	position = getMouseClickCoordinates(event);
+  // x = event.pageX - canvas.offsetLeft,
+  //  y = event.pageY - canvas.offsetTop;
+	floodFill(position.x, position.y, ctx);
+	
+	// Check if the user is done coloring the entire image.
+	var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+	if (isSameAsPreviewImage(imageData.data, 
+	                         ctx.canvas.width, 
+	                         ImageLibrary[imageIndex].jsonRecordedData)) {
+	  alert("Go to next image!");
+	}
 }
 
 function floodFill(x, y, canvasContext) {
@@ -225,13 +235,13 @@ function floodFill(x, y, canvasContext) {
 	// TODO: Handle the case when pallete color is not defined.
 	console.log("starting floodfill " + x + "," + y);     
 	fillPixel(x, y, imageData.data, canvasWidth, canvasHeight);
-	var duration = time(function() {
-	while(floodfillStack.length > 0) {
-			toFill = floodfillStack.pop();
-			fillPixel(toFill[0], toFill[1], imageData.data, canvasWidth, canvasHeight);
-		}
-	});
-	console.log("flood fill took", duration, "ms");
+  var duration = time(function() {
+    while(floodfillStack.length > 0) {
+        toFill = floodfillStack.pop();
+        fillPixel(toFill[0], toFill[1], imageData.data, canvasWidth, canvasHeight);
+      }
+    });
+  console.log("flood fill took", duration, "ms");
 	canvasContext.putImageData(imageData, 0, 0);
 }
 
