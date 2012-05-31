@@ -1,5 +1,5 @@
 // https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
-var imageIndex= 1,  // index into ImageLibrary.
+var imageIndex= 3,  // index into ImageLibrary.
 swatchStartX = 18,
 swatchStartY = 19,
 swatchImageWidth = 93,
@@ -27,12 +27,17 @@ $(document).ready(function() {
   $("button[name=stop-recording-action]").click(Debug.onStopRecordButtonClick);
 
 	// Draw the shape now.
-	var image = new Image();
-	image.src = ImageLibrary[imageIndex].filename;
-	image.onload = function() { setupCanvases(image) };
-
+	loadImage(ImageLibrary[imageIndex].filename);
+	
+	// Set up drag n drop handlers.
 	$(initDragAndDrop);
 });
+
+function loadImage(imageFilename) {
+  var image = new Image();
+	image.src = imageFilename;
+	image.onload = function() { setupCanvases(image) };
+}
 
 function setupCanvases(image) {
   var canvas = $('#tutorial')[0];
@@ -190,16 +195,17 @@ function onClearButtonClick() {
 // Taken from:
 // http://stackoverflow.com/questions/1114465/getting-mouse-location-in-canvas
 function getMouseClickCoordinates(event) {
-   var targ;
-   if (!event) targ = window.event;
-   else if (event.target) targ = event.target;
-   else if (event.srcElement) targ = event.srcElement;  
-   // defeat Safari bug
-   if (targ.nodeType == 3) targ = targ.parentNode;
-   
+   var targ = event.target;
    var x = event.pageX - $(targ).offset().left;
    var y = event.pageY - $(targ).offset().top;
    return {"x": x, "y": y};
+}
+
+function onDrawingComplete() {
+  if (imageIndex == ImageLibrary.length - 1) imageIndex = 0
+  else imageIndex++;
+  
+  loadImage(ImageLibrary[imageIndex].filename);
 }
 
 // Start flood-fill of the color from where the mouse click event
@@ -207,8 +213,6 @@ function getMouseClickCoordinates(event) {
 function onCanvasClick(event) {
 	var canvas = $('#tutorial')[0];
 	position = getMouseClickCoordinates(event);
-  // x = event.pageX - canvas.offsetLeft,
-  //  y = event.pageY - canvas.offsetTop;
 	floodFill(position.x, position.y, ctx);
 	
 	// Check if the user is done coloring the entire image.
@@ -216,7 +220,7 @@ function onCanvasClick(event) {
 	if (isSameAsPreviewImage(imageData.data, 
 	                         ctx.canvas.width, 
 	                         ImageLibrary[imageIndex].jsonRecordedData)) {
-	  alert("Go to next image!");
+	   onDrawingComplete();
 	}
 }
 
