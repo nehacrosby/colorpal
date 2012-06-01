@@ -29,7 +29,27 @@ function isSameAsPreviewImage(pixelData, canvasWidth, jsonRecordedData) {
        isDone = false;
        break;
      }
-   }
-   
+   }   
    return isDone;
+}
+
+// Make the image bigger in case the user clicks on it.
+function onImagePreviewClick(event) {
+  var previewCanvas = $('image-preview')[0];
+  
+}
+
+// An image is divided into different regions that are colored using flood-fill
+// algorithm. If there are 'n' such regions, then the max score one can earn
+// is 50 * n. TODO(Neha): Ask Phil if this feature is worth exposing.
+function updateCurrentScore(x, y, previewPixelData, previewCanvasWidth, pixelData, canvasWidth) {
+  var offset = pixelOffset(x, y, canvasWidth);
+  var pixelColor = getRgbString(pixelData[offset], pixelData[offset + 1], pixelData[offset + 2]); 
+  
+  var previewOffset = pixelOffset(x, y, previewCanvasWidth);
+  var correctColor = getRgbString(previewPixelData[offset], previewPixelData[offset + 1], pixelData[offset + 2]); 
+  if (pixelColor == correctColor) {
+    Debug.currentScore += 50;
+  }
+  console.log("Score: " + Debug.currentScore);
 }

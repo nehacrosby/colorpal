@@ -1,5 +1,5 @@
 // https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
-var imageIndex= 3,  // index into ImageLibrary.
+var imageIndex= 0,  // index into ImageLibrary.
 swatchStartX = 18,
 swatchStartY = 19,
 swatchImageWidth = 93,
@@ -21,6 +21,7 @@ $(document).ready(function() {
 	$("div.secondary-palette-square").click(onPaletteClick);
 	$("button[name=clear-mixing-area]").click(onClearButtonClick);
 	$('#tutorial').click(onCanvasClick);
+	$('#image-preview').click(onImagePreviewClick);
 
   // Debug handlers.
   $("button[name=start-recording-action]").click(Debug.onStartRecordButtonClick);
@@ -206,6 +207,7 @@ function onDrawingComplete() {
   else imageIndex++;
   
   loadImage(ImageLibrary[imageIndex].filename);
+  Debug.currentScore = 0;
 }
 
 // Start flood-fill of the color from where the mouse click event
@@ -217,11 +219,21 @@ function onCanvasClick(event) {
 	
 	// Check if the user is done coloring the entire image.
 	var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+	var previewImageData = canvasPreviewCtx.getImageData(0, 0, canvasPreviewCtx.canvas.width, canvasPreviewCtx.canvas.height);
+ 	
+ 	updateCurrentScore(position.x, position.y,
+ 	                   previewImageData.data, canvasPreviewCtx.canvas.width, 
+ 	                   imageData.data, ctx.canvas.width);
 	if (isSameAsPreviewImage(imageData.data, 
 	                         ctx.canvas.width, 
-	                         ImageLibrary[imageIndex].jsonRecordedData)) {
+                      	   ImageLibrary[imageIndex].jsonRecordedData)) {
 	   onDrawingComplete();
 	}
+}
+
+function onImagePreviewClick(event) {
+  var previewCanvas = $('image-preview')[0];
+  
 }
 
 function floodFill(x, y, canvasContext) {
