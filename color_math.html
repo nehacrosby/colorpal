@@ -19,12 +19,12 @@
       -webkit-transform: scale(0.25, 0.25); /* Safari and Chrome */
       -webkit-transform-origin:top left;
     }
-
-    #page {
-     width: 682px;
-     height: 650px;
-     border: 1px solid green;
-     position: relative;  
+    
+    .screen {
+      width: 682px;
+      height: 650px;
+      border: 1px solid green;
+      position: relative;
     }
    
 	  .primary-palette-square {
@@ -111,35 +111,49 @@
   </head>
   <body>
 	<div id="page">
-	  <!-- Draw the canvas-->
-    <canvas id="tutorial" width="552" height="482"></canvas>
-    <!-- Draw the preview on the top right 125, 125 -->
-    <canvas id="image-preview" class="image-preview" width="552" height="482"></canvas>
- 	  <!-- Provide the Palette -->
- 	  <div id="palette">
-	    <div class="primary-palette-square blue solid-black-border"></div>
-	    <div class="primary-palette-square red solid-black-border"></div>
-	    <div class="primary-palette-square yellow solid-black-border"></div>
-	    <div class="primary-palette-square green solid-black-border"></div>
-	    <div class="primary-palette-square clear solid-black-border"></div>
-	    <div class="primary-palette-square black solid-black-border"></div>
-	    <br><br>
-	    <div class="mixing-area clear solid-black-border"></div>
-	    <button type="button" name="clear-mixing-area">Clear</button>
-	    <br><br>
-	    <div class="secondary-palette-square clear dotted-black-border"></div>
-	    <div class="secondary-palette-square clear dotted-black-border"></div>
-	    <div class="secondary-palette-square clear dotted-black-border"></div>
-	    <div class="secondary-palette-square clear dotted-black-border"></div>
-	    <div class="secondary-palette-square clear dotted-black-border"></div>
+
+	  <div id="transitionScreen" class="screen" style="display:none">
+	    score
+	    <button>next</button>
 	  </div>
-	 <br>
-	 <div id="debug">
-    <button type="button" name="start-recording-action">Start Recording</button>
-    <button type="button" name="stop-recording-action">Stop Recording</button>
-    <div id="score">Score: 0</button>
-   </div>
-	</div>
+    <!--
+    $("#transitionScreen").show()
+      -->
+    <div id="listScreen" class="screen" style="display:none">
+      list screen
+    </div>
+
+    <div class="screen">
+  	  <!-- Draw the canvas-->
+      <canvas id="tutorial" width="552" height="482"></canvas>
+      <!-- Draw the preview on the top right 125, 125 -->
+      <canvas id="image-preview" class="image-preview" width="552" height="482"></canvas>
+   	  <!-- Provide the Palette -->
+   	  <div id="palette">
+  	    <div class="primary-palette-square blue solid-black-border"></div>
+  	    <div class="primary-palette-square red solid-black-border"></div>
+  	    <div class="primary-palette-square yellow solid-black-border"></div>
+  	    <div class="primary-palette-square green solid-black-border"></div>
+  	    <div class="primary-palette-square clear solid-black-border"></div>
+  	    <div class="primary-palette-square black solid-black-border"></div>
+  	    <br><br>
+  	    <div class="mixing-area clear solid-black-border"></div>
+  	    <button type="button" name="clear-mixing-area">Clear</button>
+  	    <br><br>
+  	    <div class="secondary-palette-square clear dotted-black-border"></div>
+  	    <div class="secondary-palette-square clear dotted-black-border"></div>
+  	    <div class="secondary-palette-square clear dotted-black-border"></div>
+  	    <div class="secondary-palette-square clear dotted-black-border"></div>
+  	    <div class="secondary-palette-square clear dotted-black-border"></div>
+  	  </div>
+  	 <br>
+  	 <div id="debug">
+      <button type="button" name="start-recording-action">Start Recording</button>
+      <button type="button" name="stop-recording-action">Stop Recording</button>
+      <div id="score">Score: 0</button>
+     </div>
+  	</div>
+  </div>
 	<br>
   </body>
 </html>
