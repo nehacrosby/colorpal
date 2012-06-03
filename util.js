@@ -28,11 +28,27 @@ Util = {
   },
   
   onDrawingComplete: function() {
-    if (App.imageIndex == ImageLibrary.length - 1) App.imageIndex = 0
+    if (App.imageIndex == App.ImageLibrary.length - 1) App.imageIndex = 0
     else App.imageIndex++;
 
-    App.loadImage(ImageLibrary[App.imageIndex].filename);
+    App.loadImage(App.ImageLibrary[App.imageIndex].filename);
     Debug.currentScore = 0;
+    App.paletteColorTuple = $.xcolor.test("rgb(255, 255, 255)");
+  },
+  
+  updateCurrentScore: function(x, y, previewPixelData, previewCanvasWidth, pixelData, canvasWidth) {
+    // An image is divided into different regions that are colored using flood-fill
+    // algorithm. If there are 'n' such regions, then the max score one can earn
+    // is 50 * n.
+    var offset = Util.pixelOffset(x, y, canvasWidth);
+    var pixelColor = Util.getRgbString(pixelData[offset], pixelData[offset + 1], pixelData[offset + 2]); 
+
+    var previewOffset = Util.pixelOffset(x, y, previewCanvasWidth);
+    var correctColor = Util.getRgbString(previewPixelData[offset], previewPixelData[offset + 1], pixelData[offset + 2]); 
+    if (pixelColor == correctColor) {
+      Debug.currentScore += 50;
+    }
+    console.log("Score: " + Debug.currentScore);
   },
 
   floodFill: function(x, y, canvasContext) {

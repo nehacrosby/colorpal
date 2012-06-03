@@ -2,6 +2,13 @@
 
 App = {
   init: function() {
+    this.ImageLibrary = 
+    [
+    {filename: "images/heart.png", jsonRecordedData: [{"x":240,"y":301,"color":"rgb(255,0,0)"}]},
+    {filename: "images/chick-head-1.png", jsonRecordedData: [{"x":132,"y":399,"color":"rgb(255,255,0)"},{"x":214,"y":324,"color":"rgb(255,127,0)"},{"x":204,"y":367,"color":"rgb(255,127,0)"}]},
+    {filename: "images/duckling-17737.png", jsonRecordedData: [{"x":94,"y":423,"color":"rgb(0,0,255)"},{"x":219,"y":301,"color":"rgb(255,255,0)"},{"x":392,"y":143,"color":"rgb(255,127,0)"}]},
+    {filename: "images/circus-tent-23135.png", jsonRecordedData: [{"x":82,"y":289,"color":"rgb(255,0,0)"},{"x":154,"y":278,"color":"rgb(255,0,0)"},{"x":225,"y":254,"color":"rgb(255,0,0)"},{"x":297,"y":235,"color":"rgb(255,0,0)"},{"x":352,"y":239,"color":"rgb(255,0,0)"},{"x":422,"y":240,"color":"rgb(255,0,0)"},{"x":152,"y":148,"color":"rgb(255,0,0)"},{"x":237,"y":148,"color":"rgb(255,0,0)"},{"x":321,"y":150,"color":"rgb(255,0,0)"},{"x":263,"y":34,"color":"rgb(255,0,0)"},{"x":197,"y":158,"color":"rgb(255,255,127)"},{"x":279,"y":161,"color":"rgb(255,255,127)"},{"x":356,"y":158,"color":"rgb(255,255,127)"},{"x":118,"y":294,"color":"rgb(255,255,127)"},{"x":188,"y":279,"color":"rgb(255,255,127)"},{"x":251,"y":222,"color":"rgb(255,255,127)"},{"x":317,"y":228,"color":"rgb(255,255,127)"},{"x":393,"y":241,"color":"rgb(255,255,127)"},{"x":137,"y":194,"color":"rgb(255,0,0)"}]},                                                                                               
+    ];
     this.imageIndex = 0;
     this.mixingAreaColorList = [];
     // Hard-coded black boundary color.
@@ -31,14 +38,13 @@ App = {
    	// Update the score.
    	var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
   	var previewImageData = canvasPreviewCtx.getImageData(0, 0, canvasPreviewCtx.canvas.width, canvasPreviewCtx.canvas.height);
-   	updateCurrentScore(position.x, position.y,
-   	                   previewImageData.data, canvasPreviewCtx.canvas.width, 
-   	                   imageData.data, ctx.canvas.width);
+   	Util.updateCurrentScore(position.x, position.y,
+   	                        previewImageData.data, canvasPreviewCtx.canvas.width, 
+   	                        imageData.data, ctx.canvas.width);
 
    	// Check if the user is done coloring the entire image.                   
-  	if (isSameAsPreviewImage(imageData.data, 
-  	                         ctx.canvas.width, 
-                        	   ImageLibrary[App.imageIndex].jsonRecordedData)) {
+  	if (DrawingPreview.isSameAsPreviewImage(
+        imageData.data, ctx.canvas.width, this.ImageLibrary[App.imageIndex].jsonRecordedData)) {
   	   Util.onDrawingComplete();
   	}
   },
@@ -80,7 +86,8 @@ App = {
 
   	this.drawShapes(image, ctx);
   	this.drawShapes(image, canvasPreviewCtx);
-    displayPreviewImage(ImageLibrary[App.imageIndex].jsonRecordedData, canvasPreviewCtx);
+    DrawingPreview.displayPreviewImage(this.ImageLibrary[App.imageIndex].jsonRecordedData, canvasPreviewCtx);
+    this.paletteColorTuple = $.xcolor.test("rgb(255, 255, 255)");
   },
   
   drawShapes: function(image, canvasContext) {
@@ -192,7 +199,7 @@ $(document).ready(function() {
   $("button[name=stop-recording-action]").click(Debug.onStopRecordButtonClick);
 
 	// Draw the shape.
-	App.loadImage(ImageLibrary[App.imageIndex].filename);
+	App.loadImage(App.ImageLibrary[App.imageIndex].filename);
 	
 	// Set up drag n drop handlers.
 	App.initDragAndDrop();
