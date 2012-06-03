@@ -11,8 +11,8 @@ ImageLibrary =
 function displayPreviewImage(jsonRecordedData, canvasPreviewCtx) {
   for (var i = 0; i < jsonRecordedData.length; i++) {
        var colorToFill = jsonRecordedData[i]; 
-       paletteColorTuple = $.xcolor.test(colorToFill.color);
-       floodFill(colorToFill.x, colorToFill.y, canvasPreviewCtx);
+       App.paletteColorTuple = $.xcolor.test(colorToFill.color);
+       Util.floodFill(colorToFill.x, colorToFill.y, canvasPreviewCtx);
   }
 }
 
@@ -22,8 +22,8 @@ function isSameAsPreviewImage(pixelData, canvasWidth, jsonRecordedData) {
    var isDone = true;
    for (var i = 0; i < jsonRecordedData.length; i++) {
      var recordedColor = jsonRecordedData[i]; 
-     var offset = pixelOffset(recordedColor.x, recordedColor.y, canvasWidth);
-     var pixelColor = getRgbString(pixelData[offset], pixelData[offset + 1], pixelData[offset + 2]); 
+     var offset = Util.pixelOffset(recordedColor.x, recordedColor.y, canvasWidth);
+     var pixelColor = Util.getRgbString(pixelData[offset], pixelData[offset + 1], pixelData[offset + 2]); 
 
      if (pixelColor != recordedColor.color) {
        isDone = false;
@@ -43,11 +43,11 @@ function onImagePreviewClick(event) {
 // algorithm. If there are 'n' such regions, then the max score one can earn
 // is 50 * n. TODO(Neha): Ask Phil if this feature is worth exposing.
 function updateCurrentScore(x, y, previewPixelData, previewCanvasWidth, pixelData, canvasWidth) {
-  var offset = pixelOffset(x, y, canvasWidth);
-  var pixelColor = getRgbString(pixelData[offset], pixelData[offset + 1], pixelData[offset + 2]); 
+  var offset = Util.pixelOffset(x, y, canvasWidth);
+  var pixelColor = Util.getRgbString(pixelData[offset], pixelData[offset + 1], pixelData[offset + 2]); 
   
-  var previewOffset = pixelOffset(x, y, previewCanvasWidth);
-  var correctColor = getRgbString(previewPixelData[offset], previewPixelData[offset + 1], pixelData[offset + 2]); 
+  var previewOffset = Util.pixelOffset(x, y, previewCanvasWidth);
+  var correctColor = Util.getRgbString(previewPixelData[offset], previewPixelData[offset + 1], pixelData[offset + 2]); 
   if (pixelColor == correctColor) {
     Debug.currentScore += 50;
   }

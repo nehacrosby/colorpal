@@ -1,7 +1,9 @@
+// This library contains methods that modify the dom.
+
 App = {
   init: function() {
     this.imageIndex = 0;
-    this.mixingAreaColorList = new Array();
+    this.mixingAreaColorList = [];
     // Hard-coded black boundary color.
     this.boundaryColor = $.xcolor.test("rgb(0, 0, 0)");
     this.paletteColorTuple = $.xcolor.test("rgb(255, 255, 255)");
@@ -24,7 +26,7 @@ App = {
     // Start flood-fill of the color from where the mouse click event
     // happened.
   	position = this.getMouseClickCoordinates(event);
-  	floodFill(position.x, position.y, ctx);
+  	Util.floodFill(position.x, position.y, ctx);
 
    	// Update the score.
    	var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -37,7 +39,7 @@ App = {
   	if (isSameAsPreviewImage(imageData.data, 
   	                         ctx.canvas.width, 
                         	   ImageLibrary[App.imageIndex].jsonRecordedData)) {
-  	   onDrawingComplete();
+  	   Util.onDrawingComplete();
   	}
   },
   
@@ -46,7 +48,7 @@ App = {
     // TODO(Neha): Ask Phil why this doesn't work.
     // $("div.mixing-area").addClass("clear");
     $("div.mixing-area").css("background-color", "#FFFFFF");
-    this.mixingAreaColorList = new Array();
+    this.mixingAreaColorList = [];
   },
   
   getMouseClickCoordinates: function(event) {
@@ -170,7 +172,7 @@ App = {
     // of the palette-square dropped on to it +
     // the color that may already be present.
     swatch.css("background-color", 
-          returnMixedColorRGB(
+          Util.returnMixedColorRGB(
                ui.draggable.css("background-color")));
 
   },
@@ -182,7 +184,7 @@ $(document).ready(function() {
   $("div.primary-palette-square").click(jQuery.proxy(App.onPaletteClick, App));
 	$("div.secondary-palette-square").click(jQuery.proxy(App.onPaletteClick, App));
 	$('#tutorial').click(jQuery.proxy(App.onCanvasClick, App));
-	$("button[name=clear-mixing-area]").click(jQuery.proxy(App.onClearButtonClick));
+	$("button[name=clear-mixing-area]").click(jQuery.proxy(App.onClearButtonClick, App));
 	// $('#image-preview').click(onImagePreviewClick);
 
   // Debug handlers.
@@ -195,116 +197,3 @@ $(document).ready(function() {
 	// Set up drag n drop handlers.
 	App.initDragAndDrop();
 });
-
-// Returns the rgb string as "rgb(r,g,b)" from the
-// r, g, b values passed in as arguments.
-function getRgbString(r, g, b) {
-  return "rgb(" + r + "," + g + ","+ b + ")";
-}
-
-// Returns the mixed color as rgb string by mixing dragged_color
-// with the list of colors already added to the mixing area.
-function returnMixedColorRGB(dragged_color) {
-  if (App.mixingAreaColorList.length == 0) {
-    App.mixingAreaColorList.push($.xcolor.test(dragged_color));
-    return dragged_color;
-  }
-
-  // Do appropriate color mixing.
-  App.mixingAreaColorList.push($.xcolor.test(dragged_color));
-  var r = g = b = 0;
-  for (var i = 0; i < App.mixingAreaColorList.length; i++) {
-        r = r + App.mixingAreaColorList[i]["r"];
-        g = g + App.mixingAreaColorList[i]["g"];
-        b = b + App.mixingAreaColorList[i]["b"];
-    }
-    
-  r = Math.floor(r / App.mixingAreaColorList.length);
-  g = Math.floor(g / App.mixingAreaColorList.length);
-  b = Math.floor(b / App.mixingAreaColorList.length);
-  return getRgbString(r, g, b);
-}
-
-function onDrawingComplete() {
-  if (App.imageIndex == ImageLibrary.length - 1) App.imageIndex = 0
-  else App.imageIndex++;
-  
-  loadImage(ImageLibrary[App.imageIndex].filename);
-  Debug.currentScore = 0;
-}
-
-function floodFill(x, y, canvasContext) {
-  if (Debug.isRecording) {
-    Debug.recordData.push({ x: x, y: y, color: App.paletteColorTuple.getCSS()});
-  }
-  
-  var canvasWidth = canvasContext.canvas.width;
-  var canvasHeight = canvasContext.canvas.height;
-	// Create an ImageData object.
-	var imageData = canvasContext.getImageData(0, 0, canvasWidth, canvasHeight);
-
-	// Stack stores the (x, y) coordinates of the pixel to color.
-	floodfillStack = [];
-	// TODO: Handle the case when pallete color is not defined.
-	console.log("starting floodfill " + x + "," + y);     
-	fillPixel(x, y, imageData.data, canvasWidth, canvasHeight);
-  var duration = time(function() {
-    while(floodfillStack.length > 0) {
-      toFill = floodfillStack.pop();
-      fillPixel(toFill[0], toFill[1], imageData.data, canvasWidth, canvasHeight);
-    }
-  });
-  console.log("flood fill took", duration, "ms");
-	canvasContext.putImageData(imageData, 0, 0);
-}
-
-// Fills the pixel with paletteColor if it is not boundary pixel.
-function fillPixel(x, y, pixelData, canvasWidth, canvasHeight) {
-	if(!isBoundary(x, y, pixelData, canvasWidth, canvasHeight)) fill(x, y, pixelData, canvasWidth);
-
-	if(!isBoundary(x, y - 1, pixelData, canvasWidth, canvasHeight)) floodfillStack.push([x, y - 1]);
-	if(!isBoundary(x + 1, y, pixelData, canvasWidth, canvasHeight)) floodfillStack.push([x + 1, y]);
-	if(!isBoundary(x, y + 1, pixelData, canvasWidth, canvasHeight)) floodfillStack.push([x, y + 1]);
-	if(!isBoundary(x - 1, y, pixelData, canvasWidth, canvasHeight)) floodfillStack.push([x - 1, y]);
-}
-
-// Helper method that changes the color of pixel 'x, y' to
-// whatever App.paletteColorTuple is set to.
-function fill(x, y, pixelData, canvasWidth, canvasHeight) {
-	var offset = pixelOffset(x, y, canvasWidth);
-	pixelData[offset] = App.paletteColorTuple.r;
-	pixelData[offset + 1] = App.paletteColorTuple.g;
-	pixelData[offset + 2] = App.paletteColorTuple.b;
-}
-
-// Returns the index of pixel at (x,y) into the pixel array returned by getImageData().
-function pixelOffset(x, y, canvasWidth) { return (y * canvasWidth + x) * 4; }
-
-// Returns ture if the x, y coordinates are boundary pixels
-// or pixels of the same color as the fill color or we've reached
-// the end of the canvas.
-function isBoundary(x, y, pixelData, canvasWidth, canvasHeight) {
-  if (x < 0 || x >= canvasWidth || y < 0 || y >= canvasHeight) return true;
-  
-	var offset = pixelOffset(x, y, canvasWidth);
-
-	return ((pixelData[offset] == App.boundaryColor.r &&
-		pixelData[offset + 1] == App.boundaryColor.g &&
-		pixelData[offset + 2] == App.boundaryColor.b) ||
-		(pixelData[offset] == App.paletteColorTuple.r &&
-			pixelData[offset + 1] == App.paletteColorTuple.g &&
-			pixelData[offset + 2] == App.paletteColorTuple.b));		
-		}
-
-		function time(fn) {
-			var time = Date.now();
-			fn();
-			return Date.now() - time;
-		}
-
-		function benchmark(fn) {
-			time(function() {
-				for (var i = 0; i < 100000; i++)
-				fn();
-			});
-		}
