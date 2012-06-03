@@ -45,7 +45,7 @@ App = {
    	// Check if the user is done coloring the entire image.                   
   	if (DrawingPreview.isSameAsPreviewImage(
         imageData.data, ctx.canvas.width, this.ImageLibrary[App.imageIndex].jsonRecordedData)) {
-  	   Util.onDrawingComplete();
+  	   Transition.handleCompletionAnimation();
   	}
   },
   
@@ -192,6 +192,8 @@ $(document).ready(function() {
 	$("div.secondary-palette-square").click(jQuery.proxy(App.onPaletteClick, App));
 	$('#tutorial').click(jQuery.proxy(App.onCanvasClick, App));
 	$("button[name=clear-mixing-area]").click(jQuery.proxy(App.onClearButtonClick, App));
+	$("button[name=next-button]").click(jQuery.proxy(Transition.showNextImage, Transition));
+
 	// $('#image-preview').click(onImagePreviewClick);
 
   // Debug handlers.

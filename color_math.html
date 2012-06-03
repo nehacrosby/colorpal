@@ -7,6 +7,7 @@
     <script type="text/javascript" src="color_math.js"></script>
     <script type="text/javascript" src="preview_image.js"></script>
     <script type="text/javascript" src="debug.js"></script>
+    <script type="text/javascript" src="transition.js"></script>
     <script type="text/javascript" src="util.js"></script>
     <style type="text/css">
     canvas { 
@@ -28,6 +29,14 @@
       position: relative;
     }
    
+   	#completion-image {
+  	  height: 80;
+  	  width: 80;
+  	  top: 50%;
+  	  left: 50%;
+  	  position: absolute;
+  	}
+  	
 	  .primary-palette-square {
 	    width: 40px;
 		  height: 40px;
@@ -112,20 +121,17 @@
   </head>
   <body>
 	<div id="page">
-
 	  <div id="transitionScreen" class="screen" style="display:none">
-	    score
-	    <button>next</button>
+	    Score!
+	    <button type"button" name="next-button">Next</button>
 	  </div>
-    <!--
-    $("#transitionScreen").show()
-      -->
     <div id="listScreen" class="screen" style="display:none">
       list screen
     </div>
 
-    <div class="screen">
+    <div id="drawingScreen" class="screen">
   	  <!-- Draw the canvas-->
+  	  <img src="styles/smiley_thumbs_up.png" id="completion-image" style="display:none"/>
       <canvas id="tutorial" width="552" height="482"></canvas>
       <!-- Draw the preview on the top right 125, 125 -->
       <canvas id="image-preview" class="image-preview" width="552" height="482"></canvas>

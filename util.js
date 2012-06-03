@@ -27,13 +27,9 @@ Util = {
     return Util.getRgbString(r, g, b);
   },
   
-  onDrawingComplete: function() {
-    if (App.imageIndex == App.ImageLibrary.length - 1) App.imageIndex = 0
-    else App.imageIndex++;
-
-    App.loadImage(App.ImageLibrary[App.imageIndex].filename);
-    Debug.currentScore = 0;
-    App.paletteColorTuple = $.xcolor.test("rgb(255, 255, 255)");
+  clearCanvas: function(canvasElement) {
+    var context = canvasElement.getContext('2d');
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
   },
   
   updateCurrentScore: function(x, y, previewPixelData, previewCanvasWidth, pixelData, canvasWidth) {
