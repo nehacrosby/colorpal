@@ -1,4 +1,4 @@
-// This library contains methods that deal with the clipart image previews on the canvas.
+// This library contains methods that deal with the clipart image preview on the canvas.
 
 ImageLibrary = 
 [
