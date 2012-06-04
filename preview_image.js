@@ -22,14 +22,14 @@ DrawingPreview = {
       zoom: '25%',
      }, 1000, jQuery.proxy(this.onImagePreviewAnimationComplete, this));
      
-     $('#preview-fullscreen').hide();
+     $('#image-preview-container .expand-icon').hide();
      // Fade out the palette screen.
      $('#palette').hide(500);
      $('#debug').hide(500);
   },
 
   onImagePreviewAnimationComplete: function() {
-    $('#drawing-fullscreen').show();
+    $('#tutorial-container > .expand-icon').show();
     // Do nothing for now.
   },
   

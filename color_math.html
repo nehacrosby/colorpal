@@ -11,20 +11,27 @@
     <script type="text/javascript" src="util.js"></script>
     <style type="text/css">
     
-    #image-preview {
+    #image-preview-container {
       border: 1px solid blue;
       position: absolute;
       top: 0;
+      left: 100%;
     }
     
-    /*#preview-fullscreen-icon {
-          height: 20;
-          width: 20;
-          left: 100%;
-        }*/
-    
-    .tutorial {
+    #tutorial-container {
       border: 1px solid red; 
+      display: inline-block;
+      position: relative;
+    }
+    
+    #tutorial-container .expand-icon {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+    
+    #tutorial-container #image-preview-container .expand-icon {
+      left: 0;
     }
     
     .screen {
@@ -138,11 +145,16 @@
     <div id="drawingScreen" class="screen">
   	  <!-- Draw the canvas-->
   	  <img src="styles/smiley_thumbs_up.png" id="completion-image" style="display:none"/>
-      <canvas id="tutorial" class="tutorial" width="552" height="482" style="zoom: 100%"></canvas>
-      <img src="styles/fullscreen.png" id="drawing-fullscreen" style="display:none"/>
-        <!-- <img src="styles/fullscreen.png" id="preview-fullscreen-icon"/> -->
-      <canvas id="image-preview" class="image-preview" width="552" height="482" style="zoom: 25%"></canvas>
-      
+  	  <div id="tutorial-container">
+        <canvas id="tutorial" class="tutorial" width="552" height="482" style="zoom: 100%"></canvas>
+        <img src="styles/fullscreen.png" class="expand-icon" style="display:none"/>
+
+        <div id="image-preview-container">
+          <canvas id="image-preview" class="image-preview" width="552" height="482" style="zoom: 25%"></canvas>
+          <img src="styles/fullscreen.png" class="expand-icon"/>
+        </div>
+      </div>
+
    	  <!-- Provide the Palette -->
    	  <div id="palette">
   	    <div class="primary-palette-square blue solid-black-border"></div>
