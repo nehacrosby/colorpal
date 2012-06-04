@@ -9,9 +9,33 @@ DrawingPreview = {
     }
   },
 
-  // Returns true if the canvas image has the same colors
-  // as the preview image in which case the user is done!
+  onImagePreviewClick: function(event) {
+    // Expand the preview drawing.
+    $('#image-preview').animate({
+      zoom: '100%',
+    }, 1000, function() {
+      // Animation complete.
+    });
+    
+    // Shrink the main drawing.
+    $('#tutorial').animate({
+      zoom: '25%',
+     }, 1000, jQuery.proxy(this.onImagePreviewAnimationComplete, this));
+     
+     $('#preview-fullscreen').hide();
+     // Fade out the palette screen.
+     $('#palette').hide(500);
+     $('#debug').hide(500);
+  },
+
+  onImagePreviewAnimationComplete: function() {
+    $('#drawing-fullscreen').show();
+    // Do nothing for now.
+  },
+  
   isSameAsPreviewImage: function(pixelData, canvasWidth, jsonRecordedData) {
+    // Returns true if the canvas image has the same colors
+    // as the preview image in which case the user is done!
     var isDone = true;
     for (var i = 0; i < jsonRecordedData.length; i++) {
       var recordedColor = jsonRecordedData[i]; 
@@ -25,4 +49,5 @@ DrawingPreview = {
     }   
     return isDone;
   },
+    
 };

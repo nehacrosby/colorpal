@@ -10,16 +10,21 @@
     <script type="text/javascript" src="transition.js"></script>
     <script type="text/javascript" src="util.js"></script>
     <style type="text/css">
-    canvas { 
-     border: 1px solid red; 
-    }
     
-    .image-preview {
+    #image-preview {
       border: 1px solid blue;
       position: absolute;
       top: 0;
-      -webkit-transform: scale(0.25, 0.25); /* Safari and Chrome */
-      -webkit-transform-origin:top left;
+    }
+    
+    /*#preview-fullscreen-icon {
+          height: 20;
+          width: 20;
+          left: 100%;
+        }*/
+    
+    .tutorial {
+      border: 1px solid red; 
     }
     
     .screen {
@@ -36,6 +41,7 @@
   	  left: 50%;
   	  position: absolute;
   	}
+  	
   	
 	  .primary-palette-square {
 	    width: 40px;
@@ -132,9 +138,11 @@
     <div id="drawingScreen" class="screen">
   	  <!-- Draw the canvas-->
   	  <img src="styles/smiley_thumbs_up.png" id="completion-image" style="display:none"/>
-      <canvas id="tutorial" width="552" height="482"></canvas>
-      <!-- Draw the preview on the top right 125, 125 -->
-      <canvas id="image-preview" class="image-preview" width="552" height="482"></canvas>
+      <canvas id="tutorial" class="tutorial" width="552" height="482" style="zoom: 100%"></canvas>
+      <img src="styles/fullscreen.png" id="drawing-fullscreen" style="display:none"/>
+        <!-- <img src="styles/fullscreen.png" id="preview-fullscreen-icon"/> -->
+      <canvas id="image-preview" class="image-preview" width="552" height="482" style="zoom: 25%"></canvas>
+      
    	  <!-- Provide the Palette -->
    	  <div id="palette">
   	    <div class="primary-palette-square blue solid-black-border"></div>

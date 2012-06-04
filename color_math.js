@@ -193,8 +193,7 @@ $(document).ready(function() {
 	$('#tutorial').click(jQuery.proxy(App.onCanvasClick, App));
 	$("button[name=clear-mixing-area]").click(jQuery.proxy(App.onClearButtonClick, App));
 	$("button[name=next-button]").click(jQuery.proxy(Transition.showNextImage, Transition));
-
-	// $('#image-preview').click(onImagePreviewClick);
+  $('#image-preview').click(jQuery.proxy(DrawingPreview.onImagePreviewClick, DrawingPreview));
 
   // Debug handlers.
   $("button[name=start-recording-action]").click(Debug.onStartRecordButtonClick);
