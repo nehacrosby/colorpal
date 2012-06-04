@@ -14,15 +14,26 @@ App = {
     // Hard-coded black boundary color.
     this.boundaryColor = $.xcolor.test("rgb(0, 0, 0)");
     this.paletteColorTuple = $.xcolor.test("rgb(255, 255, 255)");
+    this.eventEnabled = true;
+    
+    // Add all the click handlers.
+    $("div.primary-palette-square").click(jQuery.proxy(this.onPaletteClick, this));
+  	$("div.secondary-palette-square").click(jQuery.proxy(this.onPaletteClick, this));
+  	$('#tutorial').click(jQuery.proxy(this.onCanvasClick, this));
+  	$("button[name=clear-mixing-area]").click(jQuery.proxy(this.onClearButtonClick, this));
   },
   
   onPaletteClick: function(event) {
+    if (!this.eventEnabled) return;
+    
     // Pick up the color.
     var paletteDiv = $(event.target);
     this.paletteColorTuple = $.xcolor.test(paletteDiv.css("background-color"));
   },
   
   onCanvasClick: function(event) {
+    if (!this.eventEnabled) return;
+    
     var canvas = $('#tutorial')[0];
   	var imagePreview = $('#image-preview')[0];
 
@@ -50,12 +61,14 @@ App = {
   },
   
   onClearButtonClick: function() {
+    if (!this.eventEnabled) return;
+    
     // Clear the mixing area.
     $("div.mixing-area").css("background-color", "");
     this.mixingAreaColorList = [];
   },
   
-  getMouseClickCoordinates: function(event) {
+  getMouseClickCoordinates: function(event) {    
     // Get x, y coordinates of the mouse-click.
     // Taken from:
     // http://stackoverflow.com/questions/1114465/getting-mouse-location-in-canvas
@@ -134,19 +147,19 @@ App = {
   	});
   },
   
-  handleSecondarySwatchActivateEvent: function(event, ui) {
+  handleSecondarySwatchActivateEvent: function(event, ui) {    
     var swatch = $(event.target);
     swatch.removeClass("dotted-black-border");
     swatch.addClass("dotted-red-border");
   },
 
-  handleSecondarySwatchDeactivateEvent: function(event, ui) {
+  handleSecondarySwatchDeactivateEvent: function(event, ui) {    
     var swatch = $(event.target);
     swatch.removeClass("dotted-red-border");
     swatch.addClass("dotted-black-border");
   },
 
-  handleSecondarySwatchDropEvent: function(event, ui) {
+  handleSecondarySwatchDropEvent: function(event, ui) {    
     var swatch = $(event.target);
     draggable = ui.draggable;
 
@@ -157,7 +170,7 @@ App = {
     swatch.addClass("solid-black-border");
   },
 
-  handleMixingAreaActivateEvent: function(event, ui) {
+  handleMixingAreaActivateEvent: function(event, ui) {    
     var swatch = $(event.target);
     swatch.removeClass("solid-black-border");
     swatch.addClass("dotted-red-border");
@@ -185,17 +198,9 @@ App = {
 
 $(document).ready(function() {
   App.init();
-	// Add all the click handlers.
-  $("div.primary-palette-square").click(jQuery.proxy(App.onPaletteClick, App));
-	$("div.secondary-palette-square").click(jQuery.proxy(App.onPaletteClick, App));
-	$('#tutorial').click(jQuery.proxy(App.onCanvasClick, App));
-	$("button[name=clear-mixing-area]").click(jQuery.proxy(App.onClearButtonClick, App));
-	$("button[name=next-button]").click(jQuery.proxy(Transition.showNextImage, Transition));
-  $('#image-preview').click(jQuery.proxy(DrawingPreview.onImagePreviewClick, DrawingPreview));
+  DrawingPreview.init();
 
-  // Debug handlers.
-  $("button[name=start-recording-action]").click(Debug.onStartRecordButtonClick);
-  $("button[name=stop-recording-action]").click(Debug.onStopRecordButtonClick);
+	$("button[name=next-button]").click(jQuery.proxy(Transition.showNextImage, Transition));
 
 	// Draw the shape.
 	App.loadImage(App.ImageLibrary[App.imageIndex].filename);

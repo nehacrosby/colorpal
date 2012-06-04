@@ -1,6 +1,13 @@
 // This library contains methods that deal with the clipart image preview on the canvas.
 
 DrawingPreview = {
+  init: function() {
+    this.eventEnabled = true;
+    
+    // Add all the click handlers.
+    $('#image-preview').click(jQuery.proxy(this.onImagePreviewClick, this));
+  },
+  
   displayPreviewImage: function(jsonRecordedData, canvasPreviewCtx) {
     for (var i = 0; i < jsonRecordedData.length; i++) {
       var colorToFill = jsonRecordedData[i]; 
@@ -10,6 +17,14 @@ DrawingPreview = {
   },
 
   onImagePreviewClick: function(event) {
+    if (!this.eventEnabled) return;
+    
+    // Disable all the event handlers for the main drawing
+    // and the preview until the animation is done.
+    App.eventEnabled = false;
+    Debug.eventEnabled = false;
+    this.eventEnabled = false;
+    
     // Expand the preview drawing.
     $('#image-preview').animate({
       zoom: '100%',
@@ -31,9 +46,16 @@ DrawingPreview = {
   onImagePreviewAnimationComplete: function() {
     $('#tutorial-container > .expand-icon').show();    
     $('#tutorial').bind('click', jQuery.proxy(DrawingPreview.onShrunkDrawingClick, DrawingPreview));
+    this.eventEnabled = true;
   },
   
   onShrunkDrawingClick: function(event) {
+    // Disable all the event handlers for the main drawing
+    // and the preview until the animation is done.
+    App.eventEnabled = false;
+    this.eventEnabled = false;
+    Debug.eventEnabled = false;
+        
      // Expand the drawing.
      $('#tutorial').animate({
        zoom: '100%',
@@ -57,7 +79,12 @@ DrawingPreview = {
      // Unbind the click handler so we don't respond to it
      // while the drawing is fully expanded.
      $('#tutorial').unbind('click', jQuery.proxy(DrawingPreview.onShrunkDrawingClick, DrawingPreview));
-     console.log("done expanding");
+     
+     // Re-enable all other event handlers on the main drawing
+     // and the preview.
+     App.eventEnabled = true;
+     this.eventEnabled = true;
+     Debug.eventEnabled = true;
    },
   
   isSameAsPreviewImage: function(pixelData, canvasWidth, jsonRecordedData) {
