@@ -29,9 +29,36 @@ DrawingPreview = {
   },
 
   onImagePreviewAnimationComplete: function() {
-    $('#tutorial-container > .expand-icon').show();
-    // Do nothing for now.
+    $('#tutorial-container > .expand-icon').show();    
+    $('#tutorial').bind('click', jQuery.proxy(DrawingPreview.onShrunkDrawingClick, DrawingPreview));
   },
+  
+  onShrunkDrawingClick: function(event) {
+     // Expand the drawing.
+     $('#tutorial').animate({
+       zoom: '100%',
+     }, 1000, function() {
+       // Animation complete.
+     });
+
+     // Shrink the preview drawing.
+     $('#image-preview').animate({
+       zoom: '25%',
+      }, 1000, jQuery.proxy(this.onShrunkDrawingClickComplete, this));
+
+     $('#tutorial-container > .expand-icon').hide();  
+      // Show the palette screen.
+      $('#palette').show(500);
+      $('#debug').show(500);
+   },
+
+   onShrunkDrawingClickComplete: function() {
+     $('#image-preview-container .expand-icon').show();
+     // Unbind the click handler so we don't respond to it
+     // while the drawing is fully expanded.
+     $('#tutorial').unbind('click', jQuery.proxy(DrawingPreview.onShrunkDrawingClick, DrawingPreview));
+     console.log("done expanding");
+   },
   
   isSameAsPreviewImage: function(pixelData, canvasWidth, jsonRecordedData) {
     // Returns true if the canvas image has the same colors

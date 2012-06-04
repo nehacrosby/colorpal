@@ -51,9 +51,7 @@ App = {
   
   onClearButtonClick: function() {
     // Clear the mixing area.
-    // TODO(Neha): Ask Phil why this doesn't work.
-    // $("div.mixing-area").addClass("clear");
-    $("div.mixing-area").css("background-color", "#FFFFFF");
+    $("div.mixing-area").css("background-color", "");
     this.mixingAreaColorList = [];
   },
   

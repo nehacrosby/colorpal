@@ -32,6 +32,15 @@ Util = {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
   },
   
+  clearPaletteAndMixingArea: function() {
+     App.onClearButtonClick();
+     var secondaryPalette = $('.secondary-palette-square');
+     for(var i = 0; i < secondaryPalette.length; i++) {
+       $(secondaryPalette[i]).css("background-color", ""); 
+       $(secondaryPalette[i]).removeClass("solid-black-border"); 
+     }
+  },
+  
   updateCurrentScore: function(x, y, previewPixelData, previewCanvasWidth, pixelData, canvasWidth) {
     // An image is divided into different regions that are colored using flood-fill
     // algorithm. If there are 'n' such regions, then the max score one can earn
