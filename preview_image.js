@@ -19,6 +19,8 @@ DrawingPreview = {
   onImagePreviewClick: function(event) {
     if (!this.eventEnabled) return;
     
+    console.log("Clicked preview drawing");
+    
     // Disable all the event handlers for the main drawing
     // and the preview until the animation is done.
     App.eventEnabled = false;
@@ -50,6 +52,9 @@ DrawingPreview = {
   },
   
   onShrunkDrawingClick: function(event) {
+    if (!this.eventEnabled) return;
+    console.log("Clicked shrunk drawing");
+    
     // Disable all the event handlers for the main drawing
     // and the preview until the animation is done.
     App.eventEnabled = false;
@@ -70,8 +75,8 @@ DrawingPreview = {
 
      $('#tutorial-container > .expand-icon').hide();  
       // Show the palette screen.
-      $('#palette').show(500);
-      $('#debug').show(500);
+      $('#palette').show(1000);
+      $('#debug').show(1000);
    },
 
    onShrunkDrawingClickComplete: function() {
