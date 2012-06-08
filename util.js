@@ -112,4 +112,39 @@ Util = {
              pixelData[offset + 1] == App.paletteColorTuple.g &&
              pixelData[offset + 2] == App.paletteColorTuple.b));		
   },
+  
+  getImageIndexInImageLibrary: function(imageFilename) {
+    // This method is O(n). Runtime can be improved by storing a hash_map
+    // from imageFilename to index. However, I do not expect the number of
+    // images to be very large.
+    for (var i = 0; i < ImageLibrary.length; ++i) {
+      console.log("Comparing " + ImageLibrary[i].filename + " and " + imageFilename);
+      if (ImageLibrary[i].filename == imageFilename) {
+        return i;
+      }
+    }
+    return -1;
+  },
+  
+  findNextToDoInImageLibraryHelper: function(imageIndex) {  
+    var i = imageIndex + 1;
+    for (; i < ImageLibrary.length; ++i) {
+      if (!App.coloredImages[ImageLibrary[i].filename]) return i;
+    }
+    return i;
+  },
+  
+  findNextToDoInImageLibrary: function(imageIndex) {
+    // Finds the next image available to color after imageIndex.
+    // If it reaches the end of the level/imageLibrary, then it wraps
+    // around to the first undone image of that level.
+    var nextIndex = this.findNextToDoInImageLibraryHelper(imageIndex);
+    if (nextIndex >= ImageLibrary.length) {
+      // Try from beginning.
+      nextIndex = this.findNextToDoInImageLibraryHelper(-1);
+    }
+    // It can still be greater than length of array. So
+    // the callee needs to check for its validity.
+    return nextIndex;
+  }
 };

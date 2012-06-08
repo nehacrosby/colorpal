@@ -18,9 +18,7 @@ DrawingPreview = {
 
   onImagePreviewClick: function(event) {
     if (!this.eventEnabled) return;
-    
-    console.log("Clicked preview drawing");
-    
+        
     // Disable all the event handlers for the main drawing
     // and the preview until the animation is done.
     App.eventEnabled = false;
@@ -53,8 +51,7 @@ DrawingPreview = {
   
   onShrunkDrawingClick: function(event) {
     if (!this.eventEnabled) return;
-    console.log("Clicked shrunk drawing");
-    
+        
     // Disable all the event handlers for the main drawing
     // and the preview until the animation is done.
     App.eventEnabled = false;

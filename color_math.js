@@ -2,19 +2,15 @@
 
 App = {
   init: function() {
-    this.ImageLibrary = 
-    [
-    {filename: "images/heart.png", jsonRecordedData: [{"x":240,"y":301,"color":"rgb(255,0,0)"}]},
-    {filename: "images/chick-head-1.png", jsonRecordedData: [{"x":132,"y":399,"color":"rgb(255,255,0)"},{"x":214,"y":324,"color":"rgb(255,127,0)"},{"x":204,"y":367,"color":"rgb(255,127,0)"}]},
-    {filename: "images/duckling-17737.png", jsonRecordedData: [{"x":94,"y":423,"color":"rgb(0,0,255)"},{"x":219,"y":301,"color":"rgb(255,255,0)"},{"x":392,"y":143,"color":"rgb(255,127,0)"}]},
-    {filename: "images/circus-tent-23135.png", jsonRecordedData: [{"x":82,"y":289,"color":"rgb(255,0,0)"},{"x":154,"y":278,"color":"rgb(255,0,0)"},{"x":225,"y":254,"color":"rgb(255,0,0)"},{"x":297,"y":235,"color":"rgb(255,0,0)"},{"x":352,"y":239,"color":"rgb(255,0,0)"},{"x":422,"y":240,"color":"rgb(255,0,0)"},{"x":152,"y":148,"color":"rgb(255,0,0)"},{"x":237,"y":148,"color":"rgb(255,0,0)"},{"x":321,"y":150,"color":"rgb(255,0,0)"},{"x":263,"y":34,"color":"rgb(255,0,0)"},{"x":197,"y":158,"color":"rgb(255,255,127)"},{"x":279,"y":161,"color":"rgb(255,255,127)"},{"x":356,"y":158,"color":"rgb(255,255,127)"},{"x":118,"y":294,"color":"rgb(255,255,127)"},{"x":188,"y":279,"color":"rgb(255,255,127)"},{"x":251,"y":222,"color":"rgb(255,255,127)"},{"x":317,"y":228,"color":"rgb(255,255,127)"},{"x":393,"y":241,"color":"rgb(255,255,127)"},{"x":137,"y":194,"color":"rgb(255,0,0)"}]},                                                                                               
-    ];
     this.imageIndex = 0;
     this.mixingAreaColorList = [];
     // Hard-coded black boundary color.
     this.boundaryColor = $.xcolor.test("rgb(0, 0, 0)");
     this.paletteColorTuple = $.xcolor.test("rgb(255, 255, 255)");
     this.eventEnabled = true;
+    // Array of image filenames that the user has colored
+    // already.
+    this.coloredImages = {};
     
     // Add all the click handlers.
     $("div.primary-palette-square").click(jQuery.proxy(this.onPaletteClick, this));
@@ -55,7 +51,9 @@ App = {
 
    	// Check if the user is done coloring the entire image.                   
   	if (DrawingPreview.isSameAsPreviewImage(
-        imageData.data, ctx.canvas.width, this.ImageLibrary[App.imageIndex].jsonRecordedData)) {
+        imageData.data, ctx.canvas.width, ImageLibrary[App.imageIndex].jsonRecordedData)) {
+       this.coloredImages[ImageLibrary[App.imageIndex].filename] = true;
+       console.log(this.coloredImages);
   	   Transition.handleCompletionAnimation();
   	}
   },
@@ -78,7 +76,8 @@ App = {
      return {"x": x, "y": y};
   },
   
-  loadImage: function(imageFilename) {
+  loadImage: function(imageFilename) {  
+    console.log(imageFilename);
     var image = new Image();
   	image.src = imageFilename;
   	image.onload = jQuery.proxy(function() { this.setupCanvases(image) }, this);
@@ -97,7 +96,8 @@ App = {
 
   	this.drawShapes(image, ctx);
   	this.drawShapes(image, canvasPreviewCtx);
-    DrawingPreview.displayPreviewImage(this.ImageLibrary[App.imageIndex].jsonRecordedData, canvasPreviewCtx);
+  	App.imageIndex = Util.getImageIndexInImageLibrary($(image).attr("src"));
+    DrawingPreview.displayPreviewImage(ImageLibrary[App.imageIndex].jsonRecordedData, canvasPreviewCtx);
     this.paletteColorTuple = $.xcolor.test("rgb(255, 255, 255)");
   },
   
@@ -199,11 +199,8 @@ App = {
 $(document).ready(function() {
   App.init();
   DrawingPreview.init();
-
-	$("button[name=next-button]").click(jQuery.proxy(Transition.showNextImage, Transition));
-
-	// Draw the shape.
-	App.loadImage(App.ImageLibrary[App.imageIndex].filename);
+  ListView.init();
+  Transition.init();
 	
 	// Set up drag n drop handlers.
 	App.initDragAndDrop();

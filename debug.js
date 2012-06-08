@@ -6,6 +6,7 @@ Debug = {
   recordData : [],
   isRecording : false,
   currentScore: 0,
+  showListView: true,
   
   init: function() {
     this.eventEnabled = true;

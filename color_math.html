@@ -4,10 +4,12 @@
     <script type="text/javascript" src="jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="jquery-ui-1.8.20.custom.min.js"></script>
     <script type="text/javascript" src="jquery.xcolor.js"></script>
+    <script type="text/javascript" src="image_library.js"></script>
     <script type="text/javascript" src="color_math.js"></script>
     <script type="text/javascript" src="preview_image.js"></script>
     <script type="text/javascript" src="debug.js"></script>
     <script type="text/javascript" src="transition.js"></script>
+    <script type="text/javascript" src="list_view.js"></script>
     <script type="text/javascript" src="util.js"></script>
     <style type="text/css">
     
@@ -41,6 +43,30 @@
       position: relative;
     }
    
+     #listScreen {
+        overflow-y: auto;
+     }
+      
+    #listScreen .drawing-frame {
+         height: 150px;
+    	   width: 150px;
+         float: left;
+         margin-left: 10px;
+         margin-top: 10px;
+         border: 1px solid black;
+         text-align: center;
+      }
+      
+      #listScreen .drawing-frame-done {
+        background: lightgrey;  
+      }
+      
+     .drawing-frame img {
+    	  max-width: 100px;
+    	  max-height: 100px;
+    	  margin-top: 20px;
+    	}
+    	
    	#completion-image {
   	  height: 80;
   	  width: 80;
@@ -137,11 +163,9 @@
 	  <div id="transitionScreen" class="screen" style="display:none">
 	    Score!
 	    <button type"button" name="next-button">Next</button>
+	    <button type"button" name="list-button">List View</button>
 	  </div>
-    <div id="listScreen" class="screen" style="display:none">
-      list screen
-    </div>
-
+	  <div id="listScreen" class="screen"><!-- Image list gets populated here by JS --></div>
     <div id="drawingScreen" class="screen">
   	  <!-- Draw the canvas-->
   	  <div id="tutorial-container">
