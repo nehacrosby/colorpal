@@ -9,17 +9,22 @@ UserPrefs = {
     // Map from image filename that the user has colored
     // already to boolean (true).
     coloredImages: {}, 
-    // User's final score.
-    score: 0
+    // User's total score so far across all images.
+    totalScore: 0,
+    // User's current score for this image.
+    currentScore: 0
   },
   
   init: function() {
-     // Cookie name
-     this.name = 'user_progress'
-     // Sometime far into the future.
-     this.expiration_days = 365 * 20,
-     // entire domain
-     this.path = '/'
+    // Cookie name
+    this.name = 'user_progress';
+    // Sometime far into the future.
+    this.expiration_days = 365 * 20;
+    // entire domain
+    this.path = '/';
+    
+    // Always start from the beginning.
+    this.resetCurrentScore();
    },  
   
   // Public API. Used to update coloredImages.
@@ -35,6 +40,42 @@ UserPrefs = {
     return this.userData.coloredImages;
   },
   
+  // Public API. 
+  updateCurrentScore: function(incrementByNumber) {
+    this.loadUserData();
+    this.userData.currentScore += incrementByNumber;
+    this.saveUserData();
+  },
+  
+  // Public API. 
+  updateTotalScore: function(incrementByNumber) {
+    this.loadUserData();
+    this.userData.totalScore += incrementByNumber;
+    this.saveUserData();
+  },
+  
+  // Public API. 
+  getTotalScore: function() {
+    this.loadUserData();
+    return this.userData.totalScore;
+  },
+  
+  // Public API. 
+  getCurrentScore: function() {
+    this.loadUserData();
+    console.log("current score: " + this.userData.currentScore);
+    return this.userData.currentScore;
+  },
+  
+  // // Public API. Reset current score.
+  resetCurrentScore: function() {
+    console.log("reset the current score to 0");
+    this.loadUserData();
+    this.userData.currentScore = 0;
+    this.saveUserData();
+    console.log(document.cookie);
+  },
+  
   // Private: Helper method not to be called from outside
   // this library.
   saveUserData: function (path) { 
@@ -45,9 +86,11 @@ UserPrefs = {
   // Private: Helper method not to be called from outside
   // this library.
   loadUserData: function () {
-    var data= $.cookie(this.name);
+    var data = $.cookie(this.name);
     if (data) {
       this.userData = JSON.parse(unescape(data));
-    } 
+    } else {
+      console.log("No cookie data found");
+    }
   },
 }

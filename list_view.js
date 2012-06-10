@@ -22,6 +22,8 @@ ListView = {
     // Re-build the image gallery from scratch.
     $('#listScreen').html('');
     var completedImages = UserPrefs.getColoredImages();
+    console.log("inside show image library");
+    console.log(completedImages);
     for (var i = 0; i < ImageLibrary.length; ++i) {
       var class_tag;
       if (completedImages[ImageLibrary[i].filename]) {

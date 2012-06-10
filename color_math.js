@@ -49,7 +49,8 @@ App = {
    	// Check if the user is done coloring the entire image.                   
   	if (DrawingPreview.isSameAsPreviewImage(
         imageData.data, ctx.canvas.width, ImageLibrary[App.imageIndex].jsonRecordedData)) {
-       UserPrefs.saveCompletedImage(ImageLibrary[App.imageIndex].filename);   
+       console.log("Same as preview image");
+       UserPrefs.saveCompletedImage(ImageLibrary[App.imageIndex].filename); 
   	   Transition.handleCompletionAnimation();
   	}
   },
@@ -193,11 +194,12 @@ App = {
 };
 
 $(document).ready(function() {
+  // The order of init methods matters.
+  UserPrefs.init();
   App.init();
   DrawingPreview.init();
   ListView.init();
   Transition.init();
-  UserPrefs.init();
 	
 	// Set up drag n drop handlers.
 	App.initDragAndDrop();

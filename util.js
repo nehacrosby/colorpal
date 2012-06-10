@@ -51,9 +51,9 @@ Util = {
     var previewOffset = Util.pixelOffset(x, y, previewCanvasWidth);
     var correctColor = Util.getRgbString(previewPixelData[offset], previewPixelData[offset + 1], pixelData[offset + 2]); 
     if (pixelColor == correctColor) {
-      Debug.currentScore += 50;
+      UserPrefs.updateCurrentScore(50);
     }
-    console.log("Score: " + Debug.currentScore);
+    console.log("Score: " + UserPrefs.getCurrentScore());
   },
 
   floodFill: function(x, y, canvasContext) {
