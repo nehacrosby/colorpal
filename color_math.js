@@ -8,9 +8,6 @@ App = {
     this.boundaryColor = $.xcolor.test("rgb(0, 0, 0)");
     this.paletteColorTuple = $.xcolor.test("rgb(255, 255, 255)");
     this.eventEnabled = true;
-    // Array of image filenames that the user has colored
-    // already.
-    this.coloredImages = {};
     
     // Add all the click handlers.
     $("div.primary-palette-square").click(jQuery.proxy(this.onPaletteClick, this));
@@ -52,8 +49,7 @@ App = {
    	// Check if the user is done coloring the entire image.                   
   	if (DrawingPreview.isSameAsPreviewImage(
         imageData.data, ctx.canvas.width, ImageLibrary[App.imageIndex].jsonRecordedData)) {
-       this.coloredImages[ImageLibrary[App.imageIndex].filename] = true;
-       console.log(this.coloredImages);
+       UserPrefs.saveCompletedImage(ImageLibrary[App.imageIndex].filename);   
   	   Transition.handleCompletionAnimation();
   	}
   },
@@ -201,6 +197,7 @@ $(document).ready(function() {
   DrawingPreview.init();
   ListView.init();
   Transition.init();
+  UserPrefs.init();
 	
 	// Set up drag n drop handlers.
 	App.initDragAndDrop();

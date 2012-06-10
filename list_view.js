@@ -21,9 +21,10 @@ ListView = {
 
     // Re-build the image gallery from scratch.
     $('#listScreen').html('');
+    var completedImages = UserPrefs.getColoredImages();
     for (var i = 0; i < ImageLibrary.length; ++i) {
       var class_tag;
-      if (App.coloredImages[ImageLibrary[i].filename]) {
+      if (completedImages[ImageLibrary[i].filename]) {
         class_tag = '<div class="drawing-frame drawing-frame-done">'
       } else {
         class_tag = '<div class="drawing-frame drawing-frame-todo">'
@@ -40,9 +41,7 @@ ListView = {
     this.enabled = false;
     $("#listScreen").hide();
     $("#drawingScreen").show();
-    App.loadImage($(event.target).find('img').attr('src'));  
-    
-    // TODO(Neha): Figure out why clicking the actual center of the
-    // image doesn't work.
+    console.log(event);
+    App.loadImage($(event.currentTarget).find('img').attr('src'));  
   }
 }

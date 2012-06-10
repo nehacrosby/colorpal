@@ -126,10 +126,10 @@ Util = {
     return -1;
   },
   
-  findNextToDoInImageLibraryHelper: function(imageIndex) {  
+  findNextToDoInImageLibraryHelper: function(completedImages, imageIndex) {  
     var i = imageIndex + 1;
     for (; i < ImageLibrary.length; ++i) {
-      if (!App.coloredImages[ImageLibrary[i].filename]) return i;
+      if (!completedImages[ImageLibrary[i].filename]) return i;
     }
     return i;
   },
@@ -138,7 +138,8 @@ Util = {
     // Finds the next image available to color after imageIndex.
     // If it reaches the end of the level/imageLibrary, then it wraps
     // around to the first undone image of that level.
-    var nextIndex = this.findNextToDoInImageLibraryHelper(imageIndex);
+    var completedImages = UserPrefs.getColoredImages();
+    var nextIndex = this.findNextToDoInImageLibraryHelper(completedImages, imageIndex);
     if (nextIndex >= ImageLibrary.length) {
       // Try from beginning.
       nextIndex = this.findNextToDoInImageLibraryHelper(-1);
