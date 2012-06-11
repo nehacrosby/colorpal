@@ -63,13 +63,11 @@ UserPrefs = {
   // Public API. 
   getCurrentScore: function() {
     this.loadUserData();
-    console.log("current score: " + this.userData.currentScore);
     return this.userData.currentScore;
   },
   
   // // Public API. Reset current score.
   resetCurrentScore: function() {
-    console.log("reset the current score to 0");
     this.loadUserData();
     this.userData.currentScore = 0;
     this.saveUserData();
@@ -89,8 +87,6 @@ UserPrefs = {
     var data = $.cookie(this.name);
     if (data) {
       this.userData = JSON.parse(unescape(data));
-    } else {
-      console.log("No cookie data found");
-    }
+    } 
   },
 }
