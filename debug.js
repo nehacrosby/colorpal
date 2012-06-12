@@ -5,8 +5,8 @@ Debug = {
   //  { x: 280, y: 324, color: "rgb(255, 127, 0)", components: ["rgb(255, 0, 0)"] }]
   recordData : [],
   isRecording : false,
-  showListView: false,
-  showTransitionScreen: true,
+  showListView: true,
+  showTransitionScreen: false,
   
   init: function() {
     this.eventEnabled = true;
@@ -31,5 +31,4 @@ Debug = {
     console.log(jsonRecordData);
     Debug.recordData = [];
   },
-
 }
