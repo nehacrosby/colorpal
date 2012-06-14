@@ -201,6 +201,7 @@ $(document).ready(function() {
   Video.init();
   ListView.init();
   Transition.init();
+  Debug.init();
 	
 	// Set up drag n drop handlers.
 	App.initDragAndDrop();

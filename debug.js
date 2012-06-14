@@ -14,6 +14,7 @@ Debug = {
     // Debug handlers.
     $("button[name=start-recording-action]").click(jQuery.proxy(this.onStartRecordButtonClick, this));
     $("button[name=stop-recording-action]").click(jQuery.proxy(this.onStopRecordButtonClick, this));
+    $("button[name=debug-next]").click(jQuery.proxy(this.provideColorCheat, this));
   },
   
   onStartRecordButtonClick: function() {
@@ -30,5 +31,16 @@ Debug = {
     console.log("Recorded data:");
     console.log(jsonRecordData);
     Debug.recordData = [];
+  },
+  
+  provideColorCheat: function() {
+    console.log("before here");
+    if (!this.eventEnabled) return;
+
+    console.log("here");
+    // Pretend we are done coloring
+    // and hit next.
+    UserPrefs.saveCompletedImage(ImageLibrary[App.imageIndex].filename); 
+    Transition.handleCompletionAnimation();
   },
 }
