@@ -13,6 +13,7 @@
     <script type="text/javascript" src="list_view.js"></script>
     <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript" src="user_prefs.js"></script>
+    <script type="text/javascript" src="video_tutorials.js"></script>
     <style type="text/css">
     
     #image-preview-container {
@@ -52,7 +53,7 @@
      #transitionScreen {
        text-align: center;
      }
-      
+    
     #listScreen .drawing-frame {
          height: 150px;
     	   width: 150px;
@@ -166,6 +167,12 @@
   </head>
   <body>
 	<div id="page">
+	  <div id="videoScreen" class="screen" style="display:none">
+	    <div>
+	      <button type"button" name="list-button">List View</button>
+	      <video src="tutorials/sample_video.mp4" controls height="682" width="650"> </video>
+  	  </div>
+	  </div>
 	  <div id="transitionScreen" class="screen" style="display:none">
 	    Score!
 	    <div id="total-score">0</div>

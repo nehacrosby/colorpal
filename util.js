@@ -135,7 +135,8 @@ Util = {
   },
   
   findNextToDoInImageLibrary: function(imageIndex) {
-    // Finds the next image available to color after imageIndex.
+    // Finds the next image or video available to color
+    // or watch after imageIndex.
     // If it reaches the end of the level/imageLibrary, then it wraps
     // around to the first undone image of that level.
     var completedImages = UserPrefs.getColoredImages();

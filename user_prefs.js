@@ -6,8 +6,8 @@ UserPrefs = {
   // Private data structure not to be accessed directly
   // outside this library.
   userData: {
-    // Map from image filename that the user has colored
-    // already to boolean (true).
+    // Map from image/video filename that the user has 
+    // colored/watched already to boolean (true). 
     coloredImages: {}, 
     // User's total score so far across all images.
     totalScore: 0,

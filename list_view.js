@@ -17,24 +17,31 @@ ListView = {
   showImageLibrary: function() {
     $("#transitionScreen").hide();
     $("#drawingScreen").hide();
+    $("#videoScreen").hide();
     $("#listScreen").show();
 
     // Re-build the image gallery from scratch.
     $('#listScreen').html('');
     var completedImages = UserPrefs.getColoredImages();
     console.log("inside show image library");
-    console.log(completedImages);
+
     for (var i = 0; i < ImageLibrary.length; ++i) {
-      var class_tag;
-      if (completedImages[ImageLibrary[i].filename]) {
-        class_tag = '<div class="drawing-frame drawing-frame-done">'
+      if (ImageLibrary[i].type == "image") {
+        var class_tag;
+        if (completedImages[ImageLibrary[i].filename]) {
+          class_tag = '<div class="drawing-frame drawing-frame-done">'
+        } else {
+          class_tag = '<div class="drawing-frame drawing-frame-todo">'
+        }
+        $('#listScreen').append(class_tag + '<img src="' + ImageLibrary[i].filename + '"/></div>');
       } else {
-        class_tag = '<div class="drawing-frame drawing-frame-todo">'
+        // It's a tutorial video.
+        $('#listScreen').append('<div class="drawing-frame video-watch"><img src="' + ImageLibrary[i].filename + '"/></div>');
       }
-      $('#listScreen').append(class_tag + '<img src="' + ImageLibrary[i].filename + '"/></div>');
-     }
+    }
      $('#listScreen').append('<br style="clear:both">');
      $(".drawing-frame-todo").click(jQuery.proxy(this.onImageClick, this));
+     $(".video-watch").click(jQuery.proxy(Video.onVideoClick, Video));
      
      this.enabled = true;
   },

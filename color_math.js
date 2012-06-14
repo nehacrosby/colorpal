@@ -9,7 +9,7 @@ App = {
     this.paletteColorTuple = $.xcolor.test("rgb(255, 255, 255)");
     this.eventEnabled = true;
     
-    // Add all the click handlers.
+    // Add all the click handlers.    
     $("div.primary-palette-square").click(jQuery.proxy(this.onPaletteClick, this));
   	$("div.secondary-palette-square").click(jQuery.proxy(this.onPaletteClick, this));
   	$('#tutorial').click(jQuery.proxy(this.onCanvasClick, this));
@@ -198,6 +198,7 @@ $(document).ready(function() {
   UserPrefs.init();
   App.init();
   DrawingPreview.init();
+  Video.init();
   ListView.init();
   Transition.init();
 	
