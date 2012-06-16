@@ -16,7 +16,8 @@ Video = {
   playTutorial: function(filename) {
     $("#listScreen").hide();
     $("#videoScreen").show();
-    console.log("I've watched the video");  
-    UserPrefs.saveCompletedImage(ImageLibrary[App.imageIndex].filename); 
+    console.log("I've watched the video"); 
+    console.log(ImageLibrary[App.imageIndex].filename);  
+    UserPrefs.saveCompletedImage(filename); 
   }
 }

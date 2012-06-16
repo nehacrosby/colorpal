@@ -127,6 +127,9 @@ Util = {
   },
   
   findNextToDoInImageLibraryHelper: function(completedImages, imageIndex) {  
+    console.log("Inside helper");
+    console.log("completedImages array: ");
+    console.log(completedImages);
     var i = imageIndex + 1;
     for (; i < ImageLibrary.length; ++i) {
       if (!completedImages[ImageLibrary[i].filename]) return i;
@@ -135,15 +138,19 @@ Util = {
   },
   
   findNextToDoInImageLibrary: function(imageIndex) {
+    console.log("finding index after: " + imageIndex);
     // Finds the next image or video available to color
     // or watch after imageIndex.
     // If it reaches the end of the level/imageLibrary, then it wraps
     // around to the first undone image of that level.
     var completedImages = UserPrefs.getColoredImages();
     var nextIndex = this.findNextToDoInImageLibraryHelper(completedImages, imageIndex);
+    console.log("Helper returned " + nextIndex);
     if (nextIndex >= ImageLibrary.length) {
       // Try from beginning.
-      nextIndex = this.findNextToDoInImageLibraryHelper(-1);
+      console.log("Trying from beginning");
+      nextIndex = this.findNextToDoInImageLibraryHelper(completedImages, -1);
+      console.log("Helper returned " + nextIndex + " this time");
     }
     // It can still be greater than length of array. So
     // the callee needs to check for its validity.
