@@ -82,7 +82,6 @@ Util = {
 
     // Stack stores the (x, y) coordinates of the pixel to color.
     floodfillStack = [];
-    console.log("starting floodfill " + x + "," + y);     
     this.fillPixel(x, y, imageData.data, canvasWidth, canvasHeight);
     
     var i = 0
@@ -138,7 +137,6 @@ Util = {
     // from imageFilename to index. However, I do not expect the number of
     // images to be very large.
     for (var i = 0; i < ImageLibrary.length; ++i) {
-      console.log("Comparing " + ImageLibrary[i].filename + " and " + imageFilename);
       if (ImageLibrary[i].filename == imageFilename) {
         return i;
       }

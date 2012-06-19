@@ -9,7 +9,6 @@ Video = {
   },
   
   onVideoClick: function(event) {
-    console.log($(event.currentTarget).find('img').attr('src'));
     this.playTutorial($(event.currentTarget).find('img').attr('src'));  
   },
   

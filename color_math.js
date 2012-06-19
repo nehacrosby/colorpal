@@ -74,7 +74,6 @@ App = {
   },
   
   loadImage: function(imageFilename) {  
-    console.log(imageFilename);
     var image = new Image();
   	image.src = imageFilename;
   	image.onload = jQuery.proxy(function() { this.setupCanvases(image) }, this);
@@ -88,15 +87,7 @@ App = {
   	  return;
 
   	// Draw the drawing to color as well as the preview.
-  	var ctx = canvas.getContext('2d');
-  	
-  	// Newly added
-    var offset = Util.pixelOffset(240, 301, ctx.canvas.width);
-    var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
-    var pixelData = imageData.data;
-    var pixelColor = Util.getRgbString(pixelData[offset], pixelData[offset + 1], pixelData[offset + 2], pixelData[offset + 3]);
-    console.log("Color is: " + pixelColor);
-      
+  	var ctx = canvas.getContext('2d');    
   	var canvasPreviewCtx = imagePreview.getContext('2d');
 
   	this.drawShapes(image, ctx);
@@ -112,12 +103,6 @@ App = {
   	canvasContext.fillStyle = "rgba(0, 0, 0, 0)";
     canvasContext.fillRect(0, 0, canvasContext.canvas.width, canvasContext.canvas.height);	
   	canvasContext.drawImage(image, 0, 0);
-  	
-    var offset = Util.pixelOffset(240, 301, canvasContext.canvas.width);
-    var imageData = canvasContext.getImageData(0, 0, canvasContext.canvas.width, canvasContext.canvas.height);
-    var pixelData = imageData.data;
-    var pixelColor = Util.getRgbString(pixelData[offset], pixelData[offset + 1], pixelData[offset + 2], pixelData[offset + 3]);
-    console.log("After fill Color is: " + pixelColor);
   },
   
   initDragAndDrop: function() {

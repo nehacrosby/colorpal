@@ -101,9 +101,6 @@ DrawingPreview = {
                          pixelData[offset + 1], 
                          pixelData[offset + 2],
                          Util.getRgbAlphaFromImageData(pixelData[offset + 3])); 
-                      
-     console.log("pixelColor: " + pixelColor);
-     console.log("recordedColor: " + recordedColor.color);
 
       if (pixelColor != recordedColor.color) {
         isDone = false;
