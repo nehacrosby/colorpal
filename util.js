@@ -2,8 +2,15 @@
 // do not deal with CSS and dom directly.
 
 Util = {
-  getRgbString: function(r, g, b) {
-    return "rgb(" + r + "," + g + ","+ b + ")";
+  getRgbString: function(r, g, b, a) {
+    return "rgba(" + r + "," + g + ","+ b + ","+ a + ")";
+  },
+  
+  getRgbAlphaFromImageData: function(imageDataAlpha) {
+    // Alpha value grabbed from canvas imageData 
+    // is in the range [0, 255] while the RGB alpha
+    // value is in range [0, 1]. 
+    return Math.floor(imageDataAlpha / 255);
   },
   
   returnMixedColorRGB: function(dragged_color) {
@@ -24,7 +31,7 @@ Util = {
     r = Math.floor(r / App.mixingAreaColorList.length);
     g = Math.floor(g / App.mixingAreaColorList.length);
     b = Math.floor(b / App.mixingAreaColorList.length);
-    return Util.getRgbString(r, g, b);
+    return Util.getRgbString(r, g, b, 1);
   },
   
   clearCanvas: function(canvasElement) {
@@ -46,17 +53,25 @@ Util = {
     // algorithm. If there are 'n' such regions, then the max score one can earn
     // is 50 * n.
     var offset = Util.pixelOffset(x, y, canvasWidth);
-    var pixelColor = Util.getRgbString(pixelData[offset], pixelData[offset + 1], pixelData[offset + 2]); 
+    var pixelColor = Util.getRgbString(
+                       pixelData[offset], 
+                       pixelData[offset + 1],
+                       pixelData[offset + 2], 
+                       this.getRgbAlphaFromImageData(pixelData[offset + 3]));
 
     var previewOffset = Util.pixelOffset(x, y, previewCanvasWidth);
-    var correctColor = Util.getRgbString(previewPixelData[offset], previewPixelData[offset + 1], pixelData[offset + 2]); 
+    var correctColor = Util.getRgbString(
+                         previewPixelData[offset], 
+                         previewPixelData[offset + 1], 
+                         pixelData[offset + 2], 
+                         this.getRgbAlphaFromImageData(pixelData[offset + 3]));
     if (pixelColor == correctColor) {
       UserPrefs.updateCurrentScore(50);
+      console.log("Score: " + UserPrefs.getCurrentScore());
     }
-    console.log("Score: " + UserPrefs.getCurrentScore());
   },
 
-  floodFill: function(x, y, canvasContext) {
+  floodFill: function(x, y, canvasContext) {  
     if (Debug.isRecording) {
       Debug.recordData.push({ x: x, y: y, color: App.paletteColorTuple.getCSS()});
     }
@@ -69,6 +84,8 @@ Util = {
     floodfillStack = [];
     console.log("starting floodfill " + x + "," + y);     
     this.fillPixel(x, y, imageData.data, canvasWidth, canvasHeight);
+    
+    var i = 0
     while(floodfillStack.length > 0) {
       toFill = floodfillStack.pop();
       this.fillPixel(toFill[0], toFill[1], imageData.data, canvasWidth, canvasHeight);
@@ -93,6 +110,7 @@ Util = {
     pixelData[offset] = App.paletteColorTuple.r;
     pixelData[offset + 1] = App.paletteColorTuple.g;
     pixelData[offset + 2] = App.paletteColorTuple.b;
+    pixelData[offset + 3] = 255;  // alpha value.
   },
 
   pixelOffset: function(x, y, canvasWidth) { return (y * canvasWidth + x) * 4; },
@@ -102,15 +120,17 @@ Util = {
     // or pixels of the same color as the fill color or we've reached
     // the end of the canvas.
     if (x < 0 || x >= canvasWidth || y < 0 || y >= canvasHeight) return true;
-
     var offset = this.pixelOffset(x, y, canvasWidth);
 
+    // 255 corresponds to alpha value 1.
     return ((pixelData[offset] == App.boundaryColor.r &&
              pixelData[offset + 1] == App.boundaryColor.g &&
-             pixelData[offset + 2] == App.boundaryColor.b) ||
+             pixelData[offset + 2] == App.boundaryColor.b &&
+             pixelData[offset + 3] == 255) ||
             (pixelData[offset] == App.paletteColorTuple.r &&
              pixelData[offset + 1] == App.paletteColorTuple.g &&
-             pixelData[offset + 2] == App.paletteColorTuple.b));		
+             pixelData[offset + 2] == App.paletteColorTuple.b &&
+             pixelData[offset + 3] == 255));		
   },
   
   getImageIndexInImageLibrary: function(imageFilename) {

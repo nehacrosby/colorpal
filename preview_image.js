@@ -96,7 +96,14 @@ DrawingPreview = {
     for (var i = 0; i < jsonRecordedData.length; i++) {
       var recordedColor = jsonRecordedData[i]; 
       var offset = Util.pixelOffset(recordedColor.x, recordedColor.y, canvasWidth);
-      var pixelColor = Util.getRgbString(pixelData[offset], pixelData[offset + 1], pixelData[offset + 2]); 
+      var pixelColor = Util.getRgbString(
+                         pixelData[offset],
+                         pixelData[offset + 1], 
+                         pixelData[offset + 2],
+                         Util.getRgbAlphaFromImageData(pixelData[offset + 3])); 
+                      
+     console.log("pixelColor: " + pixelColor);
+     console.log("recordedColor: " + recordedColor.color);
 
       if (pixelColor != recordedColor.color) {
         isDone = false;

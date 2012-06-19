@@ -5,8 +5,8 @@ App = {
     this.imageIndex = 0;
     this.mixingAreaColorList = [];
     // Hard-coded black boundary color.
-    this.boundaryColor = $.xcolor.test("rgb(0, 0, 0)");
-    this.paletteColorTuple = $.xcolor.test("rgb(255, 255, 255)");
+    this.boundaryColor = $.xcolor.test("rgba(0, 0, 0, 1)");
+    this.paletteColorTuple = $.xcolor.test("rgb(255, 255, 255)"); // White
     this.eventEnabled = true;
     
     // Add all the click handlers.    
@@ -89,6 +89,14 @@ App = {
 
   	// Draw the drawing to color as well as the preview.
   	var ctx = canvas.getContext('2d');
+  	
+  	// Newly added
+    var offset = Util.pixelOffset(240, 301, ctx.canvas.width);
+    var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+    var pixelData = imageData.data;
+    var pixelColor = Util.getRgbString(pixelData[offset], pixelData[offset + 1], pixelData[offset + 2], pixelData[offset + 3]);
+    console.log("Color is: " + pixelColor);
+      
   	var canvasPreviewCtx = imagePreview.getContext('2d');
 
   	this.drawShapes(image, ctx);
@@ -100,10 +108,16 @@ App = {
   
   drawShapes: function(image, canvasContext) {
     // Picks an image and draws it and its preview on canvas.
-  	// Fill the background with white then draw an image on top.
-  	canvasContext.fillStyle = "rgb(255, 255, 255)";
-  	canvasContext.fillRect(0, 0, canvasContext.canvas.width, canvasContext.canvas.height);	
+  	// Fill the background with black with 0 alpha then draw an image on top.
+  	canvasContext.fillStyle = "rgba(0, 0, 0, 0)";
+    canvasContext.fillRect(0, 0, canvasContext.canvas.width, canvasContext.canvas.height);	
   	canvasContext.drawImage(image, 0, 0);
+  	
+    var offset = Util.pixelOffset(240, 301, canvasContext.canvas.width);
+    var imageData = canvasContext.getImageData(0, 0, canvasContext.canvas.width, canvasContext.canvas.height);
+    var pixelData = imageData.data;
+    var pixelColor = Util.getRgbString(pixelData[offset], pixelData[offset + 1], pixelData[offset + 2], pixelData[offset + 3]);
+    console.log("After fill Color is: " + pixelColor);
   },
   
   initDragAndDrop: function() {
