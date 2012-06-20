@@ -132,6 +132,26 @@ Util = {
              pixelData[offset + 3] == 255));		
   },
   
+  isLevelComplete: function(currentLevel) {
+    var completedImages = UserPrefs.getColoredImages();
+    
+    if (jQuery.isEmptyObject(completedImages)) return false;
+    
+    for (var i = 0; i < ImageLibrary.length; ++i) {
+      if (!completedImages[ImageLibrary[i].filename] 
+          && ImageLibrary[i].level == currentLevel) return false;
+      }
+    return true;
+  },
+  
+  isLibraryComplete: function() {
+    var completedImages = UserPrefs.getColoredImages();
+    for (var i = 0; i < ImageLibrary.length; ++i) {
+      if (!completedImages[ImageLibrary[i].filename]) return false;
+    }
+    return true;
+  },
+
   getImageIndexInImageLibrary: function(imageFilename) {
     // This method is O(n). Runtime can be improved by storing a hash_map
     // from imageFilename to index. However, I do not expect the number of
@@ -147,6 +167,8 @@ Util = {
   findNextToDoInImageLibraryHelper: function(completedImages, 
                                              imageIndex,
                                              currentLevel) {  
+    console.log("inside helper: ");
+    console.log(completedImages);
     var i = imageIndex + 1;    
     for (; i < ImageLibrary.length; ++i) {
       console.log("In helper with i: " + i);
@@ -166,6 +188,10 @@ Util = {
   findNextToDoInImageLibrary: function(imageIndex) {
     console.log("finding index after: " + imageIndex);
     console.log("Current level: " + ImageLibrary[imageIndex].level);
+    
+    // No more images left to color.
+    if (this.isLibraryComplete()) return ImageLibrary.length + 1;
+    
     var currentLevel = ImageLibrary[imageIndex].level;
     // Finds the next image or video available to color
     // or watch after imageIndex.
