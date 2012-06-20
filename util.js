@@ -144,34 +144,49 @@ Util = {
     return -1;
   },
   
-  findNextToDoInImageLibraryHelper: function(completedImages, imageIndex) {  
-    console.log("Inside helper");
-    console.log("completedImages array: ");
-    console.log(completedImages);
-    var i = imageIndex + 1;
+  findNextToDoInImageLibraryHelper: function(completedImages, 
+                                             imageIndex,
+                                             currentLevel) {  
+    var i = imageIndex + 1;    
     for (; i < ImageLibrary.length; ++i) {
-      if (!completedImages[ImageLibrary[i].filename]) return i;
+      console.log("In helper with i: " + i);
+      if (ImageLibrary[i].level < currentLevel) continue;
+      
+      if (ImageLibrary[i].level > currentLevel) break;
+      
+      // Return the index of the first image not
+      // completed in the same level.
+      if (!completedImages[ImageLibrary[i].filename] 
+          && ImageLibrary[i].level == currentLevel) return i;
     }
+    
     return i;
   },
   
   findNextToDoInImageLibrary: function(imageIndex) {
     console.log("finding index after: " + imageIndex);
+    console.log("Current level: " + ImageLibrary[imageIndex].level);
+    var currentLevel = ImageLibrary[imageIndex].level;
     // Finds the next image or video available to color
     // or watch after imageIndex.
     // If it reaches the end of the level/imageLibrary, then it wraps
     // around to the first undone image of that level.
     var completedImages = UserPrefs.getColoredImages();
-    var nextIndex = this.findNextToDoInImageLibraryHelper(completedImages, imageIndex);
+    var nextIndex = this.findNextToDoInImageLibraryHelper(completedImages, imageIndex, currentLevel);
     console.log("Helper returned " + nextIndex);
-    if (nextIndex >= ImageLibrary.length) {
-      // Try from beginning.
+    
+    // nextIndex can be at a different level.
+    if (nextIndex >= ImageLibrary.length
+        || ImageLibrary[nextIndex].level == currentLevel + 1) {
+      // Try from the beginning of the current level.
       console.log("Trying from beginning");
-      nextIndex = this.findNextToDoInImageLibraryHelper(completedImages, -1);
+      nextIndex = this.findNextToDoInImageLibraryHelper(completedImages, -1, currentLevel);
       console.log("Helper returned " + nextIndex + " this time");
     }
-    // It can still be greater than length of array. So
-    // the callee needs to check for its validity.
+    
+    // It can still be greater than length of array or image/video
+    // from the next level. So the callee needs to handle that
+    // accordingly.
     return nextIndex;
   }
 };
