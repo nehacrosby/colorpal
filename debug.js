@@ -28,16 +28,11 @@ Debug = {
     
     Debug.isRecording = false;
     var jsonRecordData = JSON.stringify(Debug.recordData)
-    console.log("Recorded data:");
-    console.log(jsonRecordData);
     Debug.recordData = [];
   },
   
   provideColorCheat: function() {
-    console.log("before here");
     if (!this.eventEnabled) return;
-
-    console.log("here");
     // Pretend we are done coloring
     // and hit next.
     UserPrefs.saveCompletedImage(ImageLibrary[App.imageIndex].filename); 

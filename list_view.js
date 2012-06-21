@@ -18,8 +18,6 @@ ListView = {
   // know that it has to make new level available.
   
   showImageLibrary: function() {
-    console.log("inside show image library");
-    
     $("#transitionScreen").hide();
     $("#drawingScreen").hide();
     $("#videoScreen").hide();
@@ -31,7 +29,6 @@ ListView = {
     var currentLevel = 0;
     if (App.imageIndex < ImageLibrary.length) {
       currentLevel = ImageLibrary[App.imageIndex].level;
-      console.log("currentLevel: " + currentLevel);
       // If the currentLevel is complete then undo the
       // next level.
       if (Util.isLevelComplete(currentLevel)) {
@@ -40,27 +37,22 @@ ListView = {
       }
     } 
     
-    console.log("currentLevel: " + currentLevel);
     var completedImages = UserPrefs.getColoredImages();
-    console.log(completedImages);
     
     // Only make images from the currentLevel available.
     for (var i = 0; i < ImageLibrary.length; ++i) {
       if (ImageLibrary[i].type == "image") {
-        console.log("analyzing image: " + ImageLibrary[i].filename);
         var class_tag;
         if (completedImages[ImageLibrary[i].filename]) {
           // TODO(Neha): "done" images should be colored.
           console.log("image is done");
           class_tag = '<div class="drawing-frame drawing-frame-done">'
         } else if (ImageLibrary[i].level == currentLevel) {
-          console.log("image is not done");
           class_tag = '<div class="drawing-frame drawing-frame-todo">'
         } else {
           // Image is of a level higher than the currentLevel. We show
           // it as done. TODO(Neha): Update this to something like 
           // "not-available".
-          console.log("image at higher level");
           class_tag = '<div class="drawing-frame drawing-frame-done">'
         }
         $('#listScreen').append(class_tag + '<img src="' + ImageLibrary[i].filename + '"/></div>');
@@ -80,7 +72,6 @@ ListView = {
     this.enabled = false;
     $("#listScreen").hide();
     $("#drawingScreen").show();
-    console.log(event);
     App.loadImage($(event.currentTarget).find('img').attr('src'));  
   }
 }

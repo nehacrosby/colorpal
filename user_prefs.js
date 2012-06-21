@@ -71,7 +71,6 @@ UserPrefs = {
     this.loadUserData();
     this.userData.currentScore = 0;
     this.saveUserData();
-    console.log(document.cookie);
   },
   
   // Private: Helper method not to be called from outside

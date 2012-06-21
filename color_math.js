@@ -49,7 +49,6 @@ App = {
    	// Check if the user is done coloring the entire image.                   
   	if (DrawingPreview.isSameAsPreviewImage(
         imageData.data, ctx.canvas.width, ImageLibrary[App.imageIndex].jsonRecordedData)) {
-       console.log("Same as preview image");
        UserPrefs.saveCompletedImage(ImageLibrary[App.imageIndex].filename); 
   	   Transition.handleCompletionAnimation();
   	}

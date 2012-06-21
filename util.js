@@ -14,7 +14,6 @@ Util = {
   },
   
   returnMixedColorRGB: function(dragged_color) {
-    console.log(dragged_color);
     if (App.mixingAreaColorList.length == 0) {
       App.mixingAreaColorList.push($.xcolor.test(dragged_color));
       return dragged_color;
@@ -67,7 +66,6 @@ Util = {
                          this.getRgbAlphaFromImageData(pixelData[offset + 3]));
     if (pixelColor == correctColor) {
       UserPrefs.updateCurrentScore(50);
-      console.log("Score: " + UserPrefs.getCurrentScore());
     }
   },
 
@@ -167,11 +165,8 @@ Util = {
   findNextToDoInImageLibraryHelper: function(completedImages, 
                                              imageIndex,
                                              currentLevel) {  
-    console.log("inside helper: ");
-    console.log(completedImages);
     var i = imageIndex + 1;    
     for (; i < ImageLibrary.length; ++i) {
-      console.log("In helper with i: " + i);
       if (ImageLibrary[i].level < currentLevel) continue;
       
       if (ImageLibrary[i].level > currentLevel) break;
@@ -186,9 +181,6 @@ Util = {
   },
   
   findNextToDoInImageLibrary: function(imageIndex) {
-    console.log("finding index after: " + imageIndex);
-    console.log("Current level: " + ImageLibrary[imageIndex].level);
-    
     // No more images left to color.
     if (this.isLibraryComplete()) return ImageLibrary.length + 1;
     
@@ -199,15 +191,12 @@ Util = {
     // around to the first undone image of that level.
     var completedImages = UserPrefs.getColoredImages();
     var nextIndex = this.findNextToDoInImageLibraryHelper(completedImages, imageIndex, currentLevel);
-    console.log("Helper returned " + nextIndex);
     
     // nextIndex can be at a different level.
     if (nextIndex >= ImageLibrary.length
         || ImageLibrary[nextIndex].level == currentLevel + 1) {
       // Try from the beginning of the current level.
-      console.log("Trying from beginning");
       nextIndex = this.findNextToDoInImageLibraryHelper(completedImages, -1, currentLevel);
-      console.log("Helper returned " + nextIndex + " this time");
     }
     
     // It can still be greater than length of array or image/video
