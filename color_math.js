@@ -14,6 +14,12 @@ App = {
   	$("div.secondary-palette-square").click(jQuery.proxy(this.onPaletteClick, this));
   	$('#tutorial').click(jQuery.proxy(this.onCanvasClick, this));
   	$("button[name=clear-mixing-area]").click(jQuery.proxy(this.onClearButtonClick, this));
+  	
+  	if (Debug.showColorScreen) {
+  	  $("#listScreen").hide();
+      $("#drawingScreen").show();
+      this.loadImage("images/duckling-17737.png");
+    }
   },
   
   onPaletteClick: function(event) {
@@ -101,7 +107,11 @@ App = {
   	// Fill the background with black with 0 alpha then draw an image on top.
   	canvasContext.fillStyle = "rgba(0, 0, 0, 0)";
     canvasContext.fillRect(0, 0, canvasContext.canvas.width, canvasContext.canvas.height);	
-  	canvasContext.drawImage(image, 0, 0);
+    
+    // Center the image on Canvas and draw it.
+    var widthOffset = Math.floor((canvasContext.canvas.width - image.width) / 2);
+    var heightOffset = Math.floor((canvasContext.canvas.height - image.height) / 2);
+  	canvasContext.drawImage(image, widthOffset, heightOffset);
   },
   
   initDragAndDrop: function() {
