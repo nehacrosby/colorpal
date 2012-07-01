@@ -70,6 +70,11 @@
         background: lightgrey;  
       }
       
+      #debug {
+        position:absolute;
+        left: 150px;
+        top: 1100px;
+      }
      .drawing-frame img {
     	  max-width: 100px;
     	  max-height: 100px;
@@ -84,36 +89,36 @@
   	  position: absolute;
   	}
   	
-  	
-	  .primary-palette-square {
-	    width: 40px;
-		  height: 40px;
-		  float: left;
-		  margin-left: 10px;
-	  }
+/*    .primary-palette-square {
+      width: 50px;
+      height: 50px;
+      float: left;
+      margin-left: 10px;
+      position: absolute;
+    }*/
 	  
 	  .primary-palette-square.ui-draggable-dragging {
     	border: 2px dotted black;
     }
     	
-    /* Ask phil how to remove this redundancy */
 	  .secondary-palette-square {
       width: 40px;
       height: 40px;
       float: left;
       margin-left: 10px;
+      position: absolute;
     }
 	  
 	  .secondary-palette-square-hovered {
   	   border: 2px solid black;
   	}
   	
-	  .mixing-area {
-	    width: 100px;
-	    height: 40px;
-  		float: left;
-  		margin-left: 25px;
-	  }
+	 /* .mixing-area {
+	       width: 100px;
+	       height: 40px;
+	       float: left;
+	       margin-left: 25px;
+	     }*/
 	  
 	  .mixing-area.ui-draggable-dragging {
   	   border: 2px dotted black;
@@ -122,9 +127,9 @@
    		 margin-left: 10px;
   	}
   	
-    .blue { 
-		  background-color: rgb(0, 0, 255);
-	  }
+   /* .blue { 
+        background-color: rgb(0, 0, 255);
+      }*/
 	
    	.red { 
 		  background-color: rgb(255, 0, 0);
@@ -159,12 +164,48 @@
       border: 2px dotted rgb(255, 0, 0);
     }
     
-  	#palette {
-  	  height: 168;
-  	}
     #palette br {
       clear: left;
     }
+    
+    /* NEW PALETTE SYLES*/
+   #palette {
+    	height: 168;
+    	position: relative;
+    }
+    
+    #palette canvas {
+      position: absolute;
+    }
+    	
+    #mixing-area {
+    	left: 200px;
+    	top: 100px;
+    }
+   #blue {
+      left: 80px;
+      top: 175px;
+    }
+    #red {
+      left: 180px;
+      top: 200px;
+    }
+    #yellow {
+      left: 280px;
+      top: 210px;
+    }
+    #green {
+      left: 380px;
+      top: 205px;
+    }
+    #white {
+      left: 480px;
+      top: 190px;
+    }
+    #black {
+      left: 580px;
+      top: 170px;
+    }    
     </style>
   </head>
   <body>
@@ -198,23 +239,27 @@
 
    	  <!-- Provide the Palette -->
    	  <div id="palette">
-  	    <div class="primary-palette-square blue solid-black-border"></div>
-  	    <div class="primary-palette-square red solid-black-border"></div>
-  	    <div class="primary-palette-square yellow solid-black-border"></div>
-  	    <div class="primary-palette-square green solid-black-border"></div>
-  	    <div class="primary-palette-square clear solid-black-border"></div>
-  	    <div class="primary-palette-square black solid-black-border"></div>
-  	    <br><br>
-  	    <div class="mixing-area clear solid-black-border"></div>
-  	    <button type="button" name="clear-mixing-area">Clear</button>
-  	    <br><br>
-  	    <div class="secondary-palette-square clear dotted-black-border"></div>
-  	    <div class="secondary-palette-square clear dotted-black-border"></div>
-  	    <div class="secondary-palette-square clear dotted-black-border"></div>
-  	    <div class="secondary-palette-square clear dotted-black-border"></div>
-  	    <div class="secondary-palette-square clear dotted-black-border"></div>
+   	    <div id="primary-palette-square">
+          <canvas id="blue" class="draggable-primary" width="80" height="80"></canvas>
+          <canvas id="red"  class="draggable-primary" width="80" height="80"></canvas>
+          <canvas id="yellow" class="draggable-primary" width="80" height="80"></canvas>
+          <canvas id="green" class="draggable-primary" width="80" height="80"></canvas>
+          <canvas id="white" class="draggable-primary" width="80" height="80"></canvas>
+          <canvas id="black" class="draggable-primary" width="80" height="80"></canvas>
+  	    </div>
+  	    <div id="mixing-area-square">  
+  	      <canvas id="mixing-area" class="droppable-mixing-area" width="355" height="90"></canvas>
+  	    </div>
+        <!-- <div class="mixing-area clear solid-black-border"></div> -->
+        <!-- <button type="button" name="clear-mixing-area">Clear</button> -->
+        <!-- <br><br> -->
+  	    <!-- <div class="secondary-palette-square clear dotted-black-border"></div>
+  	         <div class="secondary-palette-square clear dotted-black-border"></div>
+  	         <div class="secondary-palette-square clear dotted-black-border"></div>
+  	         <div class="secondary-palette-square clear dotted-black-border"></div>
+  	         <div class="secondary-palette-square clear dotted-black-border"></div> -->
   	  </div>
-  	 <br>
+  	 <br><br><br><br>
   	 <div id="debug">
       <button type="button" name="start-recording-action">Start Recording</button>
       <button type="button" name="stop-recording-action">Stop Recording</button>

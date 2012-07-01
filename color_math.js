@@ -10,7 +10,7 @@ App = {
     this.eventEnabled = true;
     
     // Add all the click handlers.    
-    $("div.primary-palette-square").click(jQuery.proxy(this.onPaletteClick, this));
+    $("#primary-palette-square").click(jQuery.proxy(this.onPaletteClick, this));
   	$("div.secondary-palette-square").click(jQuery.proxy(this.onPaletteClick, this));
   	$('#tutorial').click(jQuery.proxy(this.onCanvasClick, this));
   	$("button[name=clear-mixing-area]").click(jQuery.proxy(this.onClearButtonClick, this));
@@ -19,6 +19,7 @@ App = {
   	  $("#listScreen").hide();
       $("#drawingScreen").show();
       this.loadImage("images/duckling-17737.png");
+      // this.loadImage("styles/mixing_area.png");
     }
   },
   
@@ -26,8 +27,8 @@ App = {
     if (!this.eventEnabled) return;
     
     // Pick up the color.
-    var paletteDiv = $(event.target);
-    this.paletteColorTuple = $.xcolor.test(paletteDiv.css("background-color"));
+    var paletteCanvas = $(event.target);
+    this.paletteColorTuple = $.xcolor.test($(paletteCanvas).attr("color"));
   },
   
   onCanvasClick: function(event) {
@@ -43,7 +44,8 @@ App = {
     // Start flood-fill of the color from where the mouse click event
     // happened.
   	position = this.getMouseClickCoordinates(event);
-  	Util.floodFill(position.x, position.y, ctx);
+  	console.log("mouse click " + position.x + " y: " + position.y);
+  	Util.floodFill(position.x, position.y, ctx, false /* forPaletteSetUp */);
 
    	// Update the score.
    	var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -75,6 +77,7 @@ App = {
      var targ = event.target;
      var x = event.pageX - $(targ).offset().left;
      var y = event.pageY - $(targ).offset().top;
+     
      return {"x": x, "y": y};
   },
   
@@ -85,6 +88,7 @@ App = {
   },
   
   setupCanvases: function(image) {
+    // Set up the drawing canvases.
     var canvas = $('#tutorial')[0];
   	var imagePreview = $('#image-preview')[0];
 
@@ -98,12 +102,51 @@ App = {
   	this.drawShapes(image, ctx);
   	this.drawShapes(image, canvasPreviewCtx);
   	App.imageIndex = Util.getImageIndexInImageLibrary($(image).attr("src"));
-    DrawingPreview.displayPreviewImage(ImageLibrary[App.imageIndex].jsonRecordedData, canvasPreviewCtx);
+    // DrawingPreview.displayPreviewImage(ImageLibrary[App.imageIndex].jsonRecordedData, canvasPreviewCtx);
     this.paletteColorTuple = $.xcolor.test("rgb(255, 255, 255)");
+    
+    // Set up palette canvases.
+    this.setupPaletteCanvases();
+    this.setUpMixingAreaPalette();
+  },
+  
+  setupPaletteCanvases: function() {
+    this.setupSinglePalette("rgb(0, 0, 255)", "#blue");
+    this.setupSinglePalette("rgb(255, 0, 0)", "#red");
+    this.setupSinglePalette("rgb(255, 255, 0)", "#yellow");
+    this.setupSinglePalette("rgb(0, 255, 0)", "#green");
+    this.setupSinglePalette("rgb(255, 255, 255)", "#white");
+    /* Keep it different from boundary color */
+    this.setupSinglePalette("rgb(1, 1, 1)", "#black");
+  },
+  
+  setupSinglePalette: function(fillColor, canvasId) {
+     $(canvasId).attr("color", fillColor);
+     var palCanvas = $(canvasId)[0];
+     var palCtx = palCanvas.getContext('2d');   
+     var image = new Image();
+     image.onload = function () { 
+       palCtx.drawImage(image, 0, 0); 
+       App.paletteColorTuple = $.xcolor.test(fillColor);;
+       Util.floodFill(40, 40, palCtx, true);
+     }     
+     // TODO(Neha): Add rotation.
+     if ((Math.random()*1) <= 0.5) image.src = "styles/blob1.png";
+     else image.src = "styles/blob2.png";
+  },
+  
+  setUpMixingAreaPalette: function() {
+     var palCanvas = $("#mixing-area")[0];
+     var palCtx = palCanvas.getContext('2d');   
+     var image = new Image();
+     image.onload = function () { 
+       palCtx.drawImage(image, 0, 0); 
+     }     
+    image.src = "styles/mixing_area.png";
   },
   
   drawShapes: function(image, canvasContext) {
-    // Picks an image and draws it and its preview on canvas.
+    // Picks a drawing image and draws it and its preview on canvas.
   	// Fill the background with black with 0 alpha then draw an image on top.
   	canvasContext.fillStyle = "rgba(0, 0, 0, 0)";
     canvasContext.fillRect(0, 0, canvasContext.canvas.width, canvasContext.canvas.height);	
@@ -118,15 +161,14 @@ App = {
   	// Draggable properties for primary colors.
   	// Primary colors can be dragged onto the mixing
   	// area.
-  	$('div.primary-palette-square').draggable( {
-  		  containment: 'parent',
+  	$('.draggable-primary').draggable( {
   		  cursor: 'move',
-  		  helper: 'clone'
+  		  helper: this.draggedPrimaryClone,
   		});
 
   	// Droppable properties of the mixing area.
   	// It *only* accepts primary colors.
-  	$('div.mixing-area').droppable( {
+  	$('.mixing-area').droppable( {
   	  accept: 'div.primary-palette-square',
   	  drop: this.handleMixingAreaDropEvent,
   	  activate: this.handleMixingAreaActivateEvent,
@@ -136,7 +178,7 @@ App = {
   	// Draggable properties of the mixing area.
   	// Mixing area colors can *only* be dragged onto
   	// secondary color swatches.
-  	$('div.mixing-area').draggable( {
+  	$('.mixing-area').draggable( {
   		  containment: 'parent',
   		  cursor: 'move',
   		  helper: 'clone'
@@ -144,12 +186,22 @@ App = {
 
   	// Droppable properties of the secondary colors.
   	// It *only* accepts color from the mixing area.
-  	$('div.secondary-palette-square').droppable( {
+  	$('.secondary-palette-square').droppable( {
   	  accept: 'div.mixing-area',
   	  drop: this.handleSecondarySwatchDropEvent,
   	  activate: this.handleSecondarySwatchActivateEvent,
     	deactivate: this.handleSecondarySwatchDeactivateEvent,
   	});
+  },
+  
+  draggedPrimaryClone: function(event) {
+    var cloneCanvas = event.target.cloneNode();
+    // copy contents
+    var sourceContext = event.target.getContext("2d");    
+    var imageData = sourceContext.getImageData(0, 0, sourceContext.canvas.width, sourceContext.canvas.height);
+    var cloneContext = cloneCanvas.getContext("2d");
+    cloneContext.putImageData(imageData, 0, 0);	
+    return cloneCanvas;
   },
   
   handleSecondarySwatchActivateEvent: function(event, ui) {    

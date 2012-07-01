@@ -12,7 +12,7 @@ DrawingPreview = {
     for (var i = 0; i < jsonRecordedData.length; i++) {
       var colorToFill = jsonRecordedData[i]; 
       App.paletteColorTuple = $.xcolor.test(colorToFill.color);
-      Util.floodFill(colorToFill.x, colorToFill.y, canvasPreviewCtx);
+      Util.floodFill(colorToFill.x, colorToFill.y, canvasPreviewCtx, false /* forPaletteSetUp */);
     }
   },
 
