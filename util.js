@@ -69,7 +69,7 @@ Util = {
     }
   },
 
-  floodFill: function(x, y, canvasContext, forPaletteSetUp) {  
+  floodFill: function(x, y, canvasContext, forPaletteSetUp, fillColorTuple) { 
     // forPaletteSetUp is set to true if the floodfill is being done
     // for setting up the palette. The main difference is the stopping
     // condition for the floodfill. While carrying out floodfill on the 
@@ -78,7 +78,7 @@ Util = {
     // original (x, y) pixel since the boundary may not be black
     // such as, for the mixing area).
     if (Debug.isRecording) {
-      Debug.recordData.push({ x: x, y: y, color: App.paletteColorTuple.getCSS()});
+      Debug.recordData.push({ x: x, y: y, color: fillColorTuple.getCSS()});
     }
 
     var canvasWidth = canvasContext.canvas.width;
@@ -88,36 +88,35 @@ Util = {
     
     // Never run flood-fill on the boundary or
     // if the pixelColor is already the chosen color.
-    if (this.isBoundaryOrSameColor(x, y, pixelData, canvasWidth, canvasHeight)) return;
+    if (this.isBoundaryOrSameColor(x, y, pixelData, canvasWidth, canvasHeight, fillColorTuple)) return;
     
     // Get the current pixel color and floodfill all adjacent
     // pixels of the same color.
     var offset = this.pixelOffset(x, y, canvasWidth);
-    console.log("x: " + x + "y: " + y + " canvaswidth: " + canvasWidth + " offset: " + offset);
     var origColor =  Util.getRgbString(
                      pixelData[offset], 
                      pixelData[offset + 1],
                      pixelData[offset + 2],
                      this.getRgbAlphaFromImageData(pixelData[offset + 3]));
-    console.log("OrigColor" + origColor);
 
     // Stack stores the (x, y) coordinates of the pixel to color.
     floodfillStack = [];
-    this.fillPixel(x, y, pixelData, canvasWidth, canvasHeight, origColor, forPaletteSetUp);
+    this.fillPixel(x, y, pixelData, canvasWidth, canvasHeight, origColor, fillColorTuple, forPaletteSetUp);
     
     var i = 0
     while(floodfillStack.length > 0) {
       toFill = floodfillStack.pop();
-      this.fillPixel(toFill[0], toFill[1], pixelData, canvasWidth, canvasHeight, origColor, forPaletteSetUp);
+      this.fillPixel(toFill[0], toFill[1], pixelData, canvasWidth, canvasHeight, origColor, fillColorTuple, forPaletteSetUp);
       i = i + 1
       //if (i >= 10) break;
     }
     canvasContext.putImageData(imageData, 0, 0);
   },
 
-  fillPixel: function(x, y, pixelData, canvasWidth, canvasHeight, origColor, forPaletteSetUp) {
+  fillPixel: function(x, y, pixelData, canvasWidth, canvasHeight, origColor, fillColorTuple, forPaletteSetUp) {
     if (forPaletteSetUp) {
-      if(this.sameAsOrigPixelColor(x, y, pixelData, canvasWidth, canvasHeight, origColor)) this.fill(x, y, pixelData, canvasWidth);
+      if(this.sameAsOrigPixelColor(x, y, pixelData, canvasWidth, canvasHeight, origColor))
+        this.fill(x, y, pixelData, canvasWidth, fillColorTuple);
     
       // Update the floodfill stack.
       if(this.sameAsOrigPixelColor(x, y - 1, pixelData, canvasWidth, canvasHeight, origColor)) floodfillStack.push([x, y - 1]);
@@ -125,23 +124,24 @@ Util = {
       if(this.sameAsOrigPixelColor(x, y + 1, pixelData, canvasWidth, canvasHeight, origColor)) floodfillStack.push([x, y + 1]);
       if(this.sameAsOrigPixelColor(x - 1, y, pixelData, canvasWidth, canvasHeight, origColor)) floodfillStack.push([x - 1, y]);
     } else {
-        if(!this.isBoundaryOrSameColor(x, y, pixelData, canvasWidth, canvasHeight)) this.fill(x, y, pixelData, canvasWidth);
+        if(!this.isBoundaryOrSameColor(x, y, pixelData, canvasWidth, canvasHeight, fillColorTuple))
+          this.fill(x, y, pixelData, canvasWidth, fillColorTuple);
 
         // Update the floodfill stack.
-        if(!this.isBoundaryOrSameColor(x, y - 1, pixelData, canvasWidth, canvasHeight)) floodfillStack.push([x, y - 1]);
-        if(!this.isBoundaryOrSameColor(x + 1, y, pixelData, canvasWidth, canvasHeight)) floodfillStack.push([x + 1, y]);
-        if(!this.isBoundaryOrSameColor(x, y + 1, pixelData, canvasWidth, canvasHeight)) floodfillStack.push([x, y + 1]);
-        if(!this.isBoundaryOrSameColor(x - 1, y, pixelData, canvasWidth, canvasHeight)) floodfillStack.push([x - 1, y]);
+        if(!this.isBoundaryOrSameColor(x, y - 1, pixelData, canvasWidth, canvasHeight, fillColorTuple)) floodfillStack.push([x, y - 1]);
+        if(!this.isBoundaryOrSameColor(x + 1, y, pixelData, canvasWidth, canvasHeight, fillColorTuple)) floodfillStack.push([x + 1, y]);
+        if(!this.isBoundaryOrSameColor(x, y + 1, pixelData, canvasWidth, canvasHeight, fillColorTuple)) floodfillStack.push([x, y + 1]);
+        if(!this.isBoundaryOrSameColor(x - 1, y, pixelData, canvasWidth, canvasHeight, fillColorTuple)) floodfillStack.push([x - 1, y]);
     }
   },
 
-  fill: function(x, y, pixelData, canvasWidth, canvasHeight) {
+  fill: function(x, y, pixelData, canvasWidth, fillColorTuple) {    
     // Helper method that changes the color of pixel 'x, y' to
     // whatever App.paletteColorTuple is set to.
     var offset = this.pixelOffset(x, y, canvasWidth);
-    pixelData[offset] = App.paletteColorTuple.r;
-    pixelData[offset + 1] = App.paletteColorTuple.g;
-    pixelData[offset + 2] = App.paletteColorTuple.b;
+    pixelData[offset] = fillColorTuple.r;
+    pixelData[offset + 1] = fillColorTuple.g;
+    pixelData[offset + 2] = fillColorTuple.b;
     pixelData[offset + 3] = 255;  // alpha value.
   },
 
@@ -157,7 +157,7 @@ Util = {
     return (pixelColor == origColor);
    },
   
-  isBoundaryOrSameColor: function(x, y, pixelData, canvasWidth, canvasHeight) {
+  isBoundaryOrSameColor: function(x, y, pixelData, canvasWidth, canvasHeight, fillColorTuple) {
     // Returns ture if the x, y coordinates are boundary pixels
     // or pixels of the same color as the fill color or we've reached
     // the end of the canvas.
@@ -169,9 +169,9 @@ Util = {
              pixelData[offset + 1] == App.boundaryColor.g &&
              pixelData[offset + 2] == App.boundaryColor.b &&
              pixelData[offset + 3] == 255) ||
-            (pixelData[offset] == App.paletteColorTuple.r &&
-             pixelData[offset + 1] == App.paletteColorTuple.g &&
-             pixelData[offset + 2] == App.paletteColorTuple.b &&
+            (pixelData[offset] == fillColorTuple.r &&
+             pixelData[offset + 1] == fillColorTuple.g &&
+             pixelData[offset + 2] == fillColorTuple.b &&
              pixelData[offset + 3] == 255));		
   },
   
