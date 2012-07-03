@@ -17,10 +17,26 @@
     <style type="text/css">
     
     #image-preview-container {
+/*      border: 1px solid red;*/
       position: absolute;
       top: 0;
       left: 100%;
       background:url(styles/preview_background.png);
+      background-position: -69px bottom;
+      background-repeat: no-repeat;
+      padding-left: 10px;
+      padding-right: 50px;
+      padding-bottom: 50px;
+      
+ /*     Ones that work well for expanded.
+       background-position: -34px bottom;
+       background-repeat: no-repeat;
+       padding-left: 45px;
+       padding-bottom: 75px;*/
+    }
+    
+    #image-preview-container canvas {
+/*      border: 1px solid green;   */
     }
     
     #tutorial-container {
@@ -48,12 +64,12 @@
     }
    
      #listScreen {
-        overflow-y: auto;
-     }
+      overflow-y: auto;
+    }
      
      #transitionScreen {
        text-align: center;
-     }
+    }
     
     #listScreen .drawing-frame {
          height: 150px;
@@ -65,7 +81,7 @@
          text-align: center;
       }
       
-      #listScreen .drawing-frame-done {
+     #listScreen .drawing-frame-done {
         background: lightgrey;  
       }
       

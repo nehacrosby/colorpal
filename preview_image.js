@@ -25,6 +25,9 @@ DrawingPreview = {
     Debug.eventEnabled = false;
     this.eventEnabled = false;
     
+    // TODO(Neha): Also animate background-position etc.
+    // for image-preview-container.
+    
     // Expand the preview drawing.
     $('#image-preview').animate({
       zoom: '100%',
