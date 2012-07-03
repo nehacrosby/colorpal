@@ -17,14 +17,13 @@
     <style type="text/css">
     
     #image-preview-container {
-      border: 1px solid blue;
       position: absolute;
       top: 0;
       left: 100%;
+      background:url(styles/preview_background.png);
     }
     
     #tutorial-container {
-/*      border: 1px solid red; */
       display: inline-block;
       position: relative;
     }
@@ -162,6 +161,10 @@
       top: 115px;
     }
     
+   #clear-button {
+     left: 570px;
+     top: 135px;
+   }
     </style>
   </head>
   <body>
@@ -189,7 +192,6 @@
 
         <div id="image-preview-container">
           <canvas id="image-preview" class="image-preview" width="552" height="482" style="zoom: 25%"></canvas>
-          <img src="styles/fullscreen.png" class="expand-icon"/>
         </div>
       </div>  
 
@@ -236,14 +238,17 @@
     	    <canvas class="deactivated" width="355" height="90"></canvas>
     	    <canvas class="activated" width="355" height="90" style="display:none"></canvas>
     	  </div>
+    	  <div id="clear-button">
+    	    <img src="styles/eraser.png" id="clear-mixing-area"/>
+    	  </div>
    	    <div id="primary-palette-squares">
    	      <div id="blue" class="palette-square">
             <canvas class="unclicked" width="90" height="90"></canvas>
             <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
           </div>
           <div id="red" class="palette-square">
-            <canvas class="unclicked" width="90" height="90"></canvas>
-            <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+            <canvas class="unclicked" width="90" height="90" style="display:none"></canvas>
+            <canvas class="clicked" width="90" height="90"></canvas>
           </div>
           <div id="yellow" class="palette-square">
             <canvas class="unclicked" width="90" height="90"></canvas>

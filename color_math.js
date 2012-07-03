@@ -6,14 +6,14 @@ App = {
     this.mixingAreaColorList = [];
     // Hard-coded black boundary color.
     this.boundaryColor = $.xcolor.test("rgba(0, 0, 0, 1)");
-    this.paletteColorTuple = $.xcolor.test("rgba(255, 255, 255, 255)"); // White
+    this.paletteColorTuple = $.xcolor.test("rgba(255, 0, 0, 1)"); // Red.
     this.eventEnabled = true;
     
     // Add all the click handlers.    
     $("#primary-palette-squares .palette-square").click(jQuery.proxy(this.onPaletteClick, this));
     $("#secondary-palette-squares .secondary-palette-square").click(jQuery.proxy(this.onPaletteClick, this));
   	$('#tutorial').click(jQuery.proxy(this.onCanvasClick, this));
-  	$("button[name=clear-mixing-area]").click(jQuery.proxy(this.onClearButtonClick, this));
+  	$("#clear-mixing-area").click(jQuery.proxy(this.onClearButtonClick, this));
   	
   	if (Debug.showColorScreen) {
   	  $("#listScreen").hide();
@@ -72,7 +72,10 @@ App = {
     if (!this.eventEnabled) return;
     
     // Clear the mixing area.
-    $("div.mixing-area").css("background-color", "");
+    var mixedColorRgb = "rgba(255, 255, 255)";
+    var mixedColorTuple = $.xcolor.test(mixedColorRgb);
+    App.dragAndDropFloodFillHelper("#mixing-area-square canvas.deactivated", mixedColorRgb, mixedColorTuple);
+    App.dragAndDropFloodFillHelper("#mixing-area-square canvas.activated", mixedColorRgb, mixedColorTuple);    
     this.mixingAreaColorList = [];
   },
   
@@ -109,8 +112,8 @@ App = {
   	this.drawShapes(image, canvasPreviewCtx);
   	App.imageIndex = Util.getImageIndexInImageLibrary($(image).attr("src"));
     DrawingPreview.displayPreviewImage(ImageLibrary[App.imageIndex].jsonRecordedData, canvasPreviewCtx);
-    this.paletteColorTuple = $.xcolor.test("rgb(255, 255, 255)");
-    
+    this.paletteColorTuple = $.xcolor.test("rgba(255, 0, 0, 1)"); // Red.
+        
     // Set up palette canvases.
     this.setupPaletteCanvases();
   },
@@ -264,6 +267,8 @@ App = {
   },
 
   handleSecondarySwatchDropEvent: function(event, ui) {    
+    if ((App.mixingAreaColorList).length == 0) return;
+    
     draggable = ui.draggable;
     var swatch = $(event.target); 
 
