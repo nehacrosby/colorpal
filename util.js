@@ -13,6 +13,13 @@ Util = {
     return Math.floor(imageDataAlpha / 255);
   },
   
+  getImageDataAlphaFromRgb: function(a) {
+     // Alpha value grabbed from canvas imageData 
+     // is in the range [0, 255] while the RGB alpha
+     // value is in range [0, 1]. 
+     return Math.floor(a * 255);
+   },
+  
   returnMixedColorRGB: function(dragged_color) {
     if (App.mixingAreaColorList.length == 0) {
       App.mixingAreaColorList.push($.xcolor.test(dragged_color));
@@ -98,7 +105,7 @@ Util = {
                      pixelData[offset + 1],
                      pixelData[offset + 2],
                      this.getRgbAlphaFromImageData(pixelData[offset + 3]));
-
+                     
     // Stack stores the (x, y) coordinates of the pixel to color.
     floodfillStack = [];
     this.fillPixel(x, y, pixelData, canvasWidth, canvasHeight, origColor, fillColorTuple, forPaletteSetUp);
@@ -108,7 +115,7 @@ Util = {
       toFill = floodfillStack.pop();
       this.fillPixel(toFill[0], toFill[1], pixelData, canvasWidth, canvasHeight, origColor, fillColorTuple, forPaletteSetUp);
       i = i + 1
-      //if (i >= 10) break;
+      //if (i >= 5) break;
     }
     canvasContext.putImageData(imageData, 0, 0);
   },
@@ -142,7 +149,7 @@ Util = {
     pixelData[offset] = fillColorTuple.r;
     pixelData[offset + 1] = fillColorTuple.g;
     pixelData[offset + 2] = fillColorTuple.b;
-    pixelData[offset + 3] = 255;  // alpha value.
+    pixelData[offset + 3] = this.getImageDataAlphaFromRgb(fillColorTuple.a);  // alpha value.
   },
 
   pixelOffset: function(x, y, canvasWidth) { return (y * canvasWidth + x) * 4; },
@@ -168,11 +175,11 @@ Util = {
     return ((pixelData[offset] == App.boundaryColor.r &&
              pixelData[offset + 1] == App.boundaryColor.g &&
              pixelData[offset + 2] == App.boundaryColor.b &&
-             pixelData[offset + 3] == 255) ||
+             this.getRgbAlphaFromImageData(pixelData[offset + 3]) == App.boundaryColor.a) ||
             (pixelData[offset] == fillColorTuple.r &&
              pixelData[offset + 1] == fillColorTuple.g &&
              pixelData[offset + 2] == fillColorTuple.b &&
-             pixelData[offset + 3] == 255));		
+             this.getRgbAlphaFromImageData(pixelData[offset + 3]) == fillColorTuple.a));		
   },
   
   isLevelComplete: function(currentLevel) {

@@ -6,12 +6,12 @@ App = {
     this.mixingAreaColorList = [];
     // Hard-coded black boundary color.
     this.boundaryColor = $.xcolor.test("rgba(0, 0, 0, 1)");
-    this.paletteColorTuple = $.xcolor.test("rgb(255, 255, 255)"); // White
+    this.paletteColorTuple = $.xcolor.test("rgba(255, 255, 255, 255)"); // White
     this.eventEnabled = true;
     
     // Add all the click handlers.    
     $("#primary-palette-squares .palette-square").click(jQuery.proxy(this.onPaletteClick, this));
-  	$("div.secondary-palette-square").click(jQuery.proxy(this.onPaletteClick, this));
+    $("#secondary-palette-squares .secondary-palette-square").click(jQuery.proxy(this.onPaletteClick, this));
   	$('#tutorial').click(jQuery.proxy(this.onCanvasClick, this));
   	$("button[name=clear-mixing-area]").click(jQuery.proxy(this.onClearButtonClick, this));
   	
@@ -19,7 +19,6 @@ App = {
   	  $("#listScreen").hide();
       $("#drawingScreen").show();
       this.loadImage("images/duckling-17737.png");
-      // this.loadImage("styles/mixing_area.png");
     }
   },
   
@@ -109,7 +108,7 @@ App = {
   	this.drawShapes(image, ctx);
   	this.drawShapes(image, canvasPreviewCtx);
   	App.imageIndex = Util.getImageIndexInImageLibrary($(image).attr("src"));
-    // DrawingPreview.displayPreviewImage(ImageLibrary[App.imageIndex].jsonRecordedData, canvasPreviewCtx);
+    DrawingPreview.displayPreviewImage(ImageLibrary[App.imageIndex].jsonRecordedData, canvasPreviewCtx);
     this.paletteColorTuple = $.xcolor.test("rgb(255, 255, 255)");
     
     // Set up palette canvases.
@@ -117,43 +116,61 @@ App = {
   },
   
   randomlyPickBlobImage: function() {
-    // TODO(Neha): Fix the dragging images.
     if ((Math.random()*1) <= 0.5) {
       return {"unclicked" : "styles/blob1.png",
-              "clicked" : "styles/blob1_selected.png"};
+              "clicked" : "styles/blob1_selected.png",
+              "dragged" : "styles/blob1_dragging.png"};
     } else {
        return {"unclicked" : "styles/blob2.png",
-                "clicked" : "styles/blob2_selected.png"};
+                "clicked" : "styles/blob2_selected.png",
+                "dragged" : "styles/blob2_dragging.png"};
     }
   },
   
-  setupPaletteCanvases: function() {
+  setupSecondaryPaletteHelper: function(canvasId) {
     var imageFiles = this.randomlyPickBlobImage();
-    this.setupSinglePalette("rgb(0, 0, 255)", "#blue canvas.unclicked", imageFiles["unclicked"]);
-    this.setupSinglePalette("rgb(0, 0, 255)", "#blue canvas.clicked", imageFiles["clicked"]);
-    
+    this.setupSinglePalette("rgba(255, 255, 255, 0)", canvasId + " canvas.unclicked", imageFiles["unclicked"]);
+    this.setupSinglePalette("rgba(255, 255, 255, 0)", canvasId + " canvas.clicked", imageFiles["clicked"]);
+    this.setupSinglePalette("rgba(255, 255, 255, 0)", canvasId + " canvas.activated", imageFiles["dragged"]);
+  },
+  
+  setupPaletteCanvases: function() {
+    // Secondary Palette Squares
+    this.setupSecondaryPaletteHelper("#first");
+    this.setupSecondaryPaletteHelper("#second");
+    this.setupSecondaryPaletteHelper("#third");
+    this.setupSecondaryPaletteHelper("#fourth");
+    this.setupSecondaryPaletteHelper("#fifth");
+    this.setupSecondaryPaletteHelper("#sixth");
+    this.setupSecondaryPaletteHelper("#seventh");
+
+    // Primary Palette Squares
+    var imageFiles = this.randomlyPickBlobImage();
+    this.setupSinglePalette("rgba(0, 0, 255, 1)", "#blue canvas.unclicked", imageFiles["unclicked"]);
+    this.setupSinglePalette("rgba(0, 0, 255, 1)", "#blue canvas.clicked", imageFiles["clicked"]);
+
     imageFiles = this.randomlyPickBlobImage();
-    this.setupSinglePalette("rgb(255, 0, 0)", "#red canvas.unclicked", imageFiles["unclicked"]);
-    this.setupSinglePalette("rgb(255, 0, 0)", "#red canvas.clicked", imageFiles["clicked"]);
-    
+    this.setupSinglePalette("rgba(255, 0, 0, 1)", "#red canvas.unclicked", imageFiles["unclicked"]);
+    this.setupSinglePalette("rgba(255, 0, 0, 1)", "#red canvas.clicked", imageFiles["clicked"]);
+
     imageFiles = this.randomlyPickBlobImage();
-    this.setupSinglePalette("rgb(255, 255, 0)", "#yellow canvas.unclicked", imageFiles["unclicked"]);
-    this.setupSinglePalette("rgb(255, 255, 0)", "#yellow canvas.clicked", imageFiles["clicked"]);
-    
+    this.setupSinglePalette("rgba(255, 255, 0, 1)", "#yellow canvas.unclicked", imageFiles["unclicked"]);
+    this.setupSinglePalette("rgba(255, 255, 0, 1)", "#yellow canvas.clicked", imageFiles["clicked"]);
+
     imageFiles = this.randomlyPickBlobImage();
-    this.setupSinglePalette("rgb(0, 255, 0)", "#green canvas.unclicked", imageFiles["unclicked"]);
-    this.setupSinglePalette("rgb(0, 255, 0)", "#green canvas.clicked", imageFiles["clicked"]);
-    
+    this.setupSinglePalette("rgba(0, 255, 0, 1)", "#green canvas.unclicked", imageFiles["unclicked"]);
+    this.setupSinglePalette("rgba(0, 255, 0, 1)", "#green canvas.clicked", imageFiles["clicked"]);
+
     imageFiles = this.randomlyPickBlobImage();
-    this.setupSinglePalette("rgb(255, 255, 255)", "#white canvas.unclicked", imageFiles["unclicked"]);
-    this.setupSinglePalette("rgb(255, 255, 255)", "#white canvas.clicked", imageFiles["clicked"]);
-    
+    this.setupSinglePalette("rgba(255, 255, 255, 1)", "#white canvas.unclicked", imageFiles["unclicked"]);
+    this.setupSinglePalette("rgba(255, 255, 255, 1)", "#white canvas.clicked", imageFiles["clicked"]);
+
     /* Keep it different from boundary color */
     imageFiles = this.randomlyPickBlobImage();
-    this.setupSinglePalette("rgb(1, 1, 1)", "#black canvas.unclicked", imageFiles["unclicked"]);
-    this.setupSinglePalette("rgb(1, 1, 1)", "#black canvas.clicked", imageFiles["clicked"]);
-    
-    // Set up mixing area palette.
+    this.setupSinglePalette("rgba(1, 1, 1, 1)", "#black canvas.unclicked", imageFiles["unclicked"]);
+    this.setupSinglePalette("rgba(1, 1, 1, 1)", "#black canvas.clicked", imageFiles["clicked"]);
+
+    // Mixing Area
     this.setupSinglePalette("", "#mixing-area-square canvas.deactivated", "styles/mixing_area.png");
     this.setupSinglePalette("", "#mixing-area-square canvas.activated", "styles/mixing_area_dragging.png");
   },
@@ -206,16 +223,16 @@ App = {
   	// Draggable properties of the mixing area.
   	// Mixing area colors can *only* be dragged onto
   	// secondary color swatches.
-  	$('.mixing-area').draggable( {
-  		  containment: 'parent',
+  	$('#mixing-area-square').draggable( {
   		  cursor: 'move',
-  		  helper: 'clone'
+  		  helper: this.handleMixingAreaDragEvent,
+  		  // TODO(Neha): Drag a smaller sized clone instead of entire mixing area.
   		});
 
   	// Droppable properties of the secondary colors.
   	// It *only* accepts color from the mixing area.
   	$('.secondary-palette-square').droppable( {
-  	  accept: 'div.mixing-area',
+  	  accept: '#mixing-area-square',
   	  drop: this.handleSecondarySwatchDropEvent,
   	  activate: this.handleSecondarySwatchActivateEvent,
     	deactivate: this.handleSecondarySwatchDeactivateEvent,
@@ -232,27 +249,33 @@ App = {
     return cloneCanvas;
   },
   
-  handleSecondarySwatchActivateEvent: function(event, ui) {    
-    var swatch = $(event.target);
-    swatch.removeClass("dotted-black-border");
-    swatch.addClass("dotted-red-border");
+  handleSecondarySwatchActivateEvent: function(event, ui) { 
+    var swatch = $(event.target);   
+    swatch.find(".clicked").css("display", "none");
+    swatch.find(".unclicked").css("display", "none");
+    swatch.find(".activated").css("display", "");
   },
 
   handleSecondarySwatchDeactivateEvent: function(event, ui) {    
     var swatch = $(event.target);
-    swatch.removeClass("dotted-red-border");
-    swatch.addClass("dotted-black-border");
+    swatch.find(".clicked").css("display", "none");
+    swatch.find(".unclicked").css("display", "");
+    swatch.find(".activated").css("display", "none");
   },
 
   handleSecondarySwatchDropEvent: function(event, ui) {    
-    var swatch = $(event.target);
     draggable = ui.draggable;
+    var swatch = $(event.target); 
 
     // Change the swatch color to be the same as the 
     // mixing area color dropped on to it.
-    swatch.css("background-color", 
-        ui.draggable.css("background-color"));
-    swatch.addClass("solid-black-border");
+    var draggedColorRgb = draggable.find("canvas").attr("color");
+    var draggedColorTuple =  $.xcolor.test(draggedColorRgb);
+        
+    // Flood-fill all 3 versions of the swatch.
+    App.dragAndDropFloodFillHelper(swatch.find("canvas.unclicked"), draggedColorRgb, draggedColorTuple);
+    App.dragAndDropFloodFillHelper(swatch.find("canvas.clicked"), draggedColorRgb, draggedColorTuple);
+    App.dragAndDropFloodFillHelper(swatch.find("canvas.activated"), draggedColorRgb, draggedColorTuple);
   },
 
   handleMixingAreaActivateEvent: function(event, ui) {  
@@ -266,20 +289,39 @@ App = {
   },
 
   handleMixingAreaDropEvent: function(event, ui) {
-    var swatch = $(event.target);
     draggable = ui.draggable;
 
     // Floodfill both activated and deactivated mixing
     // area.
     var draggedColor = draggable.find("canvas").attr("color");
-    var mixedColorTuple = $.xcolor.test(Util.returnMixedColorRGB(draggedColor));
-    var palCanvas = $("#mixing-area-square canvas.deactivated")[0];
-    var palCtx = palCanvas.getContext('2d'); 
-    Util.floodFill(40, 40, palCtx, true /* forPaletteSetUp */, mixedColorTuple);
+    var mixedColorRgb = Util.returnMixedColorRGB(draggedColor);
+    var mixedColorTuple = $.xcolor.test(mixedColorRgb);
+    
+    // Store the mixed color as an attribute.
+    App.dragAndDropFloodFillHelper("#mixing-area-square canvas.deactivated", mixedColorRgb, mixedColorTuple);
+    App.dragAndDropFloodFillHelper("#mixing-area-square canvas.activated", mixedColorRgb, mixedColorTuple);
+  },
+  
+  handleMixingAreaDragEvent: function(event, ui) {
+    var mixingAreaDiv = event.currentTarget.cloneNode(true);
+    $(mixingAreaDiv).addClass('scale-half-size');
         
-    palCanvas = $("#mixing-area-square canvas.activated")[0];
+    // copy contents
+    var sourceContext = $(event.currentTarget).find("canvas")[0].getContext("2d");    
+    var imageData = sourceContext.getImageData(0, 0, sourceContext.canvas.width, sourceContext.canvas.height);
+    var cloneContext = $(mixingAreaDiv).find("canvas")[0].getContext("2d");
+    cloneContext.putImageData(imageData, 0, 0);	
+    return mixingAreaDiv;
+  },
+  
+  dragAndDropFloodFillHelper: function(canvasId, colorRgb, colorRgbTuple) {
+    // Flood fills the canvas with colorRgb. Also stores
+    // the colorRgb value as the "color" attribute of the
+    // canvas element.
+    $(canvasId).attr("color", colorRgb);
+    palCanvas = $(canvasId)[0];
     palCtx = palCanvas.getContext('2d'); 
-    Util.floodFill(40, 40, palCtx, true /* forPaletteSetUp */,  mixedColorTuple);  
+    Util.floodFill(40, 40, palCtx, true /* forPaletteSetUp */,  colorRgbTuple);
   },
 };
 

@@ -24,7 +24,7 @@
     }
     
     #tutorial-container {
-      border: 1px solid red; 
+/*      border: 1px solid red; */
       display: inline-block;
       position: relative;
     }
@@ -89,52 +89,77 @@
   	  position: absolute;
   	}
   	
-	  .secondary-palette-square {
-      width: 40px;
-      height: 40px;
-      float: left;
-      margin-left: 10px;
-      position: absolute;
-    }
-    
     /* NEW PALETTE SYLES*/
+   .scale-half-size {
+     -webkit-transform: scale(0.25, 0.50);
+   }
+   
    #palette {
-    	height: 168;
+    	height: 324px;  /* 1024 - canvas_width */
+    	background-image:url('styles/palette_background.png');
     	position: relative;
     }
     
-    #palette div {
+   #palette div {
       position: absolute;
     }
   
+   #first {
+     left: 15px;
+     top: 50px;
+   }
+   #second {
+      left: 115px;
+      top: 30px;
+   }
+   #third {
+     left: 215px;
+     top: 10px;
+   }
+   #fourth {
+     left: 315px;
+     top: 5px;
+   }
+   #fifth {
+     left: 415px;
+     top: 10px;
+   }
+   #sixth {
+     left: 515px;
+     top: 19px;
+   }
+   #seventh {
+     left: 615px;
+     top: 45px;
+   }
    #blue {
       left: 80px;
-      top: 175px;
+      top: 200px;
     }
     #red {
       left: 180px;
-      top: 200px;
+      top: 225px;
     }
     #yellow {
       left: 280px;
-      top: 210px;
+      top: 235px;
     }
     #green {
       left: 380px;
-      top: 205px;
+      top: 225px;
     }
     #white {
       left: 480px;
-      top: 190px;
+      top: 215px;
     }
     #black {
       left: 580px;
-      top: 170px;
+      top: 195px;
     }    
       
    #mixing-area-square {
       left: 200px;
-      top: 100px;
+      top: 115px;
     }
     
     </style>
@@ -159,7 +184,7 @@
   	  <!-- Draw the canvas-->
   	  <div id="tutorial-container">
   	    <img src="styles/smiley_thumbs_up.png" id="completion-image" style="display:none"/>
-        <canvas id="tutorial" class="tutorial" width="620" height="682" style="zoom: 100%"></canvas>
+        <canvas id="tutorial" class="tutorial" width="620" height="700" style="zoom: 100%"></canvas>
         <img src="styles/fullscreen.png" class="expand-icon" style="display:none"/>
 
         <div id="image-preview-container">
@@ -170,6 +195,43 @@
 
    	  <!-- Provide the Palette -->
    	  <div id="palette">
+   	    <div id="secondary-palette-squares">
+   	       <div id="first" class="secondary-palette-square">
+              <canvas class="unclicked" width="90" height="90"></canvas>
+              <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+              <canvas class="activated" width="90" height="90" style="display:none"></canvas>
+            </div>
+            <div id="second" class="secondary-palette-square">
+              <canvas class="unclicked" width="90" height="90"></canvas>
+              <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+              <canvas class="activated" width="90" height="90" style="display:none"></canvas>
+            </div>
+            <div id="third" class="secondary-palette-square">
+              <canvas class="unclicked" width="90" height="90"></canvas>
+              <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+              <canvas class="activated" width="90" height="90" style="display:none"></canvas>
+            </div>
+            <div id="fourth" class="secondary-palette-square">
+              <canvas class="unclicked" width="90" height="90"></canvas>
+              <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+              <canvas class="activated" width="90" height="90" style="display:none"></canvas>
+            </div>
+            <div id="fifth" class="secondary-palette-square">
+              <canvas class="unclicked" width="90" height="90"></canvas>
+              <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+              <canvas class="activated" width="90" height="90" style="display:none"></canvas>
+            </div>
+            <div id="sixth" class="secondary-palette-square">
+              <canvas class="unclicked" width="90" height="90"></canvas>
+              <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+              <canvas class="activated" width="90" height="90" style="display:none"></canvas>
+            </div>
+            <div id="seventh" class="secondary-palette-square">
+              <canvas class="unclicked" width="90" height="90"></canvas>
+              <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+              <canvas class="activated" width="90" height="90" style="display:none"></canvas>
+            </div>
+        </div>
    	    <div id="mixing-area-square">  
     	    <canvas class="deactivated" width="355" height="90"></canvas>
     	    <canvas class="activated" width="355" height="90" style="display:none"></canvas>
