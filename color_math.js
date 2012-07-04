@@ -14,6 +14,7 @@ App = {
     $("#secondary-palette-squares .secondary-palette-square").click(jQuery.proxy(this.onPaletteClick, this));
   	$('#tutorial').click(jQuery.proxy(this.onCanvasClick, this));
   	$("#clear-mixing-area").click(jQuery.proxy(this.onClearButtonClick, this));
+  	$("#show-list-view").click(jQuery.proxy(ListView.showImageLibrary, this));  
   	
   	if (Debug.showColorScreen) {
   	  $("#listScreen").hide();
