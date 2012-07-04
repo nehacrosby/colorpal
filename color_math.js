@@ -267,7 +267,7 @@ App = {
   },
 
   handleSecondarySwatchDropEvent: function(event, ui) {    
-    if ((App.mixingAreaColorList).length == 0) return;
+    //if ((App.mixingAreaColorList).length == 0) return;
     
     draggable = ui.draggable;
     var swatch = $(event.target); 

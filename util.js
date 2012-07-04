@@ -111,13 +111,17 @@ Util = {
     this.fillPixel(x, y, pixelData, canvasWidth, canvasHeight, origColor, fillColorTuple, forPaletteSetUp);
     
     var i = 0
+    var continueFloodFill = true;
     while(floodfillStack.length > 0) {
       toFill = floodfillStack.pop();
-      this.fillPixel(toFill[0], toFill[1], pixelData, canvasWidth, canvasHeight, origColor, fillColorTuple, forPaletteSetUp);
+      continueFloodFill = this.fillPixel(toFill[0], toFill[1], pixelData, canvasWidth, canvasHeight, origColor, fillColorTuple, forPaletteSetUp);
+      if (!continueFloodFill) break;
       i = i + 1
       //if (i >= 5) break;
     }
-    canvasContext.putImageData(imageData, 0, 0);
+    if (continueFloodFill) {
+      canvasContext.putImageData(imageData, 0, 0);
+    }
   },
 
   fillPixel: function(x, y, pixelData, canvasWidth, canvasHeight, origColor, fillColorTuple, forPaletteSetUp) {
@@ -131,8 +135,9 @@ Util = {
       if(this.sameAsOrigPixelColor(x, y + 1, pixelData, canvasWidth, canvasHeight, origColor)) floodfillStack.push([x, y + 1]);
       if(this.sameAsOrigPixelColor(x - 1, y, pixelData, canvasWidth, canvasHeight, origColor)) floodfillStack.push([x - 1, y]);
     } else {
-        if(!this.isBoundaryOrSameColor(x, y, pixelData, canvasWidth, canvasHeight, fillColorTuple))
-          this.fill(x, y, pixelData, canvasWidth, fillColorTuple);
+        if(!this.isBoundaryOrSameColor(x, y, pixelData, canvasWidth, canvasHeight, fillColorTuple)) {
+          if (!this.fill(x, y, pixelData, canvasWidth, fillColorTuple)) return false;  // abort abort!
+        }
 
         // Update the floodfill stack.
         if(!this.isBoundaryOrSameColor(x, y - 1, pixelData, canvasWidth, canvasHeight, fillColorTuple)) floodfillStack.push([x, y - 1]);
@@ -140,16 +145,28 @@ Util = {
         if(!this.isBoundaryOrSameColor(x, y + 1, pixelData, canvasWidth, canvasHeight, fillColorTuple)) floodfillStack.push([x, y + 1]);
         if(!this.isBoundaryOrSameColor(x - 1, y, pixelData, canvasWidth, canvasHeight, fillColorTuple)) floodfillStack.push([x - 1, y]);
     }
+    
+    return true;
   },
 
   fill: function(x, y, pixelData, canvasWidth, fillColorTuple) {    
     // Helper method that changes the color of pixel 'x, y' to
-    // whatever App.paletteColorTuple is set to.
+    // whatever App.paletteColorTuple is set to. Returns false
+    // if the entire floodfill should be aborted because 'x, y'
+    // is outside the bounds.
+    if (x == ImageLibrary[App.imageIndex].outsideRegion.x &&
+        y == ImageLibrary[App.imageIndex].outsideRegion.y) {
+        // abort abort!
+        return false;
+    }
+    
     var offset = this.pixelOffset(x, y, canvasWidth);
     pixelData[offset] = fillColorTuple.r;
     pixelData[offset + 1] = fillColorTuple.g;
     pixelData[offset + 2] = fillColorTuple.b;
     pixelData[offset + 3] = this.getImageDataAlphaFromRgb(fillColorTuple.a);  // alpha value.
+    
+    return true;
   },
 
   pixelOffset: function(x, y, canvasWidth) { return (y * canvasWidth + x) * 4; },
