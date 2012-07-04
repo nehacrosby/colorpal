@@ -245,6 +245,9 @@ App = {
   
   draggedPrimaryClone: function(event) {
     var cloneCanvas = event.target.cloneNode();
+    // Mark this primary palette as clicked.
+    App.onPaletteClick(event);
+      
     // copy contents
     var sourceContext = event.target.getContext("2d");    
     var imageData = sourceContext.getImageData(0, 0, sourceContext.canvas.width, sourceContext.canvas.height);
@@ -267,8 +270,8 @@ App = {
     swatch.find(".activated").css("display", "none");
   },
 
-  handleSecondarySwatchDropEvent: function(event, ui) {    
-    //if ((App.mixingAreaColorList).length == 0) return;
+  handleSecondarySwatchDropEvent: function(event, ui) {  
+    if ((App.mixingAreaColorList).length == 0) return;
     
     draggable = ui.draggable;
     var swatch = $(event.target); 
