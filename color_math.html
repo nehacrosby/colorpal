@@ -22,36 +22,30 @@
       top: 0;
       left: 100%;
       background:url(styles/preview_background.png);
-      background-position: -69px bottom;
+      background-position: -55px bottom;
       background-repeat: no-repeat;
       padding-left: 10px;
       padding-right: 50px;
       padding-bottom: 50px;
-      
- /*     Ones that work well for expanded.
-       background-position: -34px bottom;
-       background-repeat: no-repeat;
-       padding-left: 45px;
-       padding-bottom: 75px;*/
     }
     
     #image-preview-container canvas {
 /*      border: 1px solid green;   */
     }
     
+    #score {
+      font-family: helvetica;
+      font-weight:bold;
+      color: white;
+      text-shadow: 2px 2px 2px #000;
+      position: absolute;
+      top: 150px;
+      right: 40px;
+    }
+    
     #tutorial-container {
       display: inline-block;
       position: relative;
-    }
-    
-    #tutorial-container .expand-icon {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-    }
-    
-    #tutorial-container #image-preview-container .expand-icon {
-      left: 0;
     }
     
     .screen {
@@ -106,7 +100,10 @@
   	
     /* NEW PALETTE SYLES*/
    .scale-half-size {
-     -webkit-transform: scale(0.25, 0.50);
+     width: 100px;
+     height: 100px;
+     border: 1px solid red;
+     overflow: hidden;
    }
    
    #palette {
@@ -121,31 +118,31 @@
   
    #first {
      left: 15px;
-     top: 50px;
+     top: 55px;
    }
    #second {
       left: 115px;
-      top: 30px;
+      top: 27px;
    }
    #third {
      left: 215px;
-     top: 10px;
+     top: 18px;
    }
    #fourth {
      left: 315px;
-     top: 7px;
+     top: 21px;
    }
    #fifth {
      left: 415px;
-     top: 10px;
+     top: 24px;
    }
    #sixth {
      left: 515px;
-     top: 19px;
+     top: 28px;
    }
    #seventh {
      left: 615px;
-     top: 45px;
+     top: 55px;
    }
    #blue {
       left: 80px;
@@ -210,13 +207,16 @@
   	  <div id="tutorial-container">
   	    <img src="styles/smiley_thumbs_up.png" id="completion-image" style="display:none"/>
         <canvas id="tutorial" class="tutorial" width="620" height="700" style="zoom: 100%"></canvas>
-        <img src="styles/fullscreen.png" class="expand-icon" style="display:none"/>
 
         <div id="image-preview-container">
           <canvas id="image-preview" class="image-preview" width="552" height="482" style="zoom: 25%"></canvas>
         </div>
       </div>  
 
+      <div id="score">
+          Score: 100
+      </div>
+      
    	  <!-- Provide the Palette -->
    	  <div id="palette">
    	    <div id="secondary-palette-squares">
@@ -256,7 +256,7 @@
               <canvas class="activated" width="90" height="90" style="display:none"></canvas>
             </div>
         </div>
-   	    <div id="mixing-area-square">  
+   	    <div id="mixing-area-square" class="12scale-half-size">  
     	    <canvas class="deactivated" width="355" height="90"></canvas>
     	    <canvas class="activated" width="355" height="90" style="display:none"></canvas>
     	  </div>

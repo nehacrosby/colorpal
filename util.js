@@ -117,10 +117,11 @@ Util = {
       continueFloodFill = this.fillPixel(toFill[0], toFill[1], pixelData, canvasWidth, canvasHeight, origColor, fillColorTuple, forPaletteSetUp);
       if (!continueFloodFill) break;
       i = i + 1
-      //if (i >= 5) break;
+      //if (i >= 50) break;
     }
     if (continueFloodFill) {
       canvasContext.putImageData(imageData, 0, 0);
+      console.log("finishing floodfill");
     }
   },
 

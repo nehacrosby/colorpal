@@ -5,7 +5,7 @@ DrawingPreview = {
     this.eventEnabled = true;
     
     // Add all the click handlers.
-    $('#image-preview').click(jQuery.proxy(this.onImagePreviewClick, this));
+    $('#image-preview-container').click(jQuery.proxy(this.onImagePreviewClick, this));
   },
   
   displayPreviewImage: function(jsonRecordedData, canvasPreviewCtx) {
@@ -31,9 +31,14 @@ DrawingPreview = {
     // Expand the preview drawing.
     $('#image-preview').animate({
       zoom: '100%',
-    }, 1000, function() {
-      // Animation complete.
-    });
+    }, 1000);
+
+    $('#image-preview-container').animate({
+      backgroundPositionX: 0,
+      paddingLeft: 50
+    }, 1000);
+    
+
     
     // Shrink the main drawing.
     $('#tutorial').animate({
@@ -47,7 +52,6 @@ DrawingPreview = {
   },
 
   onImagePreviewAnimationComplete: function() {
-    $('#tutorial-container > .expand-icon').show();    
     $('#tutorial').bind('click', jQuery.proxy(DrawingPreview.onShrunkDrawingClick, DrawingPreview));
     this.eventEnabled = true;
   },
@@ -67,6 +71,11 @@ DrawingPreview = {
      }, 1000, function() {
        // Animation complete.
      });
+     
+     $('#image-preview-container').animate({
+       backgroundPositionX: -50,
+       paddingLeft: 10
+     }, 1000);
 
      // Shrink the preview drawing.
      $('#image-preview').animate({

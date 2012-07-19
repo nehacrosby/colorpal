@@ -19,7 +19,8 @@ App = {
   	if (Debug.showColorScreen) {
   	  $("#listScreen").hide();
       $("#drawingScreen").show();
-      this.loadImage("images/duckling-17737.png");
+        //this.loadImage("images/duckling-17737.png");
+      this.loadImage("images/heart.png");
     }
   },
   
@@ -210,14 +211,14 @@ App = {
   	// Draggable properties for primary colors.
   	// Primary colors can be dragged onto the mixing
   	// area.
-  	$('.palette-square').draggable( {
+  	$('.palette-square').draggable({
   		  cursor: 'move',
   		  helper: this.draggedPrimaryClone,
   		});
 
   	// Droppable properties of the mixing area.
   	// It *only* accepts primary colors.
-  	$('#mixing-area-square').droppable( {
+  	$('#mixing-area-square').droppable({
   	  accept: '.palette-square',
   	  drop: this.handleMixingAreaDropEvent,
   	  activate: this.handleMixingAreaActivateEvent, 
@@ -227,15 +228,18 @@ App = {
   	// Draggable properties of the mixing area.
   	// Mixing area colors can *only* be dragged onto
   	// secondary color swatches.
-  	$('#mixing-area-square').draggable( {
+  	$('#mixing-area-square').draggable({
+    	  start: function(element, ui) {
+          $(this).data('draggable').offset.click.left = ui.helper.width() / 2;
+          $(this).data('draggable').offset.click.left = ui.helper.height() / 2;
+    	  },
   		  cursor: 'move',
-  		  helper: this.handleMixingAreaDragEvent,
-  		  // TODO(Neha): Drag a smaller sized clone instead of entire mixing area.
+  		  helper: this.createMixingAreaDragHelper,
   		});
 
   	// Droppable properties of the secondary colors.
   	// It *only* accepts color from the mixing area.
-  	$('.secondary-palette-square').droppable( {
+  	$('.secondary-palette-square').droppable({
   	  accept: '#mixing-area-square',
   	  drop: this.handleSecondarySwatchDropEvent,
   	  activate: this.handleSecondarySwatchActivateEvent,
@@ -311,16 +315,21 @@ App = {
     App.dragAndDropFloodFillHelper("#mixing-area-square canvas.activated", mixedColorRgb, mixedColorTuple);
   },
   
-  handleMixingAreaDragEvent: function(event, ui) {
-    var mixingAreaDiv = event.currentTarget.cloneNode(true);
-    $(mixingAreaDiv).addClass('scale-half-size');
-        
+  createMixingAreaDragHelper: function(event, ui) {
+    var mixingAreaClone = event.currentTarget.cloneNode(true);
+    console.log(mixingAreaClone);
+    // todo remove
+    //$(mixingAreaClone).addClass('scale-half-size');
     // copy contents
     var sourceContext = $(event.currentTarget).find("canvas")[0].getContext("2d");    
     var imageData = sourceContext.getImageData(0, 0, sourceContext.canvas.width, sourceContext.canvas.height);
-    var cloneContext = $(mixingAreaDiv).find("canvas")[0].getContext("2d");
+    var cloneContext = $(mixingAreaClone).find("canvas")[0].getContext("2d");
+    console.log(cloneContext);
+    cloneContext.save();
+    cloneContext.scale(0.50, 0.50);
     cloneContext.putImageData(imageData, 0, 0);	
-    return mixingAreaDiv;
+    cloneContext.restore();
+    return mixingAreaClone;
   },
   
   dragAndDropFloodFillHelper: function(canvasId, colorRgb, colorRgbTuple) {
