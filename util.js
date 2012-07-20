@@ -55,11 +55,22 @@ Util = {
   },
   
   updateCurrentScore: function(x, y, previewPixelData, previewCanvasWidth, pixelData, canvasWidth) {
+    // Following updates are made to the score:
+    // 1) Deduct if the drawing was already filled with the correct color and the
+    // user chose the wrong one.
+    // 2) Increment if the user chose the correct color over the previous wrong one.
+    // 3) Unchanged otherwise.
+    //
     // An image is divided into different regions that are colored using flood-fill
     // algorithm. If there are 'n' such regions, then the max score one can earn
     // is 50 * n.
+    var newColor = Util.getRgbString(App.paletteColorTuple.r,
+                                     App.paletteColorTuple.g,
+                                     App.paletteColorTuple.b,
+                                     App.paletteColorTuple.a);
+                                          
     var offset = Util.pixelOffset(x, y, canvasWidth);
-    var pixelColor = Util.getRgbString(
+    var oldColor = Util.getRgbString(
                        pixelData[offset], 
                        pixelData[offset + 1],
                        pixelData[offset + 2], 
@@ -69,10 +80,13 @@ Util = {
     var correctColor = Util.getRgbString(
                          previewPixelData[offset], 
                          previewPixelData[offset + 1], 
-                         pixelData[offset + 2], 
-                         this.getRgbAlphaFromImageData(pixelData[offset + 3]));
-    if (pixelColor == correctColor) {
+                         previewPixelData[offset + 2], 
+                         this.getRgbAlphaFromImageData(previewPixelData[offset + 3]));
+
+    if (oldColor != correctColor && newColor == correctColor) {
       UserPrefs.updateCurrentScore(50);
+    } else if (oldColor == correctColor && newColor != correctColor) {
+      UserPrefs.updateCurrentScore(-50);
     }
   },
 
@@ -113,6 +127,7 @@ Util = {
       continueFloodFill = this.fillPixel(toFill[0], toFill[1], pixelData, canvasWidth, canvasHeight, origColor, fillColorTuple, forPaletteSetUp);
       if (!continueFloodFill) break;
       i = i + 1
+      // if (i >= 50) break;
     }
     if (continueFloodFill) {
       canvasContext.putImageData(imageData, 0, 0);

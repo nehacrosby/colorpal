@@ -55,14 +55,16 @@ App = {
   	if (Debug.isRecording) {
       Debug.recordData.push({ x: position.x, y: position.y, color: this.paletteColorTuple.getCSS()});
     }
-  	Util.floodFill(position.x, position.y, ctx, false /* forPaletteSetUp */, this.paletteColorTuple);
-
-   	// Update the score.
+    // Update the score.
    	var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
   	var previewImageData = canvasPreviewCtx.getImageData(0, 0, canvasPreviewCtx.canvas.width, canvasPreviewCtx.canvas.height);
    	Util.updateCurrentScore(position.x, position.y,
    	                        previewImageData.data, canvasPreviewCtx.canvas.width, 
    	                        imageData.data, ctx.canvas.width);
+  	Util.floodFill(position.x, position.y, ctx, false /* forPaletteSetUp */, this.paletteColorTuple);
+  	// Get the updated imageData.
+    var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+    
    	// Update the score display.
    	console.log($("#score").html("Score: " + UserPrefs.getCurrentScore()));
 
