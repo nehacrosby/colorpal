@@ -322,16 +322,17 @@ App = {
   },
   
   createMixingAreaDragHelper: function(event, ui) {
+    var canvas = $(event.currentTarget).find("canvas")[0];
     var mixingAreaClone = event.currentTarget.cloneNode(true);
     $(mixingAreaClone).addClass('smaller-mixing-area');
-    // copy contents.
-    var cloneContext = $(mixingAreaClone).find("canvas")[0].getContext("2d");
+
     var image = new Image();
-    image.src = 'styles/mixing_area.png'
-    cloneContext.drawImage(image, 0, 0, cloneContext.canvas.width / 4, cloneContext.canvas.height / 3);
-    var draggedColorRgb = $(mixingAreaClone).find("canvas").attr("color");
-    var draggedColorTuple =  $.xcolor.test(draggedColorRgb);
-    Util.floodFill(4, 4, cloneContext, true /* forPaletteSetUp */,  draggedColorTuple);    
+    image.src = canvas.toDataURL("image/png");
+    image.addEventListener("load", function() {
+      var cloneContext = $(mixingAreaClone).find("canvas")[0].getContext("2d");
+      cloneContext.drawImage(image, 0, 0, $(mixingAreaClone).width(), $(mixingAreaClone).height());
+    }, false);
+
     return mixingAreaClone;
   },
   
