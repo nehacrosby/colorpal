@@ -29,6 +29,7 @@ Debug = {
     
     Debug.isRecording = false;
     var jsonRecordData = JSON.stringify(Debug.recordData)
+    console.log(jsonRecordData);
     Debug.recordData = [];
   },
   

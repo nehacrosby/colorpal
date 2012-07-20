@@ -39,7 +39,7 @@
       color: white;
       text-shadow: 2px 2px 2px #000;
       position: absolute;
-      top: 150px;
+      top: 200px;
       right: 40px;
     }
     
@@ -99,10 +99,10 @@
   	}
   	
     /* NEW PALETTE SYLES*/
-   .scale-half-size {
-     width: 100px;
-     height: 100px;
-     border: 1px solid red;
+   .smaller-mixing-area {
+     /* Same as mixing area canvas size */
+     width: 95px;
+     height: 40px;
      overflow: hidden;
    }
    
@@ -209,14 +209,12 @@
         <canvas id="tutorial" class="tutorial" width="620" height="700" style="zoom: 100%"></canvas>
 
         <div id="image-preview-container">
-          <canvas id="image-preview" class="image-preview" width="552" height="482" style="zoom: 25%"></canvas>
+          <canvas id="image-preview" class="image-preview" width="620" height="700" style="zoom: 25%"></canvas>
         </div>
       </div>  
-
       <div id="score">
-          Score: 100
+          Score: 0
       </div>
-      
    	  <!-- Provide the Palette -->
    	  <div id="palette">
    	    <div id="secondary-palette-squares">
@@ -256,7 +254,7 @@
               <canvas class="activated" width="90" height="90" style="display:none"></canvas>
             </div>
         </div>
-   	    <div id="mixing-area-square" class="12scale-half-size">  
+   	    <div id="mixing-area-square">  
     	    <canvas class="deactivated" width="355" height="90"></canvas>
     	    <canvas class="activated" width="355" height="90" style="display:none"></canvas>
     	  </div>
@@ -298,7 +296,6 @@
       <button type="button" name="start-recording-action">Start Recording</button>
       <button type="button" name="stop-recording-action">Stop Recording</button>
       <button type="button" name="debug-next">Color cheat</button>
-      <div id="score">Score: 0</button>
      </div>
   	</div>
   </div>

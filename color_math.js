@@ -19,8 +19,8 @@ App = {
   	if (Debug.showColorScreen) {
   	  $("#listScreen").hide();
       $("#drawingScreen").show();
-        //this.loadImage("images/duckling-17737.png");
-      this.loadImage("images/heart.png");
+      this.loadImage("images/duckling-17737.png");
+      // this.loadImage("images/heart.png");
     }
   },
   
@@ -52,7 +52,9 @@ App = {
     // Start flood-fill of the color from where the mouse click event
     // happened.
   	position = this.getMouseClickCoordinates(event);
-  	console.log("mouse click " + position.x + " y: " + position.y);
+  	if (Debug.isRecording) {
+      Debug.recordData.push({ x: position.x, y: position.y, color: this.paletteColorTuple.getCSS()});
+    }
   	Util.floodFill(position.x, position.y, ctx, false /* forPaletteSetUp */, this.paletteColorTuple);
 
    	// Update the score.
@@ -61,6 +63,8 @@ App = {
    	Util.updateCurrentScore(position.x, position.y,
    	                        previewImageData.data, canvasPreviewCtx.canvas.width, 
    	                        imageData.data, ctx.canvas.width);
+   	// Update the score display.
+   	console.log($("#score").html("Score: " + UserPrefs.getCurrentScore()));
 
    	// Check if the user is done coloring the entire image.                   
   	if (DrawingPreview.isSameAsPreviewImage(
@@ -317,18 +321,15 @@ App = {
   
   createMixingAreaDragHelper: function(event, ui) {
     var mixingAreaClone = event.currentTarget.cloneNode(true);
-    console.log(mixingAreaClone);
-    // todo remove
-    //$(mixingAreaClone).addClass('scale-half-size');
-    // copy contents
-    var sourceContext = $(event.currentTarget).find("canvas")[0].getContext("2d");    
-    var imageData = sourceContext.getImageData(0, 0, sourceContext.canvas.width, sourceContext.canvas.height);
+    $(mixingAreaClone).addClass('smaller-mixing-area');
+    // copy contents.
     var cloneContext = $(mixingAreaClone).find("canvas")[0].getContext("2d");
-    console.log(cloneContext);
-    cloneContext.save();
-    cloneContext.scale(0.50, 0.50);
-    cloneContext.putImageData(imageData, 0, 0);	
-    cloneContext.restore();
+    var image = new Image();
+    image.src = 'styles/mixing_area.png'
+    cloneContext.drawImage(image, 0, 0, cloneContext.canvas.width / 4, cloneContext.canvas.height / 3);
+    var draggedColorRgb = $(mixingAreaClone).find("canvas").attr("color");
+    var draggedColorTuple =  $.xcolor.test(draggedColorRgb);
+    Util.floodFill(4, 4, cloneContext, true /* forPaletteSetUp */,  draggedColorTuple);    
     return mixingAreaClone;
   },
   

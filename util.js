@@ -84,10 +84,6 @@ Util = {
     // continue until we hit a pixel that is not the same color as the
     // original (x, y) pixel since the boundary may not be black
     // such as, for the mixing area).
-    if (Debug.isRecording) {
-      Debug.recordData.push({ x: x, y: y, color: fillColorTuple.getCSS()});
-    }
-
     var canvasWidth = canvasContext.canvas.width;
     var canvasHeight = canvasContext.canvas.height;
     var imageData = canvasContext.getImageData(0, 0, canvasWidth, canvasHeight);    
@@ -117,11 +113,9 @@ Util = {
       continueFloodFill = this.fillPixel(toFill[0], toFill[1], pixelData, canvasWidth, canvasHeight, origColor, fillColorTuple, forPaletteSetUp);
       if (!continueFloodFill) break;
       i = i + 1
-      //if (i >= 50) break;
     }
     if (continueFloodFill) {
       canvasContext.putImageData(imageData, 0, 0);
-      console.log("finishing floodfill");
     }
   },
 
@@ -188,7 +182,7 @@ Util = {
     // the end of the canvas.
     if (x < 0 || x >= canvasWidth || y < 0 || y >= canvasHeight) return true;
     var offset = this.pixelOffset(x, y, canvasWidth);
-
+    
     // 255 corresponds to alpha value 1 or fully opaque.
     return ((pixelData[offset] == App.boundaryColor.r &&
              pixelData[offset + 1] == App.boundaryColor.g &&
