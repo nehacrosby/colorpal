@@ -32,11 +32,11 @@ App = {
     this.paletteColorTuple = $.xcolor.test($(paletteCanvas).attr("color"));
     
     // Toggle the state of all palette squares to only
-    // show the clicked on in the clicked state.
-    $("#palette .clicked").css("display", "none");
-    $("#palette .unclicked").css("display", "");
-    $(event.currentTarget).find(".unclicked").css("display", "none");
-    $(event.currentTarget).find(".clicked").css("display", "");
+    // show the clicked one in the clicked state.
+    $("#palette .clicked").hide();
+    $("#palette .unclicked").show();
+    $(event.currentTarget).find(".unclicked").hide();
+    $(event.currentTarget).find(".clicked").show();
   },
   
   onCanvasClick: function(event) {
@@ -66,7 +66,7 @@ App = {
     var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
     
    	// Update the score display.
-   	console.log($("#score").html("Score: " + UserPrefs.getCurrentScore()));
+   	$("#score").html("Score: " + UserPrefs.getCurrentScore());
 
    	// Check if the user is done coloring the entire image.                   
   	if (DrawingPreview.isSameAsPreviewImage(
@@ -266,26 +266,39 @@ App = {
     return cloneCanvas;
   },
   
+  // In the event that the primary swatch was clicked:
+  // (1) Unsuccessful secondary drop preserves state.
+  // (2) Sucessful secondary drop should toggle state in
+  //     handleSecondarySwatchDropEvent and Deactivate should preserve that.
+  //
+  // Event that secondary swatch was already clicked:
+  // (1) Activate should keep it clicked.
+  // (2) Successful secondary drop should toggle and deactivate should preserve.
+  // (3) Unsuccessful secondary drop should have deactivate keep state from (1). 
   handleSecondarySwatchActivateEvent: function(event, ui) { 
-    var swatch = $(event.target);   
-    swatch.find(".clicked").css("display", "none");
-    swatch.find(".unclicked").css("display", "none");
-    swatch.find(".activated").css("display", "");
+    var swatch = $(event.target);  
+    swatch.find(".unclicked").hide();
+    // If I wasn't already clicked then show me as activated.
+    if (swatch.find(".clicked").css("display") == "none") {
+      swatch.find(".activated").show();
+     }
   },
 
-  handleSecondarySwatchDeactivateEvent: function(event, ui) {    
-    var swatch = $(event.target);
-    swatch.find(".clicked").css("display", "none");
-    swatch.find(".unclicked").css("display", "");
-    swatch.find(".activated").css("display", "none");
+  handleSecondarySwatchDeactivateEvent: function(event, ui) {
+    var swatch = $(event.target);    
+    // If I am already clicked, keep me clicked.
+    if (swatch.find("clicked").css("display") == "none") {
+      swatch.find(".unclicked").show();
+    }
+    swatch.find(".activated").hide();
   },
 
-  handleSecondarySwatchDropEvent: function(event, ui) {  
+  handleSecondarySwatchDropEvent: function(event, ui) {      
     if ((App.mixingAreaColorList).length == 0) return;
     
     draggable = ui.draggable;
     var swatch = $(event.target); 
-
+    
     // Change the swatch color to be the same as the 
     // mixing area color dropped on to it.
     var draggedColorRgb = draggable.find("canvas").attr("color");
@@ -295,14 +308,24 @@ App = {
     App.dragAndDropFloodFillHelper(swatch.find("canvas.unclicked"), draggedColorRgb, draggedColorTuple);
     App.dragAndDropFloodFillHelper(swatch.find("canvas.clicked"), draggedColorRgb, draggedColorTuple);
     App.dragAndDropFloodFillHelper(swatch.find("canvas.activated"), draggedColorRgb, draggedColorTuple);
+    
+    // Mark this secondary palette as clicked.
+    // TODO(Neha): Why doesn't this work. Seems like we need event.target
+    // instead of currentTarget.
+    // App.onPaletteClick(event);
+    App.paletteColorTuple = $.xcolor.test(draggedColorRgb);
+    $("#palette .clicked").hide();
+    $("#palette .unclicked").show();
+    swatch.find(".clicked").show();
+    swatch.find(".unclicked").hide();
   },
 
-  handleMixingAreaActivateEvent: function(event, ui) {  
+  handleMixingAreaActivateEvent: function(event, ui) {      
     $(event.target).find(".deactivated").css("display", "none");
     $(event.target).find(".activated").css("display", "");      
   },
 
-  handleMixingAreaDeactivateEvent: function(event, ui) {
+  handleMixingAreaDeactivateEvent: function(event, ui) {    
     $(event.target).find(".activated").css("display", "none");
     $(event.target).find(".deactivated").css("display", "");
   },
