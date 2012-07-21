@@ -287,7 +287,7 @@ App = {
   handleSecondarySwatchDeactivateEvent: function(event, ui) {
     var swatch = $(event.target);    
     // If I am already clicked, keep me clicked.
-    if (swatch.find("clicked").css("display") == "none") {
+    if (swatch.find(".clicked").css("display") == "none") {
       swatch.find(".unclicked").show();
     }
     swatch.find(".activated").hide();
