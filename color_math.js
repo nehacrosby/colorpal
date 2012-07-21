@@ -14,7 +14,7 @@ App = {
     $("#secondary-palette-squares .secondary-palette-square").click(jQuery.proxy(this.onPaletteClick, this));
   	$('#tutorial').click(jQuery.proxy(this.onCanvasClick, this));
   	$("#clear-mixing-area").click(jQuery.proxy(this.onClearButtonClick, this));
-  	$("#show-list-view").click(jQuery.proxy(ListView.showImageLibrary, this));  
+  	$("#drawingScreen .list-button").click(jQuery.proxy(ListView.showImageLibrary, this));  
   	
   	if (Debug.showColorScreen) {
   	  $("#listScreen").hide();
@@ -66,7 +66,7 @@ App = {
     var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
     
    	// Update the score display.
-   	$("#score").html("Score: " + UserPrefs.getCurrentScore());
+   	$("#current-score").html("Score: " + UserPrefs.getCurrentScore());
 
    	// Check if the user is done coloring the entire image.                   
   	if (DrawingPreview.isSameAsPreviewImage(
@@ -105,7 +105,9 @@ App = {
   },
   
   setupCanvases: function(image) {
-    // Set up the drawing canvases.
+    // Set up the drawing canvases after clearing them first.
+    Util.clearCanvas($('#tutorial')[0]);
+    Util.clearCanvas($('#image-preview')[0]);
     var canvas = $('#tutorial')[0];
   	var imagePreview = $('#image-preview')[0];
 

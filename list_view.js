@@ -11,7 +11,6 @@ ListView = {
     
     // Add all the click handlers.
     $(".drawing-frame-todo").click(jQuery.proxy(this.onImageClick, this));
-    $("button[name=list-button]").click(jQuery.proxy(this.showImageLibrary, this));  
   },
   
   // If you completed a level and hit "List View" then list view doesn't

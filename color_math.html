@@ -33,21 +33,24 @@
 /*      border: 1px solid green;   */
     }
     
-    #score {
-      font-family: helvetica;
-      font-weight:bold;
-      color: black;
-      text-shadow: 2px 2px 1px white;
-      position: absolute;
-      top: 200px;
-      left: 660px;
-    }
-    
     #tutorial-container {
       display: inline-block;
       position: relative;
     }
     
+   .score {
+      font-family: helvetica;
+      font-weight:bold;
+      color: black;
+      text-shadow: 2px 2px 1px white;
+      position: absolute;
+    }
+
+    #current-score {
+      top: 200px;
+      left: 660px;  
+    }
+     
     .screen {
       width: 768px;
       height: 1024px;
@@ -57,34 +60,60 @@
       background-size: 100%;
     }
    
-     #listScreen {
+    #listScreen {
       overflow-y: auto;
     }
      
-     #transitionScreen {
+    #transitionScreen {
        text-align: center;
+/*       border: 1px solid green;*/
+       height: 324px;  /* 1024 - canvas_width */
+       position: relative;
+    }
+    
+    #total-score {
+      top: 150px;
+      left: 280px;
+      font-size:200%;
+    }
+    
+    #transitionScreen .list-button {
+      top: 250px;
+      left: 690px;
+      position: absolute;
+    }
+    
+    #transitionScreen .next-button {
+      top: 250px;
+      left: 600px;
+      position: absolute;
+    }
+    
+    #transitionScreen #stars {
+      margin-top: 100px;
     }
     
     #listScreen .drawing-frame {
-         height: 150px;
-    	   width: 150px;
-         float: left;
-         margin-left: 10px;
-         margin-top: 10px;
-         border: 1px solid black;
-         text-align: center;
-      }
+      height: 150px;
+    	width: 150px;
+      float: left;
+      margin-left: 10px;
+      margin-top: 10px;
+      border: 1px solid black;
+      text-align: center;
+    }
       
-     #listScreen .drawing-frame-done {
-        background: lightgrey;  
-      }
+    #listScreen .drawing-frame-done {
+      background: lightgrey;  
+    }
       
-      #debug {
-        position:absolute;
-        left: 150px;
-        top: 1100px;
-      }
-     .drawing-frame img {
+    #debug {
+      position:absolute;
+      left: 150px;
+      top: 1100px;
+    }
+    
+    .drawing-frame img {
     	  max-width: 100px;
     	  max-height: 100px;
     	  margin-top: 20px;
@@ -179,7 +208,7 @@
      top: 135px;
    }
    
-   #list-button {
+  #palette .list-button {
       left: 700px;
       top: 250px;
     }
@@ -194,13 +223,6 @@
 	      <video src="tutorials/sample_video.mp4" controls height="682" width="650"> </video>
   	  </div>
 	  </div>
-	  <div id="transitionScreen" class="screen" style="display:none">
-	    Score!
-	    <div id="total-score">0</div>
-	    <br> <br>
-	    <button type"button" name="next-button">Next</button>
-	    <button type"button" name="list-button">List View</button>
-	  </div>
 	  <div id="listScreen" class="screen"><!-- Image list gets populated here by JS --></div>
     <div id="drawingScreen" class="screen">
   	  <!-- Draw the canvas-->
@@ -212,11 +234,9 @@
           <canvas id="image-preview" class="image-preview" width="620" height="700" style="zoom: 25%"></canvas>
         </div>
       </div>  
-      <div id="score">
-          Score: 0
-      </div>
+      <div id="current-score" class="score">Score: 0</div>
    	  <!-- Provide the Palette -->
-   	  <div id="palette">
+   	  <div id="palette" style="">
    	    <div id="secondary-palette-squares">
    	       <div id="first" class="secondary-palette-square">
               <canvas class="unclicked" width="90" height="90"></canvas>
@@ -261,7 +281,7 @@
     	  <div id="clear-button">
     	    <img src="styles/eraser.png" id="clear-mixing-area"/>
     	  </div>
-    	  <div id="list-button">
+    	  <div class="list-button">
         	<img src="styles/list_icon.png" id="show-list-view"/>
         </div>
    	    <div id="primary-palette-squares">
@@ -290,7 +310,14 @@
             <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
           </div>
   	    </div>
-  	  </div>
+  	  </div>  <!-- End of palette div -->
+  	  <div id="transitionScreen" style="display:none">
+  	    <div id="great-job"><img src="styles/great_job.png"/></div>
+    	  <div id="total-score" class="score">Total Score: 0</div>
+    	  <div id="stars"><img src="styles/star.png" /><img src="styles/star.png"/><img src="styles/star.png"/></div>
+    	  <div class="next-button"><img src="styles/next.png" id="show-next-image"/></div>
+        <div class="list-button"><img src="styles/list_icon.png" id="show-list-view"/></div>
+    	</div>
   	 <br><br><br><br>
   	 <div id="debug">
       <button type="button" name="start-recording-action">Start Recording</button>

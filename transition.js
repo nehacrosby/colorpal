@@ -5,7 +5,8 @@ Transition = {
     // Total time (in ms) that the entire running score animation should take.
     this.scoreAnimationTime = 2000;
     
-    $("button[name=next-button]").click(jQuery.proxy(this.showNextImage, this));  
+    $("#transitionScreen .next-button").click(jQuery.proxy(this.showNextImage, this));
+    $("#transitionScreen .list-button").click(jQuery.proxy(ListView.showImageLibrary, this));    
     
     if (Debug.showTransitionScreen) {
       this.showScoreScreen();
@@ -37,17 +38,17 @@ Transition = {
     current = current || 0;
     if (current == targetVal) return;
     current++;
-    $('#transitionScreen #total-score').text(current);
+    $('#transitionScreen .score').text("Total Score: " + current);
     setTimeout(jQuery.proxy(function() { this.scoreAnimationHelper(targetVal, current, timeout) }, this), timeout);
   },
   
   showScoreScreen: function() {
     // Can only get here from the drawing screen. Clear the drawing
     // screen, secondary palette and the mixing area.
-    $("#drawingScreen").hide();
-    Util.clearCanvas($('#image-preview')[0]);
-    Util.clearCanvas($('#tutorial')[0]);
     Util.clearPaletteAndMixingArea();
+    $('#palette').hide();
+    $('#image-preview-container').hide();
+    $('#current-score').hide();
     
     // Update the total score.  
     $("#transitionScreen").show("slide", { direction: "right" }, 1000);
