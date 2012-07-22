@@ -15,7 +15,6 @@ ListView = {
   
   // If you completed a level and hit "List View" then list view doesn't
   // know that it has to make new level available.
-  
   showImageLibrary: function() {
     $("#transitionScreen").hide();
     $("#drawingScreen").hide();
@@ -40,24 +39,30 @@ ListView = {
     
     // Only make images from the currentLevel available.
     for (var i = 0; i < ImageLibrary.length; ++i) {
+      // Pick a randomly picked rotated tile as background.
+      var rand = Math.floor(Math.random() * 5);
       if (ImageLibrary[i].type == "image") {
         var class_tag;
+        var backgroundImg;
         if (completedImages[ImageLibrary[i].filename]) {
           // TODO(Neha): "done" images should be colored.
           console.log("image is done");
           class_tag = '<div class="drawing-frame drawing-frame-done">'
+          backgroundImg = 'url(styles/locked_tile.png)';
         } else if (ImageLibrary[i].level == currentLevel) {
           class_tag = '<div class="drawing-frame drawing-frame-todo">'
+          backgroundImg = 'url(styles/plain_tile_' + rand + '.png)';
         } else {
-          // Image is of a level higher than the currentLevel. We show
-          // it as done. TODO(Neha): Update this to something like 
-          // "not-available".
-          class_tag = '<div class="drawing-frame drawing-frame-done">'
+          // Image is of a level higher than the currentLevel.
+          class_tag = '<div class="drawing-frame drawing-frame-unavailable"> <img src="styles/lock.png" class="lock"/>'
+          backgroundImg = 'url(styles/locked_tile_' + rand + '.png)';
         }
-        $('#listScreen').append(class_tag + '<img src="' + ImageLibrary[i].filename + '"/></div>');
+        var newElement = $(class_tag + '<img src="' + ImageLibrary[i].filename + '"/></div>');
+        newElement.css('background-image', backgroundImg);
+        $('#listScreen').append(newElement);
       } else {
         // It's a tutorial video.
-        $('#listScreen').append('<div class="drawing-frame video-watch"><img src="' + ImageLibrary[i].filename + '"/></div>');
+        $('#listScreen').append('<div class="drawing-frame video-watch"></div>');
       }
     }
      $('#listScreen').append('<br style="clear:both">');

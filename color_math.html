@@ -97,14 +97,30 @@
       height: 150px;
     	width: 150px;
       float: left;
-      margin-left: 10px;
-      margin-top: 10px;
-      border: 1px solid black;
+      margin-left: 20px;
+      margin-top: 20px;
       text-align: center;
+      background-repeat: no-repeat;
     }
-      
-    #listScreen .drawing-frame-done {
-      background: lightgrey;  
+    
+    #listScreen .drawing-frame-unavailable {
+      position: relative;
+    }
+    
+    #listScreen .drawing-frame-unavailable .lock {
+      bottom: 33px;
+      left: 5px;
+      position: absolute;
+    }
+    
+    #listScreen .video-watch {
+      background-image:url(styles/video_tile.png);
+    }
+    
+    .drawing-frame img {
+    	max-width: 90px;
+    	max-height: 90px;
+    	margin-top: 20px;
     }
       
     #debug {
@@ -112,12 +128,6 @@
       left: 150px;
       top: 1100px;
     }
-    
-    .drawing-frame img {
-    	  max-width: 100px;
-    	  max-height: 100px;
-    	  margin-top: 20px;
-    	}
     	
    	#completion-image {
   	  height: 80;
