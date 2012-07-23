@@ -7,10 +7,7 @@ ListView = {
     
     if (Debug.showListView) {
       this.showImageLibrary();
-    }
-    
-    // Add all the click handlers.
-    $(".drawing-frame-todo").click(jQuery.proxy(this.onImageClick, this));
+    }    
   },
   
   // If you completed a level and hit "List View" then list view doesn't
@@ -25,17 +22,20 @@ ListView = {
     $('#listScreen').html('');
     
     var currentLevel = 0;
-    if (App.imageIndex < ImageLibrary.length) {
-      currentLevel = ImageLibrary[App.imageIndex].level;
+    if (Util.isLibraryComplete()) {
+      currentLevel = ImageLibrary.length + 1;
+    } else {
       // If the currentLevel is complete then undo the
       // next level.
-      if (Util.isLevelComplete(currentLevel)) {
-        alert("show image library level complete!");
+      while (Util.isLevelComplete(currentLevel)) {
         currentLevel++;
       }
     } 
+    console.log("App.imageIndex " + App.imageIndex);
+    console.log("current level: ", currentLevel);
     
     var completedImages = UserPrefs.getColoredImages();
+    console.log("completed images ", completedImages);
     
     // Only make images from the currentLevel available.
     for (var i = 0; i < ImageLibrary.length; ++i) {
@@ -46,9 +46,8 @@ ListView = {
         var backgroundImg;
         if (completedImages[ImageLibrary[i].filename]) {
           // TODO(Neha): "done" images should be colored.
-          console.log("image is done");
           class_tag = '<div class="drawing-frame drawing-frame-done">'
-          backgroundImg = 'url(styles/locked_tile.png)';
+          backgroundImg = 'url(styles/locked_tile_0.png)';
         } else if (ImageLibrary[i].level == currentLevel) {
           class_tag = '<div class="drawing-frame drawing-frame-todo">'
           backgroundImg = 'url(styles/plain_tile_' + rand + '.png)';
@@ -62,11 +61,19 @@ ListView = {
         $('#listScreen').append(newElement);
       } else {
         // It's a tutorial video.
-        $('#listScreen').append('<div class="drawing-frame video-watch"></div>');
+        if (ImageLibrary[i].level <= currentLevel) {
+          var newElement = $('<div class="drawing-frame video-watch"></div>');
+          newElement.attr("filename", ImageLibrary[i].filename);
+          $('#listScreen').append(newElement);
+        } else {
+          // The video is not yet available to be watched.
+          $('#listScreen').append('<div class="drawing-frame video-watch-unavailable"><img src="styles/lock.png" class="lock"/></div>');
+        }
       }
     }
      $('#listScreen').append('<br style="clear:both">');
      $(".drawing-frame-todo").click(jQuery.proxy(this.onImageClick, this));
+     // Ask phil how to pass the video filename to play video tutorial.
      $(".video-watch").click(jQuery.proxy(Video.onVideoClick, Video));
      
      this.enabled = true;

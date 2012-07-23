@@ -49,7 +49,7 @@ DrawingPreview = {
      // Fade out the palette screen.
      $('#palette').hide(500);
      $('#debug').hide(500);
-     $('#score').hide();
+     $('#current-score').hide();
   },
 
   onImagePreviewAnimationComplete: function() {
@@ -87,7 +87,7 @@ DrawingPreview = {
       // Show the palette screen.
       $('#palette').show(1000);
       $('#debug').show(1000);
-      $('#score').show(1100);
+      $('#current-score').show(1100);
    },
 
    onShrunkDrawingClickComplete: function() {

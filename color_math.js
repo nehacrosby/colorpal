@@ -14,13 +14,12 @@ App = {
     $("#secondary-palette-squares .secondary-palette-square").click(jQuery.proxy(this.onPaletteClick, this));
   	$('#tutorial').click(jQuery.proxy(this.onCanvasClick, this));
   	$("#clear-mixing-area").click(jQuery.proxy(this.onClearButtonClick, this));
-  	$("#drawingScreen .list-button").click(jQuery.proxy(ListView.showImageLibrary, this));  
-  	
+  	$("#drawingScreen .list-button").click(jQuery.proxy(ListView.showImageLibrary, ListView));  
+    
   	if (Debug.showColorScreen) {
   	  $("#listScreen").hide();
       $("#drawingScreen").show();
-      this.loadImage("images/duckling-17737.png");
-      // this.loadImage("images/heart.png");
+      this.loadImage("images/circus-tent-23135.png");
     }
   },
   
@@ -40,6 +39,7 @@ App = {
   },
   
   onCanvasClick: function(event) {
+    console.log("inside canvas click");
     if (!this.eventEnabled) return;
     
     var canvas = $('#tutorial')[0];
@@ -53,7 +53,7 @@ App = {
     // happened.
   	position = this.getMouseClickCoordinates(event);
   	if (Debug.isRecording) {
-      Debug.recordData.push({ x: position.x, y: position.y, color: this.paletteColorTuple.getCSS()});
+      Debug.recordData.push({ x: position.x, y: position.y, color: Util.getRgbString(this.paletteColorTuple.r, this.paletteColorTuple.g, this.paletteColorTuple.b ,1)});
     }
     // Update the score.
    	var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -98,16 +98,39 @@ App = {
      return {"x": x, "y": y};
   },
   
+  // Clears all state and prepares the new drawing to be colored.
+  resetPage: function() {
+    this.mixingAreaColorList = [];
+    this.paletteColorTuple = $.xcolor.test("rgba(255, 0, 0, 1)"); // Red.
+    // Set the red swatch to be clicked.
+    
+    // Clear all the canvases.
+    var canvasList = $('canvas');
+    for (var i = 0; i < canvasList.length; i++) {
+      Util.clearCanvas(canvasList[i]);
+    }
+    
+    // Now show the required dom elements from the
+    // drawing screen.
+    $('#palette').show();
+    $('#image-preview-container').show();
+    $('#current-score').show();
+  },
+
   loadImage: function(imageFilename) {  
+    console.log("inside load image");
+    // Prepare the drawing screen by clearing previous
+    // state.
+    this.resetPage();
+    console.log("after reset");
+    
     var image = new Image();
   	image.src = imageFilename;
   	image.onload = jQuery.proxy(function() { this.setupCanvases(image) }, this);
   },
   
   setupCanvases: function(image) {
-    // Set up the drawing canvases after clearing them first.
-    Util.clearCanvas($('#tutorial')[0]);
-    Util.clearCanvas($('#image-preview')[0]);
+    console.log("setting up canvases");
     var canvas = $('#tutorial')[0];
   	var imagePreview = $('#image-preview')[0];
 
@@ -121,7 +144,10 @@ App = {
   	this.drawShapes(image, ctx);
   	this.drawShapes(image, canvasPreviewCtx);
   	App.imageIndex = Util.getImageIndexInImageLibrary($(image).attr("src"));
+  	console.log("calling displaypreviewmsg");
     DrawingPreview.displayPreviewImage(ImageLibrary[App.imageIndex].jsonRecordedData, canvasPreviewCtx);
+    console.log("after calling displaypreviewmsg");
+  	
     this.paletteColorTuple = $.xcolor.test("rgba(255, 0, 0, 1)"); // Red.
         
     // Set up palette canvases.
@@ -148,6 +174,8 @@ App = {
   },
   
   setupPaletteCanvases: function() {
+    console.log("Inside setup plalette canvases");
+    
     // Secondary Palette Squares
     this.setupSecondaryPaletteHelper("#first");
     this.setupSecondaryPaletteHelper("#second");
@@ -186,6 +214,12 @@ App = {
     // Mixing Area
     this.setupSinglePalette("", "#mixing-area-square canvas.deactivated", "styles/mixing_area.png");
     this.setupSinglePalette("", "#mixing-area-square canvas.activated", "styles/mixing_area_dragging.png");
+    
+    // Now mark the red one clicked.
+    $("#palette .clicked").hide();
+    $("#palette .unclicked").show();
+    $("#palette #red canvas.unclicked").hide();
+    $("#palette #red canvas.clicked").show();
   },
   
   // TODO(Neha): Add rotation.

@@ -5,11 +5,12 @@
 Video = {
   init: function() {    
     // Add all the click handlers.
-    $(".video-watch").click(jQuery.proxy(this.onVideoClick, this)); 
+    $("#videoScreen .next-button").click(jQuery.proxy(Transition.showNextImage, Transition));
+    $("#videoScreen .list-button").click(jQuery.proxy(ListView.showImageLibrary, ListView));
   },
   
   onVideoClick: function(event) {
-    this.playTutorial($(event.currentTarget).find('img').attr('src'));  
+    this.playTutorial($(event.currentTarget).attr('filename'));  
   },
   
   playTutorial: function(filename) {
@@ -17,7 +18,8 @@ Video = {
     $("#transitionScreen").hide();
     $("#drawingScreen").hide();
     $("#videoScreen").show();
-    console.log("I've watched the video"); 
+    console.log("I've watched the video, saving " + filename); 
+    $('#videoScreen video').attr('src', filename);
     UserPrefs.saveCompletedImage(filename); 
   }
 }

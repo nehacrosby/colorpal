@@ -83,6 +83,10 @@ Util = {
                          previewPixelData[offset + 2], 
                          this.getRgbAlphaFromImageData(previewPixelData[offset + 3]));
 
+    if (correctColor == "rgba(0,0,0,0)") {
+      // Trying to fill the outside region so just skip.
+      return;
+    }
     if (oldColor != correctColor && newColor == correctColor) {
       UserPrefs.updateCurrentScore(50);
     } else if (oldColor == correctColor && newColor != correctColor) {

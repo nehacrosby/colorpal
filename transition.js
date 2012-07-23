@@ -6,7 +6,7 @@ Transition = {
     this.scoreAnimationTime = 2000;
     
     $("#transitionScreen .next-button").click(jQuery.proxy(this.showNextImage, this));
-    $("#transitionScreen .list-button").click(jQuery.proxy(ListView.showImageLibrary, this));    
+    $("#transitionScreen .list-button").click(jQuery.proxy(ListView.showImageLibrary, ListView));    
     
     if (Debug.showTransitionScreen) {
       this.showScoreScreen();
@@ -43,9 +43,6 @@ Transition = {
   },
   
   showScoreScreen: function() {
-    // Can only get here from the drawing screen. Clear the drawing
-    // screen, secondary palette and the mixing area.
-    Util.clearPaletteAndMixingArea();
     $('#palette').hide();
     $('#image-preview-container').hide();
     $('#current-score').hide();
@@ -73,12 +70,14 @@ Transition = {
         alert("YOU ARE DONE!!");
         ListView.showImageLibrary();
       } else {
-        if (ImageLibrary[App.imageIndex].level == currentLevel + 1) alert("Level complete!");
+        if (ImageLibrary[App.imageIndex].level == currentLevel + 1) console.log("Level complete!");
         
         // Check if its a video.
         if (ImageLibrary[App.imageIndex].type == "video") {
+          console.log("next image is a video");
           Video.playTutorial(ImageLibrary[App.imageIndex].filename);
         } else {
+          console.log("calling load image from transition");
           App.loadImage(ImageLibrary[App.imageIndex].filename);
           Debug.currentScore = 0;
           App.paletteColorTuple = $.xcolor.test("rgb(255, 255, 255)");

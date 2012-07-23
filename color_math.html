@@ -54,19 +54,14 @@
     .screen {
       width: 768px;
       height: 1024px;
-      border: 1px solid green;
+/*      border: 1px solid green;*/
       position: relative;
       background:url(styles/paper.jpg);
       background-size: 100%;
     }
-   
-    #listScreen {
-      overflow-y: auto;
-    }
      
     #transitionScreen {
        text-align: center;
-/*       border: 1px solid green;*/
        height: 324px;  /* 1024 - canvas_width */
        position: relative;
     }
@@ -93,6 +88,26 @@
       margin-top: 100px;
     }
     
+    #videoScreen {
+      position: relative;
+    }
+    
+    #videoScreen .list-button {
+      top: 950px;
+      left: 690px;
+      position: absolute;
+    }
+    
+    #videoScreen .next-button {
+      top: 950px;
+      left: 600px;
+      position: absolute;
+    }
+    
+    #listScreen {
+      overflow-y: auto;
+    }
+    
     #listScreen .drawing-frame {
       height: 150px;
     	width: 150px;
@@ -115,6 +130,18 @@
     
     #listScreen .video-watch {
       background-image:url(styles/video_tile.png);
+    }
+    
+    #listScreen .video-watch-unavailable {
+      /* TODO(Neha): Change this to greyed out preview*/
+      position: relative;
+      background-image:url(styles/video_tile.png);
+    }
+    
+    #listScreen .video-watch-unavailable .lock {
+      bottom: 33px;
+      left: 5px;
+      position: absolute;
     }
     
     .drawing-frame img {
@@ -228,10 +255,9 @@
   <body>
 	<div id="page">
 	  <div id="videoScreen" class="screen" style="display:none">
-	    <div>
-	      <button type"button" name="next-button">Next</button>
-	      <video src="tutorials/sample_video.mp4" controls height="682" width="650"> </video>
-  	  </div>
+	    <div><video src="tutorials/sample_video.mp4" controls height="682" width="650"> </video></div>
+  	  <div class="next-button"><img src="styles/next.png" id="show-next-image"/></div>
+      <div class="list-button"><img src="styles/list_icon.png" id="show-list-view"/></div>
 	  </div>
 	  <div id="listScreen" class="screen"><!-- Image list gets populated here by JS --></div>
     <div id="drawingScreen" class="screen">
