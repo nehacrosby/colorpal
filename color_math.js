@@ -19,7 +19,7 @@ App = {
   	if (Debug.showColorScreen) {
   	  $("#listScreen").hide();
       $("#drawingScreen").show();
-      this.loadImage("images/circus-tent-23135.png");
+      this.loadImage("images/pig.png");
     }
   },
   
@@ -69,11 +69,11 @@ App = {
    	$("#current-score").html("Score: " + UserPrefs.getCurrentScore());
 
    	// Check if the user is done coloring the entire image.                   
-  	if (DrawingPreview.isSameAsPreviewImage(
-        imageData.data, ctx.canvas.width, ImageLibrary[App.imageIndex].jsonRecordedData)) {
-       UserPrefs.saveCompletedImage(ImageLibrary[App.imageIndex].filename); 
-  	   Transition.handleCompletionAnimation();
-  	}
+  	// if (DrawingPreview.isSameAsPreviewImage(
+  	//         imageData.data, ctx.canvas.width, ImageLibrary[App.imageIndex].jsonRecordedData)) {
+  	//        UserPrefs.saveCompletedImage(ImageLibrary[App.imageIndex].filename); 
+  	//        Transition.handleCompletionAnimation();
+  	//     }
   },
   
   onClearButtonClick: function() {
