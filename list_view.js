@@ -44,8 +44,9 @@ ListView = {
       if (ImageLibrary[i].type == "image") {
         var class_tag;
         var backgroundImg;
+        var imageDone = false;
         if (completedImages[ImageLibrary[i].filename]) {
-          // TODO(Neha): "done" images should be colored.
+          imageDone = true;
           class_tag = '<div class="drawing-frame drawing-frame-done">'
           backgroundImg = 'url(styles/locked_tile_0.png)';
         } else if (ImageLibrary[i].level == currentLevel) {
@@ -56,7 +57,13 @@ ListView = {
           class_tag = '<div class="drawing-frame drawing-frame-unavailable"> <img src="styles/lock.png" class="lock"/>'
           backgroundImg = 'url(styles/locked_tile_' + rand + '.png)';
         }
-        var newElement = $(class_tag + '<img src="' + ImageLibrary[i].filename + '"/></div>');
+        var imageFilename;
+        if (imageDone) { 
+          imageFilename = Util.getColoredDrawingFilename(ImageLibrary[i].filename);
+        } else {
+          imageFilename = Util.getDrawingTodoFilename(ImageLibrary[i].filename);
+        }
+        var newElement = $(class_tag + '<img src="' + imageFilename + '"/></div>');
         newElement.css('background-image', backgroundImg);
         $('#listScreen').append(newElement);
       } else {
@@ -83,6 +90,6 @@ ListView = {
     this.enabled = false;
     $("#listScreen").hide();
     $("#drawingScreen").show();
-    App.loadImage($(event.currentTarget).find('img').attr('src'));  
+    App.loadImage(Util.getImageNameFromImageFilename($(event.currentTarget).find('img').attr('src')));
   }
 }

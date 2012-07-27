@@ -75,7 +75,7 @@ Transition = {
         // Check if its a video.
         if (ImageLibrary[App.imageIndex].type == "video") {
           console.log("next image is a video");
-          Video.playTutorial(ImageLibrary[App.imageIndex].filename);
+          Video.playTutorial(Util.getDrawingTodoFilename(ImageLibrary[App.imageIndex].filename));
         } else {
           console.log("calling load image from transition");
           App.loadImage(ImageLibrary[App.imageIndex].filename);

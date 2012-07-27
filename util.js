@@ -6,6 +6,20 @@ Util = {
     return "rgba(" + r + "," + g + ","+ b + ","+ a + ")";
   },
   
+  getDrawingTodoFilename: function(imageName) {
+    return "images/" + imageName + ".png";
+  },
+  
+  getColoredDrawingFilename: function(imageName) {
+    return "colored_images/" + imageName + "_colored.png";
+  },
+  
+  getImageNameFromImageFilename: function(imageFilename) {
+    // imageFilename is of type "path/imageName.png"
+    var path_array = imageFilename.split("/");
+    return path_array[1].split(".")[0];
+  },
+  
   getRgbAlphaFromImageData: function(imageDataAlpha) {
     // Alpha value grabbed from canvas imageData 
     // is in the range [0, 255] while the RGB alpha
@@ -257,12 +271,12 @@ Util = {
     return true;
   },
 
-  getImageIndexInImageLibrary: function(imageFilename) {
+  getImageIndexInImageLibrary: function(imageName) {
     // This method is O(n). Runtime can be improved by storing a hash_map
     // from imageFilename to index. However, I do not expect the number of
     // images to be very large.
     for (var i = 0; i < ImageLibrary.length; ++i) {
-      if (ImageLibrary[i].filename == imageFilename) {
+      if (ImageLibrary[i].filename == imageName) {
         return i;
       }
     }

@@ -59,6 +59,11 @@ App = {
    	var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
   	var previewImageData = canvasPreviewCtx.getImageData(0, 0, canvasPreviewCtx.canvas.width, canvasPreviewCtx.canvas.height);
   	
+  	// !!! DEBUG !!!
+    // var imgSrc = imagePreview.toDataURL("image/png");
+    //         $('#colored-image').attr('src', imgSrc);
+  	// !!! DEBUG !!!
+  	
   	// Return if the click happened outside the region that can be colored.
   	if (Util.isOutsideRegion(position.x, position.y, previewImageData.data, canvasPreviewCtx.canvas.width)) {
   	  console.log("Outside region click!");
@@ -124,7 +129,7 @@ App = {
     $('#current-score').show();
   },
 
-  loadImage: function(imageFilename) {  
+  loadImage: function(imageName) {  
     console.log("inside load image");
     // Prepare the drawing screen by clearing previous
     // state.
@@ -132,7 +137,7 @@ App = {
     console.log("after reset");
     
     var image = new Image();
-  	image.src = imageFilename;
+  	image.src = Util.getDrawingTodoFilename(imageName);
   	image.onload = jQuery.proxy(function() { this.setupCanvases(image) }, this);
   },
   
@@ -150,8 +155,9 @@ App = {
 
   	this.drawShapes(image, ctx);
   	this.drawShapes(image, canvasPreviewCtx);
-  	App.imageIndex = Util.getImageIndexInImageLibrary($(image).attr("src"));
-  	console.log("calling displaypreviewmsg");
+  	console.log($(image).attr("src"));
+  	App.imageIndex = Util.getImageIndexInImageLibrary(Util.getImageNameFromImageFilename($(image).attr("src")));
+  	console.log("calling displaypreviewmsg ", App.imageIndex);
     DrawingPreview.displayPreviewImage(ImageLibrary[App.imageIndex].jsonRecordedData, canvasPreviewCtx);
     console.log("after calling displaypreviewmsg");
   	
