@@ -5,7 +5,7 @@ App = {
     this.imageIndex = 0;
     this.mixingAreaColorList = [];
     // Hard-coded black boundary color.
-    this.boundaryColor = $.xcolor.test("rgba(0, 0, 0, 1)");
+    this.boundaryColor = $.xcolor.test("rgba(0,0,0,1)");
     this.paletteColorTuple = $.xcolor.test("rgba(255, 0, 0, 1)"); // Red.
     this.eventEnabled = true;
     
@@ -58,6 +58,13 @@ App = {
     // Update the score.
    	var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
   	var previewImageData = canvasPreviewCtx.getImageData(0, 0, canvasPreviewCtx.canvas.width, canvasPreviewCtx.canvas.height);
+  	
+  	// Return if the click happened outside the region that can be colored.
+  	if (Util.isOutsideRegion(position.x, position.y, previewImageData.data, canvasPreviewCtx.canvas.width)) {
+  	  console.log("Outside region click!");
+  	  return;
+  	}
+  	
    	Util.updateCurrentScore(position.x, position.y,
    	                        previewImageData.data, canvasPreviewCtx.canvas.width, 
    	                        imageData.data, ctx.canvas.width);

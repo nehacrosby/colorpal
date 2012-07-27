@@ -54,6 +54,29 @@ Util = {
      }
   },
   
+  isOutsideRegion: function(x, y, previewPixelData, previewCanvasWidth) {
+    // We detect the outside region by checking whether the alpha
+    // value is < 1 or boundary. We can have almost-black regions
+    // in the image.
+    var offset = Util.pixelOffset(x, y, previewCanvasWidth);
+    var alphaValue = this.getRgbAlphaFromImageData(previewPixelData[offset + 3]);
+    if (alphaValue < 1) return true;
+    
+    var pixelColor = Util.getRgbString(
+                          previewPixelData[offset], 
+                          previewPixelData[offset + 1], 
+                          previewPixelData[offset + 2], 
+                          alphaValue);
+    
+    if (pixelColor == Util.getRgbString(App.boundaryColor.r,
+                                        App.boundaryColor.g, 
+                                        App.boundaryColor.b, 
+                                        App.boundaryColor.a)) {
+      return true;
+    }
+    return false;
+  },
+  
   updateCurrentScore: function(x, y, previewPixelData, previewCanvasWidth, pixelData, canvasWidth) {
     // Following updates are made to the score:
     // 1) Deduct if the drawing was already filled with the correct color and the
@@ -64,6 +87,11 @@ Util = {
     // An image is divided into different regions that are colored using flood-fill
     // algorithm. If there are 'n' such regions, then the max score one can earn
     // is 50 * n.
+    if (this.isOutsideRegion(x, y, previewPixelData, previewCanvasWidth)) {
+      // Trying to fill the outside region so just skip.
+      return;
+    }
+      
     var newColor = Util.getRgbString(App.paletteColorTuple.r,
                                      App.paletteColorTuple.g,
                                      App.paletteColorTuple.b,
@@ -78,15 +106,11 @@ Util = {
 
     var previewOffset = Util.pixelOffset(x, y, previewCanvasWidth);
     var correctColor = Util.getRgbString(
-                         previewPixelData[offset], 
-                         previewPixelData[offset + 1], 
-                         previewPixelData[offset + 2], 
-                         this.getRgbAlphaFromImageData(previewPixelData[offset + 3]));
+                         previewPixelData[previewOffset], 
+                         previewPixelData[previewOffset + 1], 
+                         previewPixelData[previewOffset + 2], 
+                         this.getRgbAlphaFromImageData(previewPixelData[previewOffset + 3]));
 
-    if (correctColor == "rgba(0,0,0,0)") {
-      // Trying to fill the outside region so just skip.
-      return;
-    }
     if (oldColor != correctColor && newColor == correctColor) {
       UserPrefs.updateCurrentScore(50);
     } else if (oldColor == correctColor && newColor != correctColor) {
