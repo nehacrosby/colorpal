@@ -203,15 +203,7 @@ Util = {
 
   fill: function(x, y, pixelData, canvasWidth, fillColorTuple) {    
     // Helper method that changes the color of pixel 'x, y' to
-    // whatever App.paletteColorTuple is set to. Returns false
-    // if the entire floodfill should be aborted because 'x, y'
-    // is outside the bounds.
-    if (x == ImageLibrary[App.imageIndex].outsideRegion.x &&
-        y == ImageLibrary[App.imageIndex].outsideRegion.y) {
-        // abort abort!
-        return false;
-    }
-    
+    // whatever App.paletteColorTuple is set to. 
     var offset = this.pixelOffset(x, y, canvasWidth);
     pixelData[offset] = fillColorTuple.r;
     pixelData[offset + 1] = fillColorTuple.g;
