@@ -48,7 +48,7 @@ Transition = {
     $('#current-score').hide();
     
     // Update the total score.  
-    $("#transitionScreen").show("slide", { direction: "right" }, 1000);
+    $("#transitionScreen").fadeIn(1500);
     
     // Update the total score and show the score animation.
     this.handleScoreAnimation();

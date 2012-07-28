@@ -8,6 +8,9 @@ App = {
     this.boundaryColor = $.xcolor.test("rgba(0,0,0,1)");
     this.paletteColorTuple = $.xcolor.test("rgba(255, 0, 0, 1)"); // Red.
     this.eventEnabled = true;
+    // This counter is incremented when each palette canvas is drawn.
+    // We show the palette container only after all palettes are drawn.
+    this.totalPalettesDrawn = 0;
     
     // Add all the click handlers.    
     $("#primary-palette-squares .palette-square").click(jQuery.proxy(this.onPaletteClick, this));
@@ -65,10 +68,9 @@ App = {
   	// !!! DEBUG !!!
   	
   	// Return if the click happened outside the region that can be colored.
-  	if (Util.isOutsideRegion(position.x, position.y, previewImageData.data, canvasPreviewCtx.canvas.width)) {
-  	    console.log("Outside region click!");
-  	    return;
-  	}
+    if (Util.isOutsideRegion(position.x, position.y, previewImageData.data, canvasPreviewCtx.canvas.width)) {
+          return;
+    }
   	
    	Util.updateCurrentScore(position.x, position.y,
    	                        previewImageData.data, canvasPreviewCtx.canvas.width, 
@@ -128,7 +130,8 @@ App = {
     
     // Now show the required dom elements from the
     // drawing screen.
-    $('#palette').show();  // TODO(neha): Show only after the palette canvases have been drawn.
+    this.totalPalettesDrawn = 0; // Show only after the palette canvases have been drawn.
+    $('#palette').hide();  
     $('#image-preview-container').show();
     $('#current-score').show();
   },
@@ -161,9 +164,7 @@ App = {
   	this.drawShapes(image, canvasPreviewCtx);
   	console.log($(image).attr("src"));
   	App.imageIndex = Util.getImageIndexInImageLibrary(Util.getImageNameFromImageFilename($(image).attr("src")));
-  	console.log("calling displaypreviewmsg ", App.imageIndex);
     DrawingPreview.displayPreviewImage(ImageLibrary[App.imageIndex].jsonRecordedData, canvasPreviewCtx);
-    console.log("after calling displaypreviewmsg");
   	
     this.paletteColorTuple = $.xcolor.test("rgba(255, 0, 0, 1)"); // Red.
         
@@ -239,7 +240,6 @@ App = {
     $("#palette #red canvas.clicked").show();
   },
   
-  // TODO(Neha): Add rotation.
   setupSinglePalette: function(fillColor, canvasId, imageFile) {
     var palCanvas = $(canvasId)[0];
     var palCtx = palCanvas.getContext('2d');   
@@ -250,8 +250,17 @@ App = {
         $(canvasId).attr("color", fillColor);
         Util.floodFill(40, 40, palCtx, true, $.xcolor.test(fillColor));
       }
+      App.paletteSquareDrawingComplete();
     }     
     image.src = imageFile;
+  },
+  
+  paletteSquareDrawingComplete: function() {
+    this.totalPalettesDrawn = this.totalPalettesDrawn + 1;
+    
+    if (this.totalPalettesDrawn >= 13) {
+      $('#palette').show();
+    }
   },
   
   drawShapes: function(image, canvasContext) {
