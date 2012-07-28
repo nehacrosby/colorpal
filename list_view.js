@@ -48,7 +48,7 @@ ListView = {
         if (completedImages[ImageLibrary[i].filename]) {
           imageDone = true;
           class_tag = '<div class="drawing-frame drawing-frame-done">'
-          backgroundImg = 'url(styles/locked_tile_0.png)';
+          backgroundImg = 'url(styles/locked_tile_' + rand + '.png)';
         } else if (ImageLibrary[i].level == currentLevel) {
           class_tag = '<div class="drawing-frame drawing-frame-todo">'
           backgroundImg = 'url(styles/plain_tile_' + rand + '.png)';
