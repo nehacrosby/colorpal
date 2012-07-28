@@ -39,7 +39,6 @@ App = {
   },
   
   onCanvasClick: function(event) {
-    console.log("inside canvas click");
     if (!this.eventEnabled) return;
     
     var canvas = $('#tutorial')[0];
@@ -52,6 +51,7 @@ App = {
     // Start flood-fill of the color from where the mouse click event
     // happened.
   	position = this.getMouseClickCoordinates(event);
+    
   	if (Debug.isRecording) {
       Debug.recordData.push({ x: position.x, y: position.y, color: Util.getRgbString(this.paletteColorTuple.r, this.paletteColorTuple.g, this.paletteColorTuple.b ,1)});
     }
@@ -81,11 +81,11 @@ App = {
    	$("#current-score").html("Score: " + UserPrefs.getCurrentScore());
 
    	// Check if the user is done coloring the entire image.                   
-  	// if (DrawingPreview.isSameAsPreviewImage(
-  	//         imageData.data, ctx.canvas.width, ImageLibrary[App.imageIndex].jsonRecordedData)) {
-  	//        UserPrefs.saveCompletedImage(ImageLibrary[App.imageIndex].filename); 
-  	//        Transition.handleCompletionAnimation();
-  	//     }
+    if (DrawingPreview.isSameAsPreviewImage(
+            imageData.data, ctx.canvas.width, ImageLibrary[App.imageIndex].jsonRecordedData)) {
+        UserPrefs.saveCompletedImage(ImageLibrary[App.imageIndex].filename); 
+        Transition.handleCompletionAnimation();
+     }
   },
   
   onClearButtonClick: function() {
@@ -103,11 +103,15 @@ App = {
     // Get x, y coordinates of the mouse-click.
     // Taken from:
     // http://stackoverflow.com/questions/1114465/getting-mouse-location-in-canvas
-     var targ = event.target;
-     var x = event.pageX - $(targ).offset().left;
-     var y = event.pageY - $(targ).offset().top;
+    var targ = event.target;
      
-     return {"x": x, "y": y};
+    // Zoom settings can break this functionality by returning
+    // floating point x and y values. So we take the floor to
+    // convert them to ints.
+    var x = Math.floor(event.pageX - $(targ).offset().left);
+    var y = Math.floor(event.pageY - $(targ).offset().top);
+     
+    return {"x": x, "y": y};
   },
   
   // Clears all state and prepares the new drawing to be colored.
@@ -124,7 +128,7 @@ App = {
     
     // Now show the required dom elements from the
     // drawing screen.
-    $('#palette').show();
+    $('#palette').show();  // TODO(neha): Show only after the palette canvases have been drawn.
     $('#image-preview-container').show();
     $('#current-score').show();
   },
