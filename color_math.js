@@ -19,7 +19,7 @@ App = {
   	if (Debug.showColorScreen) {
   	  $("#listScreen").hide();
       $("#drawingScreen").show();
-      this.loadImage("images/pig.png");
+      this.loadImage("ladybird");
     }
   },
   
@@ -61,13 +61,13 @@ App = {
   	
   	// !!! DEBUG !!!
     // var imgSrc = imagePreview.toDataURL("image/png");
-    //         $('#colored-image').attr('src', imgSrc);
+    //               $('#colored-image').attr('src', imgSrc);
   	// !!! DEBUG !!!
   	
   	// Return if the click happened outside the region that can be colored.
   	if (Util.isOutsideRegion(position.x, position.y, previewImageData.data, canvasPreviewCtx.canvas.width)) {
-  	  console.log("Outside region click!");
-  	  return;
+  	    console.log("Outside region click!");
+  	    return;
   	}
   	
    	Util.updateCurrentScore(position.x, position.y,
@@ -82,9 +82,9 @@ App = {
 
    	// Check if the user is done coloring the entire image.                   
     if (DrawingPreview.isSameAsPreviewImage(
-            imageData.data, ctx.canvas.width, ImageLibrary[App.imageIndex].jsonRecordedData)) {
-        UserPrefs.saveCompletedImage(ImageLibrary[App.imageIndex].filename); 
-        Transition.handleCompletionAnimation();
+                 imageData.data, ctx.canvas.width, ImageLibrary[App.imageIndex].jsonRecordedData)) {
+         UserPrefs.saveCompletedImage(ImageLibrary[App.imageIndex].filename); 
+         Transition.handleCompletionAnimation();
      }
   },
   
