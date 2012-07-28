@@ -25,9 +25,6 @@ DrawingPreview = {
     Debug.eventEnabled = false;
     this.eventEnabled = false;
     
-    // TODO(Neha): Also animate background-position etc.
-    // for image-preview-container.
-    
     // Expand the preview drawing.
     $('#image-preview').animate({
       zoom: '100%',
@@ -45,7 +42,6 @@ DrawingPreview = {
       zoom: '25%',
      }, 1000, jQuery.proxy(this.onImagePreviewAnimationComplete, this));
      
-     $('#image-preview-container .expand-icon').hide();
      // Fade out the palette screen.
      $('#palette').hide(500);
      $('#debug').hide(500);
@@ -53,7 +49,8 @@ DrawingPreview = {
   },
 
   onImagePreviewAnimationComplete: function() {
-    $('#tutorial').bind('click', jQuery.proxy(DrawingPreview.onShrunkDrawingClick, DrawingPreview));
+    $('#image-preview-container').unbind('click', jQuery.proxy(DrawingPreview.onImagePreviewClick, DrawingPreview));
+    $('#image-preview-container').bind('click', jQuery.proxy(DrawingPreview.onShrunkDrawingClick, DrawingPreview));
     this.eventEnabled = true;
   },
   
@@ -83,7 +80,6 @@ DrawingPreview = {
        zoom: '25%',
       }, 1000, jQuery.proxy(this.onShrunkDrawingClickComplete, this));
 
-     $('#tutorial-container > .expand-icon').hide();  
       // Show the palette screen.
       $('#palette').show(1000);
       $('#debug').show(1000);
@@ -94,7 +90,8 @@ DrawingPreview = {
      $('#image-preview-container .expand-icon').show();
      // Unbind the click handler so we don't respond to it
      // while the drawing is fully expanded.
-     $('#tutorial').unbind('click', jQuery.proxy(DrawingPreview.onShrunkDrawingClick, DrawingPreview));
+     $('#image-preview-container').unbind('click', jQuery.proxy(DrawingPreview.onShrunkDrawingClick, DrawingPreview));
+     $('#image-preview-container').bind('click', jQuery.proxy(DrawingPreview.onImagePreviewClick, DrawingPreview));
      
      // Re-enable all other event handlers on the main drawing
      // and the preview.
