@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>Color Math</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <script type="text/javascript" src="jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="jquery-ui-1.8.20.custom.min.js"></script>
     <script type="text/javascript" src="jquery.xcolor.js"></script>
@@ -14,243 +15,6 @@
     <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript" src="user_prefs.js"></script>
     <script type="text/javascript" src="video_tutorials.js"></script>
-    <style type="text/css">
-    
-    #image-preview-container {
-/*      border: 1px solid red;*/
-      position: absolute;
-      top: 0;
-      left: 90%;
-      background:url(styles/preview_background.png);
-      background-position: -55px bottom;
-      background-repeat: no-repeat;
-      padding-left: 10px;
-      padding-right: 50px;
-      padding-bottom: 50px;
-    }
-    
-    #image-preview-container canvas {
-/*      border: 1px solid green;   */
-    }
-    
-    #tutorial-container {
-      display: inline-block;
-      position: relative;
-    }
-    
-   .score {
-      font-family: helvetica;
-      font-weight:bold;
-      font-size: 25px;
-      color: black;
-      text-shadow: 2px 2px 1px white;
-      position: absolute;
-    }
-
-    #current-score {
-      top: 200px;
-      left: 600px;  
-    }
-     
-    .screen {
-      width: 768px;
-      height: 1024px;
-/*      border: 1px solid green;*/
-      position: relative;
-      background:url(styles/paper.jpg);
-      background-size: 100%;
-    }
-     
-    #transitionScreen {
-       text-align: center;
-       height: 324px;  /* 1024 - canvas_width */
-       position: relative;
-    }
-    
-    #total-score {
-      top: 150px;
-      left: 280px;
-      font-size:200%;
-    }
-    
-    #transitionScreen .list-button {
-      top: 250px;
-      left: 690px;
-      position: absolute;
-    }
-    
-    #transitionScreen .next-button {
-      top: 250px;
-      left: 600px;
-      position: absolute;
-    }
-    
-    #transitionScreen #stars {
-      margin-top: 100px;
-    }
-    
-    #videoScreen {
-      position: relative;
-    }
-    
-    #videoScreen .list-button {
-      top: 950px;
-      left: 690px;
-      position: absolute;
-    }
-    
-    #videoScreen .next-button {
-      top: 950px;
-      left: 600px;
-      position: absolute;
-    }
-    
-    #listScreen {
-      overflow-y: auto;
-    }
-    
-    #listScreen .drawing-frame {
-      height: 150px;
-    	width: 150px;
-      float: left;
-      margin-left: 35px;
-      margin-top: 20px;
-      text-align: center;
-      background-repeat: no-repeat;
-    }
-    
-    #listScreen .drawing-frame-unavailable {
-      position: relative;
-    }
-    
-    #listScreen .drawing-frame-unavailable .lock {
-      bottom: 33px;
-      left: 5px;
-      position: absolute;
-    }
-    
-    #listScreen .video-watch {
-      background-image:url(styles/video_tile.png);
-    }
-    
-    #listScreen .video-watch-unavailable {
-      position: relative;
-      background-image:url(styles/locked_video_tile.png);
-    }
-    
-    #listScreen .video-watch-unavailable .lock {
-      bottom: 33px;
-      left: 5px;
-      position: absolute;
-    }
-    
-    .drawing-frame img {
-    	max-width: 90px;
-    	max-height: 90px;
-    	margin-top: 20px;
-    }
-      
-    #debug {
-      position:absolute;
-      left: 150px;
-      top: 1100px;
-    }
-    	
-   	#completion-image {
-  	  height: 80;
-  	  width: 80;
-  	  top: 50%;
-  	  left: 50%;
-  	  position: absolute;
-  	}
-  	
-    /* NEW PALETTE SYLES*/
-   .smaller-mixing-area {
-     /* Same as mixing area canvas size */
-     width: 90px;
-     height: 50px;
-     overflow: hidden;
-   }
-   
-   #palette {
-    	height: 324px;  /* 1024 - canvas_width */
-    	background-image:url('styles/palette_background.png');
-    	position: relative;
-    }
-    
-   #palette div {
-      position: absolute;
-    }
-  
-   #first {
-     left: 15px;
-     top: 55px;
-   }
-   #second {
-      left: 115px;
-      top: 27px;
-   }
-   #third {
-     left: 215px;
-     top: 18px;
-   }
-   #fourth {
-     left: 315px;
-     top: 21px;
-   }
-   #fifth {
-     left: 415px;
-     top: 24px;
-   }
-   #sixth {
-     left: 515px;
-     top: 28px;
-   }
-   #seventh {
-     left: 615px;
-     top: 55px;
-   }
-   #blue {
-      left: 80px;
-      top: 200px;
-    }
-    #red {
-      left: 180px;
-      top: 225px;
-    }
-    #yellow {
-      left: 280px;
-      top: 235px;
-    }
-    #green {
-      left: 380px;
-      top: 225px;
-    }
-    #white {
-      left: 480px;
-      top: 215px;
-    }
-    #black {
-      left: 580px;
-      top: 195px;
-    }    
-      
-   #mixing-area-square {
-      left: 200px;
-      top: 115px;
-    }
-    
-   #clear-button {
-     left: 570px;
-     top: 135px;
-   }
-   
-  #palette .list-button {
-      left: 700px;
-      top: 250px;
-    }
-    
-    </style>
   </head>
   <body>
 	<div id="page">
@@ -259,14 +23,14 @@
           </div> -->
 	  <div id="videoScreen" class="screen" style="display:none">
 	    <div><video src="tutorials/sample_video.mp4" controls height="682" width="650"> </video></div>
-  	  <div class="next-button"><img src="styles/next.png" id="show-next-image"/></div>
-      <div class="list-button"><img src="styles/list_icon.png" id="show-list-view"/></div>
+  	  <div class="next-button"><img src="images/next.png" id="show-next-image"/></div>
+      <div class="list-button"><img src="images/list_icon.png" id="show-list-view"/></div>
 	  </div>
 	  <div id="listScreen" class="screen"><!-- Image list gets populated here by JS --></div>
     <div id="drawingScreen" class="screen">
   	  <!-- Draw the canvas-->
   	  <div id="tutorial-container">
-  	    <img src="styles/smiley_thumbs_up.png" id="completion-image" style="display:none"/>
+  	    <img src="images/smiley_thumbs_up.png" id="completion-image" style="display:none"/>
         <canvas id="tutorial" class="tutorial" width="620" height="700" style="zoom: 100%"></canvas>
 
         <div id="image-preview-container">
@@ -318,10 +82,10 @@
     	    <canvas class="activated" width="355" height="90" style="display:none"></canvas>
     	  </div>
     	  <div id="clear-button">
-    	    <img src="styles/eraser.png" id="clear-mixing-area"/>
+    	    <img src="images/eraser.png" id="clear-mixing-area"/>
     	  </div>
     	  <div class="list-button">
-        	<img src="styles/list_icon.png" id="show-list-view"/>
+        	<img src="images/list_icon.png" id="show-list-view"/>
         </div>
    	    <div id="primary-palette-squares">
    	      <div id="blue" class="palette-square">
@@ -351,11 +115,11 @@
   	    </div>
   	  </div>  <!-- End of palette div -->
   	  <div id="transitionScreen" style="display:none">
-  	    <div id="great-job"><img src="styles/great_job.png"/></div>
+  	    <div id="great-job"><img src="images/great_job.png"/></div>
     	  <div id="total-score" class="score">Total Score: 0</div>
-    	  <div id="stars"><img src="styles/star.png" /><img src="styles/star.png"/><img src="styles/star.png"/></div>
-    	  <div class="next-button"><img src="styles/next.png" id="show-next-image"/></div>
-        <div class="list-button"><img src="styles/list_icon.png" id="show-list-view"/></div>
+    	  <div id="stars"><img src="images/star.png" /><img src="images/star.png"/><img src="images/star.png"/></div>
+    	  <div class="next-button"><img src="images/next.png" id="show-next-image"/></div>
+        <div class="list-button"><img src="images/list_icon.png" id="show-list-view"/></div>
     	</div>
   	 <br><br><br><br>
   	 <div id="debug">

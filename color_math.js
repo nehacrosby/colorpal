@@ -174,13 +174,13 @@ App = {
   
   randomlyPickBlobImage: function() {
     if ((Math.random()*1) <= 0.5) {
-      return {"unclicked" : "styles/blob1.png",
-              "clicked" : "styles/blob1_selected.png",
-              "dragged" : "styles/blob1_dragging.png"};
+      return {"unclicked" : "images/blob1.png",
+              "clicked" : "images/blob1_selected.png",
+              "dragged" : "images/blob1_dragging.png"};
     } else {
-       return {"unclicked" : "styles/blob2.png",
-                "clicked" : "styles/blob2_selected.png",
-                "dragged" : "styles/blob2_dragging.png"};
+       return {"unclicked" : "images/blob2.png",
+                "clicked" : "images/blob2_selected.png",
+                "dragged" : "images/blob2_dragging.png"};
     }
   },
   
@@ -230,8 +230,8 @@ App = {
     this.setupSinglePalette("rgba(1, 1, 1, 1)", "#black canvas.clicked", imageFiles["clicked"]);
 
     // Mixing Area
-    this.setupSinglePalette("", "#mixing-area-square canvas.deactivated", "styles/mixing_area.png");
-    this.setupSinglePalette("", "#mixing-area-square canvas.activated", "styles/mixing_area_dragging.png");
+    this.setupSinglePalette("", "#mixing-area-square canvas.deactivated", "images/mixing_area.png");
+    this.setupSinglePalette("", "#mixing-area-square canvas.activated", "images/mixing_area_dragging.png");
     
     // Now mark the red one clicked.
     $("#palette .clicked").hide();
