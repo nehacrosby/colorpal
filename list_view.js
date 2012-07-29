@@ -31,12 +31,8 @@ ListView = {
         currentLevel++;
       }
     } 
-    console.log("App.imageIndex " + App.imageIndex);
-    console.log("current level: ", currentLevel);
     
-    var completedImages = UserPrefs.getColoredImages();
-    console.log("completed images ", completedImages);
-    
+    var completedImages = UserPrefs.getColoredImages();    
     // Only make images from the currentLevel available.
     for (var i = 0; i < ImageLibrary.length; ++i) {
       // Pick a randomly picked rotated tile as background.
@@ -51,7 +47,6 @@ ListView = {
           backgroundImg = 'url(images/locked_tile_' + rand + '.png)';
         } else if (ImageLibrary[i].level == currentLevel) {
           var q = 'url(images/plain_tile_' + rand + '.png)';
-          console.log("image url:", q);
           class_tag = '<div class="drawing-frame drawing-frame-todo">'
           backgroundImg = 'url(images/plain_tile_' + rand + '.png)';
         } else {

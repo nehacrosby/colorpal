@@ -137,19 +137,15 @@ App = {
   },
 
   loadImage: function(imageName) {  
-    console.log("inside load image");
     // Prepare the drawing screen by clearing previous
     // state.
-    this.resetPage();
-    console.log("after reset");
-    
+    this.resetPage();    
     var image = new Image();
   	image.src = Util.getDrawingTodoFilename(imageName);
   	image.onload = jQuery.proxy(function() { this.setupCanvases(image) }, this);
   },
   
   setupCanvases: function(image) {
-    console.log("setting up canvases");
     var canvas = $('#tutorial')[0];
   	var imagePreview = $('#image-preview')[0];
 
@@ -162,7 +158,6 @@ App = {
 
   	this.drawShapes(image, ctx);
   	this.drawShapes(image, canvasPreviewCtx);
-  	console.log($(image).attr("src"));
   	App.imageIndex = Util.getImageIndexInImageLibrary(Util.getImageNameFromImageFilename($(image).attr("src")));
     DrawingPreview.displayPreviewImage(ImageLibrary[App.imageIndex].jsonRecordedData, canvasPreviewCtx);
   	
@@ -191,9 +186,7 @@ App = {
     this.setupSinglePalette("rgba(255, 255, 255, 0)", canvasId + " canvas.activated", imageFiles["dragged"]);
   },
   
-  setupPaletteCanvases: function() {
-    console.log("Inside setup plalette canvases");
-    
+  setupPaletteCanvases: function() {    
     // Secondary Palette Squares
     this.setupSecondaryPaletteHelper("#first");
     this.setupSecondaryPaletteHelper("#second");

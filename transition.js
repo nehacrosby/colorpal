@@ -70,14 +70,12 @@ Transition = {
         alert("YOU ARE DONE!!");
         ListView.showImageLibrary();
       } else {
-        if (ImageLibrary[App.imageIndex].level == currentLevel + 1) console.log("Level complete!");
+        // if (ImageLibrary[App.imageIndex].level == currentLevel + 1) console.log("Level complete!");
         
         // Check if its a video.
         if (ImageLibrary[App.imageIndex].type == "video") {
-          console.log("next image is a video");
           Video.playTutorial(Util.getDrawingTodoFilename(ImageLibrary[App.imageIndex].filename));
         } else {
-          console.log("calling load image from transition");
           App.loadImage(ImageLibrary[App.imageIndex].filename);
           Debug.currentScore = 0;
           App.paletteColorTuple = $.xcolor.test("rgb(255, 255, 255)");
