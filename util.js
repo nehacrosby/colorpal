@@ -7,7 +7,7 @@ Util = {
   },
   
   getDrawingTodoFilename: function(imageName) {
-    return "images/" + imageName + ".png";
+    return "drawing_images/" + imageName + ".png";
   },
   
   getColoredDrawingFilename: function(imageName) {

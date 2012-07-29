@@ -4,7 +4,7 @@
 // TODO(Neha): Add outside regions for rest of the images.
 ImageLibrary = 
 [
-{level: 0, type: "video", filename: "tutorials/sample_video_1.mp4", jsonRecordedData: []},
+{level: 0, type: "video", filename: "tutorials/capture_trial.m4v", jsonRecordedData: []},
 {level: 1, type: "image", filename: "heart", jsonRecordedData: [{"x":240,"y":301,"color":"rgba(255,0,0,1)"}]},
 {level: 1, type: "image", filename: "cheese", jsonRecordedData: [{"x":442,"y":467,"color":"rgba(255,255,0,1)"},{"x":455,"y":282,"color":"rgba(255,255,0,1)"},{"x":250,"y":396,"color":"rgba(1,1,1,1)"},{"x":465,"y":346,"color":"rgba(1,1,1,1)"}]},
 {level: 1, type: "image", filename: "rabbit", jsonRecordedData: [{"x":484,"y":519,"color":"rgba(255,255,255,1)"},{"x":334,"y":562,"color":"rgba(255,255,255,1)"},{"x":326,"y":592,"color":"rgba(255,255,255,1)"},{"x":296,"y":595,"color":"rgba(255,255,255,1)"},{"x":436,"y":281,"color":"rgba(255,255,255,1)"},{"x":274,"y":279,"color":"rgba(255,255,255,1)"},{"x":310,"y":518,"color":"rgba(255,0,0,1)"},{"x":242,"y":302,"color":"rgba(255,0,0,1)"},{"x":373,"y":280,"color":"rgba(255,0,0,1)"}]},
