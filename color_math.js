@@ -425,17 +425,3 @@ App = {
     Util.floodFill(40, 40, palCtx, true /* forPaletteSetUp */,  colorRgbTuple);
   },
 };
-
-$(document).ready(function() {
-  // The order of init methods matters.
-  UserPrefs.init();
-  App.init();
-  DrawingPreview.init();
-  Video.init();
-  ListView.init();
-  Transition.init();
-  Debug.init();
-	
-	// Set up drag n drop handlers.
-	App.initDragAndDrop();
-});

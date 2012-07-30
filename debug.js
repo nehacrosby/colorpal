@@ -8,7 +8,8 @@ Debug = {
   showListView: false,
   showTransitionScreen: false,
   showColorScreen: false,
-  showVideoScreen: true,
+  showVideoScreen: false,
+  showStartScreen: true,
   
   init: function() {
     this.eventEnabled = true;

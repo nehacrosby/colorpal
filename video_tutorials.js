@@ -1,7 +1,5 @@
 // This library contains the handling of playing a video
 // tutorial.
-
-// TODO(Neha): Figure out why the video isn't always clickable.
 Video = {
   init: function() {    
     // Add all the click handlers.

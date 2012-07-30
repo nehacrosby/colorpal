@@ -16,6 +16,7 @@ ListView = {
     $("#transitionScreen").hide();
     $("#drawingScreen").hide();
     $("#videoScreen").hide();
+    $("#startScreen").hide();
     $("#listScreen").show();
 
     // Re-build the image gallery from scratch.

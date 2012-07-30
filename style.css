@@ -1,5 +1,4 @@
 #image-preview-container {
-/*      border: 1px solid red;*/
 position: absolute;
 top: 0;
 left: 90%;
@@ -41,6 +40,35 @@ padding-bottom: 50px;
   position: relative;
   background:url(images/paper.jpg);
   background-size: 100%;
+  overflow: hidden;
+}
+
+#startScreen {
+  text-align: center;
+  position: relative;
+}
+
+#startScreen .style {
+  position: absolute;
+  display: inline-block;
+}
+
+#startScreen #start-button {
+  top: 800px;
+}
+
+#startScreen #logo-text {
+  top: 200px;
+  z-index: 2;
+}
+
+#startScreen #start-screen-drawings {
+  top: 60px;
+  z-index: 1;
+}
+
+#startScreen #stars {
+  top: 940px;
 }
 
 #transitionScreen {
