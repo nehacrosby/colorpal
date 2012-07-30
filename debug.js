@@ -5,9 +5,10 @@ Debug = {
   //  { x: 280, y: 324, color: "rgb(255, 127, 0)", components: ["rgb(255, 0, 0)"] }]
   recordData : [],
   isRecording : false,
-  showListView: true,
+  showListView: false,
   showTransitionScreen: false,
   showColorScreen: false,
+  showVideoScreen: true,
   
   init: function() {
     this.eventEnabled = true;
