@@ -2,14 +2,12 @@
 // tutorial.
 Video = {
   init: function() {    
-    // Add all the click handlers.
-    $("#videoScreen .next-button").click(jQuery.proxy(Transition.showNextImage, Transition));
-    $("#videoScreen .list-button").click(jQuery.proxy(ListView.showImageLibrary, ListView));
+    $('video').bind('ended', jQuery.proxy(this.playTutorialDone, this));
     
     if (Debug.showVideoScreen) {
   	  $("#listScreen").hide();
       $("#drawingScreen").hide();
-      this.playTutorial("tutorials/capture_trial.m4v");
+      this.playTutorial("tutorials/level2_tutorial.m4v");
     }
   },
   
@@ -22,8 +20,22 @@ Video = {
     $("#transitionScreen").hide();
     $("#drawingScreen").hide();
     $("#videoScreen").show();
-    console.log("I've watched the video, saving " + filename); 
     $('#videoScreen video').attr('src', filename);
     UserPrefs.saveCompletedImage(filename); 
-  }
+  },
+  
+  playTutorialDone: function(event) {
+    // The below gymnast is to get around Safari bug where the
+    // "ended" event fires the first time on the video tag but
+    // not on subsequent plays. See:
+    // http://stackoverflow.com/questions/5738855/mobile-safari-html5-video-event-listener-ended-does-not-fire-the-2nd-time
+    // So we just remove the video tag and add its clone
+    // back alongwith the event handler.
+    var cloneVideo = $(event.target).clone();
+    $(event.target).parent().append(cloneVideo);
+    $(event.target).remove();
+    $('video').bind('ended', jQuery.proxy(this.playTutorialDone, this));
+    
+    ListView.showImageLibrary();
+  },
 }

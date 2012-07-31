@@ -74,7 +74,7 @@ Transition = {
         
         // Check if its a video.
         if (ImageLibrary[App.imageIndex].type == "video") {
-          Video.playTutorial(Util.getDrawingTodoFilename(ImageLibrary[App.imageIndex].filename));
+          Video.playTutorial(ImageLibrary[App.imageIndex].filename);
         } else {
           App.loadImage(ImageLibrary[App.imageIndex].filename);
           Debug.currentScore = 0;

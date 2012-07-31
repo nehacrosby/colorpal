@@ -1,3 +1,8 @@
+#page {
+  width: 768px;
+  height: 1024px;
+}
+
 #image-preview-container {
 position: absolute;
 top: 0;
@@ -48,9 +53,9 @@ padding-bottom: 50px;
   position: relative;
 }
 
-#startScreen .style {
+#startScreen .start-screen-style {
   position: absolute;
-  display: inline-block;
+  width: 100%;
 }
 
 #startScreen #start-button {
@@ -69,6 +74,10 @@ padding-bottom: 50px;
 
 #startScreen #stars {
   top: 940px;
+}
+
+#startScreen #stars img {
+  margin: 0 50px;
 }
 
 #transitionScreen {
@@ -97,38 +106,6 @@ padding-bottom: 50px;
 
 #transitionScreen #stars {
   margin-top: 100px;
-}
-
-#videoScreen {
-  position: relative;
-}
-
-#videoScreen #video-container {
-  top: 0;
-  left: 100%;
-  background: url(images/preview_background.png);
-  height: 900px;
-}
-
-#videoScreen #video-container video {
-  margin-top: 20%;
-  margin-left: 10%;
-  border: 5px solid grey;
-  -moz-box-shadow: 50px 50px 50px white; /* FF3.5+ */
-  -webkit-box-shadow: 50px 50px 50px white; /* Saf3.0+, Chrome */
-  box-shadow: 10px 10px 10px white; /* Opera 10.5, IE 9.0 */
-}
-
-#videoScreen .list-button {
-  top: 950px;
-  left: 690px;
-  position: absolute;
-}
-
-#videoScreen .next-button {
-  top: 950px;
-  left: 600px;
-  position: absolute;
 }
 
 #listScreen {

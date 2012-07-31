@@ -133,6 +133,7 @@ App = {
     this.totalPalettesDrawn = 0; // Show only after the palette canvases have been drawn.
     $('#palette').hide();  
     $('#image-preview-container').show();
+    $("#current-score").html("Score: " + UserPrefs.getCurrentScore());
     $('#current-score').show();
   },
 
