@@ -160,7 +160,6 @@ App = {
   	this.drawShapes(image, ctx);
   	this.drawShapes(image, canvasPreviewCtx);
   	App.imageIndex = Util.getImageIndexInImageLibrary(Util.getImageNameFromImageFilename($(image).attr("src")));
-  	console.log(ImageLibrary[App.imageIndex].jsonRecordedData);
     DrawingPreview.displayPreviewImage(ImageLibrary[App.imageIndex].jsonRecordedData, canvasPreviewCtx);
   	
     this.paletteColorTuple = $.xcolor.test("rgba(255, 0, 0, 1)"); // Red.
