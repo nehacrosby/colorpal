@@ -21,6 +21,7 @@ Video = {
     $("#drawingScreen").hide();
     $("#videoScreen").show();
     $('#videoScreen video').attr('src', filename);
+    $('#videoScreen video')[0].play();
     UserPrefs.saveCompletedImage(filename); 
   },
   
