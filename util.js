@@ -91,6 +91,12 @@ Util = {
     return false;
   },
   
+  getMaxScoreForImage: function(imageIndex) {
+    // Returns the total score achieved once the drawing is
+    // fully and correctly colored.
+    return ImageLibrary[imageIndex].jsonRecordedData.length * 50;
+  },
+  
   updateCurrentScore: function(x, y, previewPixelData, previewCanvasWidth, pixelData, canvasWidth) {
     // Following updates are made to the score:
     // 1) Deduct if the drawing was already filled with the correct color and the
@@ -131,7 +137,12 @@ Util = {
       UserPrefs.updateCurrentScore(-50);
     }
   },
-
+  
+  getFormattedScoreString: function(currentScore, totalScore) {
+    // Used to print on the drawing screen.
+    return "Score: " + currentScore + " / " + totalScore;
+  },
+  
   floodFill: function(x, y, canvasContext, forPaletteSetUp, fillColorTuple) { 
     // forPaletteSetUp is set to true if the floodfill is being done
     // for setting up the palette. The main difference is the stopping

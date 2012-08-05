@@ -1,7 +1,8 @@
-// TODO: Add appropriate graying out logic for videos and images between different levels.
-// Right now, the videos can be watched from any level.
-
-// TODO(Neha): Add outside regions for rest of the images.
+//  Stores the following details for each drawing image:
+//  1) Game level they belong to.
+//  2) Whether it is an image or a tutorial
+//  3) Name of the image/video.
+//  4) If it is a drawing image, then the color of a pixel from each drawing region.
 ImageLibrary = 
 [
 {level: 0, type: "video", filename: "tutorials/level1_tutorial.m4v", jsonRecordedData: []},
@@ -32,5 +33,3 @@ ImageLibrary =
 {level: 5, type: "image", filename: "mouse", jsonRecordedData: [{"x":316,"y":592,"color":"rgba(170,85,0,1)"},{"x":381,"y":590,"color":"rgba(170,85,0,1)"},{"x":348,"y":275,"color":"rgba(170,85,0,1)"},{"x":435,"y":306,"color":"rgba(170,85,0,1)"},{"x":463,"y":284,"color":"rgba(170,85,0,1)"},{"x":335,"y":107,"color":"rgba(170,85,0,1)"},{"x":464,"y":200,"color":"rgba(127,0,127,1)"},{"x":486,"y":170,"color":"rgba(255,255,0,1)"}]},
 {level: 5, type: "image", filename: "yogi_bear", jsonRecordedData: [{"x":420,"y":342,"color":"rgba(1,1,1,1)"},{"x":317,"y":424,"color":"rgba(1,1,1,1)"},{"x":340,"y":287,"color":"rgba(1,1,1,1)"},{"x":399,"y":293,"color":"rgba(1,1,1,1)"},{"x":290,"y":178,"color":"rgba(1,1,1,1)"},{"x":309,"y":557,"color":"rgba(255,255,255,1)"},{"x":462,"y":554,"color":"rgba(255,255,255,1)"},{"x":341,"y":474,"color":"rgba(255,127,127,1)"},{"x":131,"y":232,"color":"rgba(170,85,0,1)"},{"x":293,"y":420,"color":"rgba(170,85,0,1)"},{"x":445,"y":465,"color":"rgba(170,85,0,1)"},{"x":333,"y":243,"color":"rgba(255,255,255,1)"},{"x":389,"y":253,"color":"rgba(255,255,255,1)"},{"x":209,"y":283,"color":"rgba(128,0,0,1)"},{"x":415,"y":185,"color":"rgba(85,170,0,1)"},{"x":337,"y":148,"color":"rgba(85,170,0,1)"},{"x":274,"y":129,"color":"rgba(85,170,0,1)"},{"x":225,"y":180,"color":"rgba(85,170,0,1)"}]},
 ]
-
-// {level: 4, type: "image", filename: "images/mailbox.png", outsideRegion: {"x": -1, "y": -1 }, jsonRecordedData: []},

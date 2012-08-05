@@ -69,7 +69,7 @@ App = {
   	
   	// Return if the click happened outside the region that can be colored.
     if (Util.isOutsideRegion(position.x, position.y, previewImageData.data, canvasPreviewCtx.canvas.width)) {
-          return;
+       return;
     }
   	
    	Util.updateCurrentScore(position.x, position.y,
@@ -79,8 +79,9 @@ App = {
   	// Get the updated imageData.
     var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
     
-   	// Update the score display.
-   	$("#current-score").html("Score: " + UserPrefs.getCurrentScore());
+   	// Update the score display.    
+   	$("#current-score").html(Util.getFormattedScoreString(UserPrefs.getCurrentScore(),
+   	                         Util.getMaxScoreForImage(App.imageIndex)));
 
    	// Check if the user is done coloring the entire image.                   
     if (DrawingPreview.isSameAsPreviewImage(
@@ -133,8 +134,6 @@ App = {
     this.totalPalettesDrawn = 0; // Show only after the palette canvases have been drawn.
     $('#palette').hide();  
     $('#image-preview-container').show();
-    $("#current-score").html("Score: " + UserPrefs.getCurrentScore());
-    $('#current-score').show();
   },
 
   loadImage: function(imageName) {  
@@ -156,12 +155,18 @@ App = {
   	// Draw the drawing to color as well as the preview.
   	var ctx = canvas.getContext('2d');    
   	var canvasPreviewCtx = imagePreview.getContext('2d');
-
   	this.drawShapes(image, ctx);
   	this.drawShapes(image, canvasPreviewCtx);
   	App.imageIndex = Util.getImageIndexInImageLibrary(Util.getImageNameFromImageFilename($(image).attr("src")));
+    
+    // Display the filled in preview image.
     DrawingPreview.displayPreviewImage(ImageLibrary[App.imageIndex].jsonRecordedData, canvasPreviewCtx);
+    // Display the current score.
+  	$("#current-score").html(Util.getFormattedScoreString(UserPrefs.getCurrentScore(),
+   	                         Util.getMaxScoreForImage(App.imageIndex)));
+    $('#current-score').show();
   	
+  	// Initial selected color.
     this.paletteColorTuple = $.xcolor.test("rgba(255, 0, 0, 1)"); // Red.
         
     // Set up palette canvases.
@@ -366,9 +371,6 @@ App = {
     App.dragAndDropFloodFillHelper(swatch.find("canvas.activated"), draggedColorRgb, draggedColorTuple);
     
     // Mark this secondary palette as clicked.
-    // TODO(Neha): Why doesn't this work. Seems like we need event.target
-    // instead of currentTarget.
-    // App.onPaletteClick(event);
     App.paletteColorTuple = $.xcolor.test(draggedColorRgb);
     $("#palette .clicked").hide();
     $("#palette .unclicked").show();
