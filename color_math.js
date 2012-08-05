@@ -86,7 +86,6 @@ App = {
    	// Check if the user is done coloring the entire image.                   
     if (DrawingPreview.isSameAsPreviewImage(
                  imageData.data, ctx.canvas.width, ImageLibrary[App.imageIndex].jsonRecordedData)) {
-         UserPrefs.saveCompletedImage(ImageLibrary[App.imageIndex].filename); 
          Transition.handleCompletionAnimation();
      }
   },
@@ -144,7 +143,7 @@ App = {
   	image.src = Util.getDrawingTodoFilename(imageName);
   	image.onload = jQuery.proxy(function() { this.setupCanvases(image) }, this);
   },
-  
+    
   setupCanvases: function(image) {
     var canvas = $('#tutorial')[0];
   	var imagePreview = $('#image-preview')[0];

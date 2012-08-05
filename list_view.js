@@ -78,7 +78,10 @@ ListView = {
     }
      $('#listScreen').append('<br style="clear:both">');
      $(".drawing-frame-todo").click(jQuery.proxy(this.onImageClick, this));
-     // Ask phil how to pass the video filename to play video tutorial.
+     // Make the already colored image clickable again but do not
+     // update the score or status of this image in UserPrefs.
+     $(".drawing-frame-done").click(jQuery.proxy(this.onImageClick, this));
+     
      $(".video-watch").click(jQuery.proxy(Video.onVideoClick, Video));
      
      this.enabled = true;
@@ -88,6 +91,8 @@ ListView = {
     this.enabled = false;
     $("#listScreen").hide();
     $("#drawingScreen").show();
-    App.loadImage(Util.getImageNameFromImageFilename($(event.currentTarget).find('img').attr('src')));
+    var fname = $(event.currentTarget).find('img').attr('src');
+    fname = fname.replace("_colored", "");
+    App.loadImage(Util.getImageNameFromImageFilename(fname));
   }
 }

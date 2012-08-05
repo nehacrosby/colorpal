@@ -23,10 +23,19 @@ Transition = {
     var totalScoreBeforeUpdate = UserPrefs.getTotalScore();
     var incrementScoreBy = UserPrefs.getCurrentScore();
     var timeout = this.calculateTimeout(incrementScoreBy);
+    // If the user is recoloring the image then re-update
+    // the total score.
+    var completedImages = UserPrefs.getColoredImages();  
+    if (completedImages[ImageLibrary[App.imageIndex].filename]) {
+      totalScoreBeforeUpdate = totalScoreBeforeUpdate - incrementScoreBy;
+    }
     this.scoreAnimationHelper(totalScoreBeforeUpdate + incrementScoreBy, totalScoreBeforeUpdate, timeout);
-    
-    // Update the user data stored in the cookie.
-    UserPrefs.updateTotalScore(incrementScoreBy);
+    // Update the user data stored in the cookie only
+    // if the user wasn't recoloring the image.
+    if (!completedImages[ImageLibrary[App.imageIndex].filename]) {
+      UserPrefs.updateTotalScore(incrementScoreBy);
+      UserPrefs.saveCompletedImage(ImageLibrary[App.imageIndex].filename);
+    }
     UserPrefs.resetCurrentScore();
   },
   
