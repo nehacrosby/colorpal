@@ -155,10 +155,16 @@ body{
   position: absolute;
 }
 
-#videoScreen #test {
+#videoScreen #video-message {
   position: absolute;
-  bottom: 33px;
-  left: 5px;
+  text-align: center;
+  width: 100%;
+  bottom: 380px;
+  font-family: helvetica;
+  font-weight: bold;
+  font-size: 50px;
+  color: #6AC8FF;
+  text-shadow: 2px 2px 5px black;
 }
 
 .drawing-frame img {

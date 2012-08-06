@@ -5,12 +5,12 @@
 //  4) If it is a drawing image, then the color of a pixel from each drawing region.
 ImageLibrary = 
 [
-{level: 0, type: "video", filename: "tutorials/level1_tutorial.m4v", jsonRecordedData: []},
+{level: 0, type: "video", filename: "tutorials/level1_tutorial.m4v", jsonRecordedData: [], messageData: [{"t": 1, "message": "Let's learn how to fill color!" }, { "t": 8, "message": "Touch blob to pick color" }, { "t": 17, "message": "Touch drawing to fill color" }, { "t": 21, "message": " " }]},
 {level: 1, type: "image", filename: "heart", jsonRecordedData: [{"x":240,"y":301,"color":"rgba(255,0,0,1)"}]},
 {level: 1, type: "image", filename: "cheese", jsonRecordedData: [{"x":442,"y":467,"color":"rgba(255,255,0,1)"},{"x":455,"y":282,"color":"rgba(255,255,0,1)"},{"x":250,"y":396,"color":"rgba(1,1,1,1)"},{"x":465,"y":346,"color":"rgba(1,1,1,1)"}]},
 {level: 1, type: "image", filename: "rabbit", jsonRecordedData: [{"x":484,"y":519,"color":"rgba(255,255,255,1)"},{"x":334,"y":562,"color":"rgba(255,255,255,1)"},{"x":326,"y":592,"color":"rgba(255,255,255,1)"},{"x":296,"y":595,"color":"rgba(255,255,255,1)"},{"x":436,"y":281,"color":"rgba(255,255,255,1)"},{"x":274,"y":279,"color":"rgba(255,255,255,1)"},{"x":310,"y":518,"color":"rgba(255,0,0,1)"},{"x":242,"y":302,"color":"rgba(255,0,0,1)"},{"x":373,"y":280,"color":"rgba(255,0,0,1)"}]},
 {level: 1, type: "image", filename: "ladybird", jsonRecordedData: [{"x":194,"y":390,"color":"rgba(1,1,1,1)"},{"x":314,"y":342,"color":"rgba(1,1,1,1)"},{"x":356,"y":383,"color":"rgba(1,1,1,1)"},{"x":387,"y":349,"color":"rgba(1,1,1,1)"},{"x":276,"y":302,"color":"rgba(1,1,1,1)"},{"x":360,"y":302,"color":"rgba(1,1,1,1)"},{"x":288,"y":386,"color":"rgba(255,0,0,1)"},{"x":307,"y":299,"color":"rgba(255,0,0,1)"},{"x":234,"y":366,"color":"rgba(255,255,255,1)"},{"x":188,"y":347,"color":"rgba(255,255,255,1)"}]},
-{level: 2, type: "video", filename: "tutorials/level2_tutorial.m4v", jsonRecordedData: []},
+{level: 2, type: "video", filename: "tutorials/level2_tutorial.m4v", jsonRecordedData: [], messageData: [{"t": 1, "message": "Let's learn to create new colors!" }, { "t": 6, "message": "Drag colors to mixing area" }, { "t": 16, "message": "Drag new color to blob to save!" }, { "t": 20, "message": " " }]},
 {level: 3, type: "image", filename: "chick_head", jsonRecordedData: [{"x":360,"y":550,"color":"rgba(255,255,0,1)"},{"x":322,"y":433,"color":"rgba(255,127,0,1)"},{"x":314,"y":497,"color":"rgba(255,127,0,1)"}]},
 {level: 3, type: "image", filename: "duckling", jsonRecordedData: [{"x":363,"y":284,"color":"rgba(255,255,0,1)"},{"x":456,"y":240,"color":"rgba(255,127,0,1)"}]},
 {level: 3, type: "image", filename: "frog_1", jsonRecordedData: [{"x":372,"y":537,"color":"rgba(0,128,0,1)"},{"x":350,"y":269,"color":"rgba(0,128,0,1)"},{"x":378,"y":216,"color":"rgba(255,255,255,1)"},{"x":239,"y":176,"color":"rgba(255,255,255,1)"}]},
