@@ -17,6 +17,7 @@ ListView = {
     $("#drawingScreen").hide();
     $("#videoScreen").hide();
     $("#startScreen").hide();
+    $("#endScreen").hide();
     $("#listScreen").show();
 
     // Re-build the image gallery from scratch.

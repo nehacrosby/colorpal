@@ -16,6 +16,7 @@
     <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript" src="user_prefs.js"></script>
     <script type="text/javascript" src="video_tutorials.js"></script>
+    <script type="text/javascript" src="end_screen.js"></script>
   </head>
   <body>
 	<div id="page">
@@ -29,16 +30,19 @@
       <div id="stars" class="start-screen-style"><img src="images/star.png" /><img src="images/star.png"/><img src="images/star.png"/></div>
     </div>
 	  <div id="videoScreen" class="screen" style="display:none">
-	    <video src="" height="1024" width="768"></video>
+      <video src="" height="1024" width="768"></video>
+      <div id="test">Hola</div>
 	  </div>
 	  <div id="listScreen" class="screen" style="display:none">
 	     <!-- Image list gets populated here by JS -->
 	  </div>
     <div id="drawingScreen" class="screen" style="display:none">
-        <!-- Debug buttons
-               <button type="button" name="start-recording-action">Start Recording</button>
-               <button type="button" name="stop-recording-action">Stop Recording</button>
-               <button type="button" name="debug-next">Color cheat</button> -->
+      <!-- Debug buttons -->
+      <div id="debug">
+        <button type="button" name="start-recording-action">Start Recording</button>
+        <button type="button" name="stop-recording-action">Stop Recording</button>
+        <button type="button" name="debug-next">Color cheat</button>
+      </div>
   	  <!-- Draw the canvas-->
   	  <div id="tutorial-container">
   	    <img src="images/smiley_thumbs_up.png" id="completion-image" style="display:none"/>
@@ -48,7 +52,11 @@
           <canvas id="image-preview" class="image-preview" width="620" height="700" style="zoom: 25%"></canvas>
         </div>
       </div>  
-      <div id="current-score" class="score">Score: 0</div>
+      <div id="current-score">
+        Score: <span class="score"></span>
+        <span class="of">of</span>
+        <span class="max-score"></span>
+      </div>
    	  <!-- Provide the Palette -->
    	  <div id="palette" style="">
    	    <div id="secondary-palette-squares">
@@ -127,14 +135,17 @@
   	  </div>  <!-- End of palette div -->
   	  <div id="transitionScreen" style="display:none">
   	    <div id="great-job"><img src="images/great_job.png"/></div>
-    	  <div id="total-score" class="score">Total Score: 0</div>
+    	  <div id="total-score">Total Score: <span class="score">0</span></div>
     	  <div id="stars"><img src="images/star.png" /><img src="images/star.png"/><img src="images/star.png"/></div>
     	  <div class="next-button"><img src="images/next.png" id="show-next-image"/></div>
         <div class="list-button"><img src="images/list_icon.png" id="show-list-view"/></div>
     	</div>
-  	 <br><br><br><br>
   	</div>
+  	<div id="endScreen" class="screen" style="display:none">
+      <!-- TODO(Neha) Replace with replay_button.jpg and finish styling the end screen -->
+      <div id="replay-button" class="start-screen-style"><img src="images/start_button.png" id="replay-button-click"/></div>
+      <div class="list-button"><img src="images/list_icon.png" id="show-list-view"/></div>
+    </div>
   </div>
-	<br>
   </body>
 </html>

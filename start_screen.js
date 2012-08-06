@@ -25,6 +25,7 @@ $(document).ready(function() {
   DrawingPreview.init();
   Video.init();
   Transition.init();
+  End.init();
   
 	// Set up drag n drop handlers.
 	App.initDragAndDrop();

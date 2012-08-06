@@ -27,6 +27,16 @@ UserPrefs = {
     this.resetCurrentScore();
    },  
   
+  // Dangerous to call. Wipe the cookie information
+  // start all over!
+  resetUserPrefs: function() {
+    this.loadUserData();
+    this.userData.currentScore = 0;
+    this.userData.coloredImages = {};
+    this.userData.totalScore = 0;
+    this.saveUserData();
+  },
+  
   // Public API. Used to update coloredImages.
   saveCompletedImage: function(imageFilename) {
     this.loadUserData();

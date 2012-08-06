@@ -77,11 +77,8 @@ App = {
    	                        imageData.data, ctx.canvas.width);
   	Util.floodFill(position.x, position.y, ctx, false /* forPaletteSetUp */, this.paletteColorTuple);
   	// Get the updated imageData.
-    var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
-    
-   	// Update the score display.    
-   	$("#current-score").html(Util.getFormattedScoreString(UserPrefs.getCurrentScore(),
-   	                         Util.getMaxScoreForImage(App.imageIndex)));
+    var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);    
+   	this.displayCurrentScore();
 
    	// Check if the user is done coloring the entire image.                   
     if (DrawingPreview.isSameAsPreviewImage(
@@ -160,16 +157,19 @@ App = {
     
     // Display the filled in preview image.
     DrawingPreview.displayPreviewImage(ImageLibrary[App.imageIndex].jsonRecordedData, canvasPreviewCtx);
-    // Display the current score.
-  	$("#current-score").html(Util.getFormattedScoreString(UserPrefs.getCurrentScore(),
-   	                         Util.getMaxScoreForImage(App.imageIndex)));
-    $('#current-score').show();
+    this.displayCurrentScore();
   	
   	// Initial selected color.
     this.paletteColorTuple = $.xcolor.test("rgba(255, 0, 0, 1)"); // Red.
         
     // Set up palette canvases.
     this.setupPaletteCanvases();
+  },
+  
+  displayCurrentScore: function() {
+    $("#current-score .score").html(UserPrefs.getCurrentScore());
+    $("#current-score .max-score").html(Util.getMaxScoreForImage(App.imageIndex));
+    $('#current-score').show();
   },
   
   randomlyPickBlobImage: function() {

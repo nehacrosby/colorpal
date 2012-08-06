@@ -138,11 +138,6 @@ Util = {
     }
   },
   
-  getFormattedScoreString: function(currentScore, totalScore) {
-    // Used to print on the drawing screen.
-    return "Score: " + currentScore + " / " + totalScore;
-  },
-  
   floodFill: function(x, y, canvasContext, forPaletteSetUp, fillColorTuple) { 
     // forPaletteSetUp is set to true if the floodfill is being done
     // for setting up the palette. The main difference is the stopping

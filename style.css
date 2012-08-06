@@ -1,19 +1,24 @@
+body{
+  margin: 0;
+}
+
 #page {
   width: 768px;
   height: 1024px;
   margin: 0 auto;
+  zoom: 72%;
 }
 
 #image-preview-container {
-position: absolute;
-top: 0;
-left: 90%;
-background:url(images/preview_background.png);
-background-position: -55px bottom;
-background-repeat: no-repeat;
-padding-left: 10px;
-padding-right: 50px;
-padding-bottom: 50px;
+  position: absolute;
+  top: 0;
+  left: 90%;
+  background:url(images/preview_background.png);
+  background-position: -55px bottom;
+  background-repeat: no-repeat;
+  padding-left: 10px;
+  padding-right: 50px;
+  padding-bottom: 50px;
 }
 
 #image-preview-container canvas {
@@ -25,10 +30,10 @@ padding-bottom: 50px;
   position: relative;
 }
 
-.score {
+#total-score, #current-score {
   font-family: helvetica;
-  font-weight:bold;
-  font-size: 25px;
+  font-weight: bold;
+  font-size: 22px;
   color: black;
   text-shadow: 2px 2px 1px white;
   position: absolute;
@@ -36,8 +41,10 @@ padding-bottom: 50px;
 
 #current-score {
   top: 200px;
-  left: 600px;  
+  left: 565px;  
 }
+
+#current-score .of, #current-score .max-score { color: #444; }
 
 .screen {
   width: 768px;
@@ -148,6 +155,12 @@ padding-bottom: 50px;
   position: absolute;
 }
 
+#videoScreen #test {
+  position: absolute;
+  bottom: 33px;
+  left: 5px;
+}
+
 .drawing-frame img {
   max-width: 90px;
   max-height: 90px;
@@ -155,9 +168,9 @@ padding-bottom: 50px;
 }
 
 #debug {
-  position:absolute;
+  position: absolute;
   left: 150px;
-  top: 1100px;
+  z-index: 200;
 }
 
 #completion-image {

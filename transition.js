@@ -47,7 +47,7 @@ Transition = {
     current = current || 0;
     if (current == targetVal) return;
     current++;
-    $('#transitionScreen .score').text("Total Score: " + current);
+    $('#transitionScreen #total-score .score').html(current);
     setTimeout(jQuery.proxy(function() { this.scoreAnimationHelper(targetVal, current, timeout) }, this), timeout);
   },
   
@@ -64,20 +64,24 @@ Transition = {
   },  
   
   showNextImage: function() {
-    $("#transitionScreen").hide();
-    $("#videoScreen").hide();
-    $("#drawingScreen").show();
-
     if (App.imageIndex >= ImageLibrary.length) {
-      alert("YOU ARE DONE!!");
-      ListView.showImageLibrary();
+      $("#transitionScreen").hide();
+      $("#videoScreen").hide();
+      $("#drawingScreen").hide();
+      $("#endScreen").show(); 
     } else {
+      $("#transitionScreen").hide();
+      $("#videoScreen").hide();
+      $("#drawingScreen").show();
+      
       var currentLevel = ImageLibrary[App.imageIndex].level;
       App.imageIndex = Util.findNextToDoInImageLibrary(App.imageIndex);
 
       if (App.imageIndex >= ImageLibrary.length) {
-        alert("YOU ARE DONE!!");
-        ListView.showImageLibrary();
+         $("#transitionScreen").hide();
+         $("#videoScreen").hide();
+         $("#drawingScreen").hide();
+         $("#endScreen").show();
       } else {
         // if (ImageLibrary[App.imageIndex].level == currentLevel + 1) console.log("Level complete!");
         

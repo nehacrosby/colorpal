@@ -10,6 +10,7 @@ Debug = {
   showColorScreen: false,
   showVideoScreen: false,
   showStartScreen: true,
+  showEndScreen: false,
   
   init: function() {
     this.eventEnabled = true;
