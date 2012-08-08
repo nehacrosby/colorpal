@@ -4,7 +4,7 @@ Colorpal is a fun online app for kids to learn color mixing. They mix colors (li
  
 Visit the app by going to: http://nehacrosby.github.com/colorpal/
  
-[Image preview](http://i.imgur.com/tw7kh)
+![App preview](http://i.imgur.com/81jCv.png)
 
 ### Getting started
 
