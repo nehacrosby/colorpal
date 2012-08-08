@@ -9,8 +9,8 @@ Visit the app by going to: http://nehacrosby.github.com/colorpal/
 ### Getting started
 
 The app is built using HTML5, jQuery and Canvas and only works in webkit browsers (chrome and safari) currently. You can run it easily using the following ruby script:
-    $ cd colorpal
-    $ ./serve_directory.rb ./
+    `$ cd colorpal`
+    `$ ./serve_directory.rb ./`
 
 ### Fun facts
 
