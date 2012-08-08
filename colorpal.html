@@ -1,0 +1,151 @@
+<html>
+<head>
+  <title>Color Math</title>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="jquery-ui-1.8.20.custom.min.js"></script>
+  <script type="text/javascript" src="jquery.xcolor.js"></script>
+  <script type="text/javascript" src="jquery.cookie.js"></script>
+  <script type="text/javascript" src="image_library.js"></script>
+  <script type="text/javascript" src="start_screen.js"></script>
+  <script type="text/javascript" src="color_math.js"></script>
+  <script type="text/javascript" src="preview_image.js"></script>
+  <script type="text/javascript" src="debug.js"></script>
+  <script type="text/javascript" src="transition.js"></script>
+  <script type="text/javascript" src="list_view.js"></script>
+  <script type="text/javascript" src="util.js"></script>
+  <script type="text/javascript" src="user_prefs.js"></script>
+  <script type="text/javascript" src="video_tutorials.js"></script>
+  <script type="text/javascript" src="end_screen.js"></script>
+</head>
+<body>
+  <div id="page">
+    <!-- <div id="colorDump" class="screen">
+    <div><img src="drawing_images/bee.png" id="colored-image"></div>
+    </div> -->
+    <div id="startScreen" class="screen">
+      <div id="logo-text" class="start-screen-style"><img src="images/logo_text.png"/></div>
+      <div id="start-screen-drawings" class="start-screen-style"><img src="images/start_screen_drawings.png"/></div>
+      <div id="start-button" class="start-screen-style"><img src="images/start_button.png" id="start-button-click"/></div>
+      <div id="stars" class="start-screen-style"><img src="images/star.png" /><img src="images/star.png"/><img src="images/star.png"/></div>
+    </div>
+    <div id="videoScreen" class="screen" style="display:none">
+      <video src="" height="1024" width="768" controls></video>
+      <div id="video-message"></div>
+    </div>
+    <div id="listScreen" class="screen" style="display:none">
+      <!-- Image list gets populated here by JS -->
+    </div>
+    <div id="drawingScreen" class="screen" style="display:none">
+      <!-- Debug buttons -->
+      <!-- <div id="debug" style="display:none">
+      <button type="button" name="start-recording-action">Start Recording</button>
+      <button type="button" name="stop-recording-action">Stop Recording</button>
+      <button type="button" name="debug-next">Color cheat</button>
+      </div> -->
+      <!-- Draw the canvas-->
+      <div id="tutorial-container">
+        <img src="images/smiley_thumbs_up.png" id="completion-image" style="display:none"/>
+        <canvas id="tutorial" class="tutorial" width="620" height="700" style="zoom: 100%"></canvas>
+
+        <div id="image-preview-container">
+          <canvas id="image-preview" class="image-preview" width="620" height="700" style="zoom: 25%"></canvas>
+        </div>
+      </div>  
+      <div id="current-score">
+        Score: <span class="score"></span>
+        <span class="of">of</span>
+        <span class="max-score"></span>
+      </div>
+      <!-- Provide the Palette -->
+      <div id="palette" style="">
+        <div id="secondary-palette-squares">
+          <div id="first" class="secondary-palette-square">
+            <canvas class="unclicked" width="90" height="90"></canvas>
+            <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+            <canvas class="activated" width="90" height="90" style="display:none"></canvas>
+          </div>
+          <div id="second" class="secondary-palette-square">
+            <canvas class="unclicked" width="90" height="90"></canvas>
+            <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+            <canvas class="activated" width="90" height="90" style="display:none"></canvas>
+          </div>
+          <div id="third" class="secondary-palette-square">
+            <canvas class="unclicked" width="90" height="90"></canvas>
+            <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+            <canvas class="activated" width="90" height="90" style="display:none"></canvas>
+          </div>
+          <div id="fourth" class="secondary-palette-square">
+            <canvas class="unclicked" width="90" height="90"></canvas>
+            <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+            <canvas class="activated" width="90" height="90" style="display:none"></canvas>
+          </div>
+          <div id="fifth" class="secondary-palette-square">
+            <canvas class="unclicked" width="90" height="90"></canvas>
+            <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+            <canvas class="activated" width="90" height="90" style="display:none"></canvas>
+          </div>
+          <div id="sixth" class="secondary-palette-square">
+            <canvas class="unclicked" width="90" height="90"></canvas>
+            <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+            <canvas class="activated" width="90" height="90" style="display:none"></canvas>
+          </div>
+          <div id="seventh" class="secondary-palette-square">
+            <canvas class="unclicked" width="90" height="90"></canvas>
+            <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+            <canvas class="activated" width="90" height="90" style="display:none"></canvas>
+          </div>
+        </div>
+        <div id="mixing-area-square">  
+          <canvas class="deactivated" width="355" height="90"></canvas>
+          <canvas class="activated" width="355" height="90" style="display:none"></canvas>
+        </div>
+        <div id="clear-button">
+          <img src="images/eraser.png" id="clear-mixing-area"/>
+        </div>
+        <div class="list-button">
+          <img src="images/list_icon.png" id="show-list-view"/>
+        </div>
+        <div id="primary-palette-squares">
+          <div id="blue" class="palette-square">
+            <canvas class="unclicked" width="90" height="90"></canvas>
+            <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+          </div>
+          <div id="red" class="palette-square">
+            <canvas class="unclicked" width="90" height="90" style="display:none"></canvas>
+            <canvas class="clicked" width="90" height="90"></canvas>
+          </div>
+          <div id="yellow" class="palette-square">
+            <canvas class="unclicked" width="90" height="90"></canvas>
+            <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+          </div>
+          <div id="green" class="palette-square">
+            <canvas class="unclicked" width="90" height="90"></canvas>
+            <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+          </div>
+          <div id="white" class="palette-square">
+            <canvas class="unclicked" width="90" height="90"></canvas>
+            <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+          </div>
+          <div id="black" class="palette-square">
+            <canvas class="unclicked" width="90" height="90"></canvas>
+            <canvas class="clicked" width="90" height="90" style="display:none"></canvas>
+          </div>
+        </div>
+      </div>  <!-- End of palette div -->
+      <div id="transitionScreen" style="display:none">
+        <div id="great-job"><img src="images/great_job.png"/></div>
+        <div id="total-score">Total Score: <span class="score">0</span></div>
+        <div id="stars"><img src="images/star.png" /><img src="images/star.png"/><img src="images/star.png"/></div>
+        <div class="next-button"><img src="images/next.png" id="show-next-image"/></div>
+        <div class="list-button"><img src="images/list_icon.png" id="show-list-view"/></div>
+      </div>
+    </div>
+    <div id="endScreen" class="screen" style="display:none">
+      <!-- TODO(Neha) Replace with replay_button.jpg and finish styling the end screen -->
+      <div id="replay-button" class="start-screen-style"><img src="images/start_button.png" id="replay-button-click"/></div>
+      <div class="list-button"><img src="images/list_icon.png" id="show-list-view"/></div>
+    </div>
+  </div>
+</body>
+</html>

@@ -21,6 +21,7 @@ App = {
     
   	if (Debug.showColorScreen) {
   	  $("#listScreen").hide();
+  	  $("#startScreen").hide(); 
       $("#drawingScreen").show();
       this.loadImage("ladybird");
     }
@@ -98,18 +99,13 @@ App = {
     this.mixingAreaColorList = [];
   },
   
-  getMouseClickCoordinates: function(event) {    
+  getMouseClickCoordinates: function(event) {        
     // Get x, y coordinates of the mouse-click.
     // Taken from:
     // http://stackoverflow.com/questions/1114465/getting-mouse-location-in-canvas
-    var targ = event.target;
-     
-    // Zoom settings can break this functionality by returning
-    // floating point x and y values. So we take the floor to
-    // convert them to ints.
+    var targ = event.currentTarget;
     var x = Math.floor(event.pageX - $(targ).offset().left);
     var y = Math.floor(event.pageY - $(targ).offset().top);
-     
     return {"x": x, "y": y};
   },
   
@@ -295,13 +291,13 @@ App = {
   	// Mixing area colors can *only* be dragged onto
   	// secondary color swatches.
   	$('#mixing-area-square').draggable({
-    	  start: function(element, ui) {
-          $(this).data('draggable').offset.click.left = ui.helper.width() / 2;
-          $(this).data('draggable').offset.click.left = ui.helper.height() / 2;
-    	  },
-  		  cursor: 'move',
-  		  helper: this.createMixingAreaDragHelper,
-  		});
+  	    start: function(element, ui) {
+  	    $(this).data('draggable').offset.click.left = ui.helper.width() / 2;
+  	    $(this).data('draggable').offset.click.top = ui.helper.height() / 2;
+      },  	 
+  	  cursor: 'move',
+  	  helper: this.createMixingAreaDragHelper,
+  	});
 
   	// Droppable properties of the secondary colors.
   	// It *only* accepts color from the mixing area.
