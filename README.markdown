@@ -2,7 +2,7 @@
 
 Colorpal is a fun online app for kids to learn color mixing. They mix colors (like red and yellow to create orange) and use those colors to paint drawings. Starting from a limited palette; they explore new colors and produce their own custom palette. The app takes advantage of the flexibility of the digital world by being able to experiment quickly without any waste.
  
-Visit the app by going to: http://nehacrosby.github.com/colorpal/
+Play with the app [here](http://nehacrosby.github.com/colorpal/)
  
 ![App preview](http://i.imgur.com/81jCv.png)
 
