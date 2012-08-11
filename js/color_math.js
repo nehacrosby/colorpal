@@ -111,6 +111,9 @@ App = {
   
   // Clears all state and prepares the new drawing to be colored.
   resetPage: function() {
+    // Hide the current-score until we are done resetting it and
+    // re-calculating the new total score.
+    $('#current-score').hide();
     this.mixingAreaColorList = [];
     this.paletteColorTuple = $.xcolor.test("rgba(255, 0, 0, 1)"); // Red.
     // Set the red swatch to be clicked.
@@ -124,12 +127,13 @@ App = {
     // Now show the required dom elements from the
     // drawing screen.
     this.totalPalettesDrawn = 0; // Show only after the palette canvases have been drawn.
+    UserPrefs.resetCurrentScore();  // Reset the current score.
     $('#palette').hide();  
     $('#image-preview-container').show();
   },
 
   loadImage: function(imageName) {  
-    // Prepare the drawing screen by clearing previous
+    // Prepare the drawing screen by clearing previous  
     // state.
     this.resetPage();    
     var image = new Image();
