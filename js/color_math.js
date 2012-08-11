@@ -14,6 +14,7 @@ App = {
     
     // Add all the click handlers.    
     $("#primary-palette-squares .palette-square").click(jQuery.proxy(this.onPaletteClick, this));
+    $("#mixing-area-square").click(jQuery.proxy(this.onMixingAreaClick, this));
   	$('#tutorial').click(jQuery.proxy(this.onCanvasClick, this));
   	$("#clear-mixing-area").click(jQuery.proxy(this.onClearButtonClick, this));
   	$("#drawingScreen .list-button").click(jQuery.proxy(ListView.showImageLibrary, ListView));  
@@ -41,6 +42,24 @@ App = {
     $(event.currentTarget).find(".clicked").show();
   },
   
+  onMixingAreaClick: function(event, ui) {
+    // If empty, then do not select the mixing area.
+    if (this.mixingAreaColorList.length == 0) return;
+    
+    // Pick up the color.
+    var paletteCanvas = $(event.target);
+    this.paletteColorTuple = $.xcolor.test($(paletteCanvas).attr("color"));
+
+    // Toggle the state of all palette squares to only
+    // show the clicked one in the clicked state.
+    $("#palette .clicked").hide();
+    $("#palette .unclicked").show();
+    
+    // TODO(neha): Revisit once we have clicked image for mixing area.
+    // $(event.currentTarget).find(".unclicked").hide();
+    //    $(event.currentTarget).find(".clicked").show();
+  },
+  
   onCanvasClick: function(event) {
     if (!this.eventEnabled) return;
     
@@ -62,9 +81,9 @@ App = {
    	var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
   	var previewImageData = canvasPreviewCtx.getImageData(0, 0, canvasPreviewCtx.canvas.width, canvasPreviewCtx.canvas.height);
   	
-  	// !!! DEBUG !!!
+  	// !!! DEBUG -- Generate colored image thumbnail !!!
     // var imgSrc = imagePreview.toDataURL("image/png");
-    //               $('#colored-image').attr('src', imgSrc);
+    // $('#colored-image').attr('src', imgSrc);
   	// !!! DEBUG !!!
   	
   	// Return if the click happened outside the region that can be colored.
@@ -317,8 +336,6 @@ App = {
     App.paletteColorTuple = mixedColorTuple;
     $("#palette .clicked").hide();
     $("#palette .unclicked").show();
-    // swatch.find(".clicked").show();
-    //     swatch.find(".unclicked").hide();
   },
   
   dragAndDropFloodFillHelper: function(canvasId, colorRgb, colorRgbTuple) {
