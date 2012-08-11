@@ -14,7 +14,6 @@ App = {
     
     // Add all the click handlers.    
     $("#primary-palette-squares .palette-square").click(jQuery.proxy(this.onPaletteClick, this));
-    $("#secondary-palette-squares .secondary-palette-square").click(jQuery.proxy(this.onPaletteClick, this));
   	$('#tutorial').click(jQuery.proxy(this.onCanvasClick, this));
   	$("#clear-mixing-area").click(jQuery.proxy(this.onClearButtonClick, this));
   	$("#drawingScreen .list-button").click(jQuery.proxy(ListView.showImageLibrary, ListView));  
@@ -184,23 +183,7 @@ App = {
     }
   },
   
-  setupSecondaryPaletteHelper: function(canvasId) {
-    var imageFiles = this.randomlyPickBlobImage();
-    this.setupSinglePalette("rgba(255, 255, 255, 0)", canvasId + " canvas.unclicked", imageFiles["unclicked"]);
-    this.setupSinglePalette("rgba(255, 255, 255, 0)", canvasId + " canvas.clicked", imageFiles["clicked"]);
-    this.setupSinglePalette("rgba(255, 255, 255, 0)", canvasId + " canvas.activated", imageFiles["dragged"]);
-  },
-  
   setupPaletteCanvases: function() {    
-    // Secondary Palette Squares
-    this.setupSecondaryPaletteHelper("#first");
-    this.setupSecondaryPaletteHelper("#second");
-    this.setupSecondaryPaletteHelper("#third");
-    this.setupSecondaryPaletteHelper("#fourth");
-    this.setupSecondaryPaletteHelper("#fifth");
-    this.setupSecondaryPaletteHelper("#sixth");
-    this.setupSecondaryPaletteHelper("#seventh");
-
     // Primary Palette Squares
     var imageFiles = this.randomlyPickBlobImage();
     this.setupSinglePalette("rgba(0, 0, 255, 1)", "#blue canvas.unclicked", imageFiles["unclicked"]);
@@ -284,32 +267,13 @@ App = {
 
   	// Droppable properties of the mixing area.
   	// It *only* accepts primary colors.
+  	// Once the color is dropped, the mixed
+  	// color is ready to be used to fill the drawing image.
   	$('#mixing-area-square').droppable({
   	  accept: '.palette-square',
   	  drop: this.handleMixingAreaDropEvent,
   	  activate: this.handleMixingAreaActivateEvent, 
   	  deactivate: this.handleMixingAreaDeactivateEvent, 
-  	});
-
-  	// Draggable properties of the mixing area.
-  	// Mixing area colors can *only* be dragged onto
-  	// secondary color swatches.
-  	$('#mixing-area-square').draggable({
-  	    start: function(element, ui) {
-  	    $(this).data('draggable').offset.click.left = ui.helper.width() / 2;
-  	    $(this).data('draggable').offset.click.top = ui.helper.height() / 2;
-      },  	 
-  	  cursor: 'move',
-  	  helper: this.createMixingAreaDragHelper,
-  	});
-
-  	// Droppable properties of the secondary colors.
-  	// It *only* accepts color from the mixing area.
-  	$('.secondary-palette-square').droppable({
-  	  accept: '#mixing-area-square',
-  	  drop: this.handleSecondarySwatchDropEvent,
-  	  activate: this.handleSecondarySwatchActivateEvent,
-    	deactivate: this.handleSecondarySwatchDeactivateEvent,
   	});
   },
   
@@ -324,57 +288,6 @@ App = {
     var cloneContext = cloneCanvas.getContext("2d");
     cloneContext.putImageData(imageData, 0, 0);	
     return cloneCanvas;
-  },
-  
-  // In the event that the primary swatch was clicked:
-  // (1) Unsuccessful secondary drop preserves state.
-  // (2) Sucessful secondary drop should toggle state in
-  //     handleSecondarySwatchDropEvent and Deactivate should preserve that.
-  //
-  // Event that secondary swatch was already clicked:
-  // (1) Activate should keep it clicked.
-  // (2) Successful secondary drop should toggle and deactivate should preserve.
-  // (3) Unsuccessful secondary drop should have deactivate keep state from (1). 
-  handleSecondarySwatchActivateEvent: function(event, ui) { 
-    var swatch = $(event.target);  
-    swatch.find(".unclicked").hide();
-    // If I wasn't already clicked then show me as activated.
-    if (swatch.find(".clicked").css("display") == "none") {
-      swatch.find(".activated").show();
-     }
-  },
-
-  handleSecondarySwatchDeactivateEvent: function(event, ui) {
-    var swatch = $(event.target);    
-    // If I am already clicked, keep me clicked.
-    if (swatch.find(".clicked").css("display") == "none") {
-      swatch.find(".unclicked").show();
-    }
-    swatch.find(".activated").hide();
-  },
-
-  handleSecondarySwatchDropEvent: function(event, ui) {      
-    if ((App.mixingAreaColorList).length == 0) return;
-    
-    draggable = ui.draggable;
-    var swatch = $(event.target); 
-    
-    // Change the swatch color to be the same as the 
-    // mixing area color dropped on to it.
-    var draggedColorRgb = draggable.find("canvas").attr("color");
-    var draggedColorTuple =  $.xcolor.test(draggedColorRgb);
-        
-    // Flood-fill all 3 versions of the swatch.
-    App.dragAndDropFloodFillHelper(swatch.find("canvas.unclicked"), draggedColorRgb, draggedColorTuple);
-    App.dragAndDropFloodFillHelper(swatch.find("canvas.clicked"), draggedColorRgb, draggedColorTuple);
-    App.dragAndDropFloodFillHelper(swatch.find("canvas.activated"), draggedColorRgb, draggedColorTuple);
-    
-    // Mark this secondary palette as clicked.
-    App.paletteColorTuple = $.xcolor.test(draggedColorRgb);
-    $("#palette .clicked").hide();
-    $("#palette .unclicked").show();
-    swatch.find(".clicked").show();
-    swatch.find(".unclicked").hide();
   },
 
   handleMixingAreaActivateEvent: function(event, ui) {      
@@ -399,21 +312,13 @@ App = {
     // Store the mixed color as an attribute.
     App.dragAndDropFloodFillHelper("#mixing-area-square canvas.deactivated", mixedColorRgb, mixedColorTuple);
     App.dragAndDropFloodFillHelper("#mixing-area-square canvas.activated", mixedColorRgb, mixedColorTuple);
-  },
-  
-  createMixingAreaDragHelper: function(event, ui) {
-    var canvas = $(event.currentTarget).find("canvas")[0];
-    var mixingAreaClone = event.currentTarget.cloneNode(true);
-    $(mixingAreaClone).addClass('smaller-mixing-area');
-
-    var image = new Image();
-    image.src = canvas.toDataURL("image/png");
-    image.addEventListener("load", function() {
-      var cloneContext = $(mixingAreaClone).find("canvas")[0].getContext("2d");
-      cloneContext.drawImage(image, 0, 0, $(mixingAreaClone).width(), $(mixingAreaClone).height());
-    }, false);
-
-    return mixingAreaClone;
+    
+    // Mark this cell as clicked.
+    App.paletteColorTuple = mixedColorTuple;
+    $("#palette .clicked").hide();
+    $("#palette .unclicked").show();
+    // swatch.find(".clicked").show();
+    //     swatch.find(".unclicked").hide();
   },
   
   dragAndDropFloodFillHelper: function(canvasId, colorRgb, colorRgbTuple) {

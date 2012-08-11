@@ -59,15 +59,6 @@ Util = {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
   },
   
-  clearPaletteAndMixingArea: function() {
-     App.onClearButtonClick();
-     var secondaryPalette = $('.secondary-palette-square');
-     for(var i = 0; i < secondaryPalette.length; i++) {
-       $(secondaryPalette[i]).css("background-color", ""); 
-       $(secondaryPalette[i]).removeClass("solid-black-border"); 
-     }
-  },
-  
   isOutsideRegion: function(x, y, previewPixelData, previewCanvasWidth) {
     // We detect the outside region by checking whether the alpha
     // value is < 1 or boundary. We can have almost-black regions

@@ -234,37 +234,37 @@ body{
 }
 #blue {
   left: 80px;
-  top: 200px;
+  top: 170px;
 }
 #red {
   left: 180px;
-  top: 225px;
+  top: 200px;
 }
 #yellow {
   left: 280px;
-  top: 235px;
+  top: 210px;
 }
 #green {
   left: 380px;
-  top: 225px;
+  top: 205px;
 }
 #white {
   left: 480px;
-  top: 215px;
+  top: 190px;
 }
 #black {
   left: 580px;
-  top: 195px;
+  top: 165px;
 }    
 
 #mixing-area-square {
   left: 200px;
-  top: 115px;
+  top: 80px;
 }
 
 #clear-button {
   left: 570px;
-  top: 135px;
+  top: 100px;
 }
 
 #palette .list-button {
