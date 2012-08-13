@@ -87,6 +87,30 @@ body{
   margin: 0 50px;
 }
 
+#endScreen {
+  text-align: center;
+  position: relative;
+}
+
+#endScreen .end-screen-style {
+  position: absolute;
+  width: 100%;
+}
+
+#endScreen #done-text {
+  top: 200px;
+  z-index: 2;
+}
+
+#endScreen #end-screen-drawings {
+  top: 300px;
+  z-index: 1;
+}
+
+#endScreen #replay-button {
+  top: 800px;
+}
+
 #transitionScreen {
   text-align: center;
   height: 324px;  /* 1024 - canvas_width */
