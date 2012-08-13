@@ -68,7 +68,7 @@ ListView = {
       } else {
         // It's a tutorial video.
         if (ImageLibrary[i].level <= currentLevel) {
-          var newElement = $('<div class="drawing-frame video-watch"></div>');
+          var newElement = $('<div class="drawing-frame video-watch video-watch-available"></div>');
           newElement.attr("filename", ImageLibrary[i].filename);
           $('#listScreen').append(newElement);
         } else {
@@ -83,7 +83,7 @@ ListView = {
      // update the score or status of this image in UserPrefs.
      $(".drawing-frame-done").click(jQuery.proxy(this.onImageClick, this));
      
-     $(".video-watch").click(jQuery.proxy(Video.onVideoClick, Video));
+     $(".video-watch-available").click(jQuery.proxy(Video.onVideoClick, Video));
      
      this.enabled = true;
   },

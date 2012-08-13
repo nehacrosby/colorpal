@@ -54,10 +54,9 @@ App = {
     // show the clicked one in the clicked state.
     $("#palette .clicked").hide();
     $("#palette .unclicked").show();
-    
-    // TODO(neha): Revisit once we have clicked image for mixing area.
-    // $(event.currentTarget).find(".unclicked").hide();
-    //    $(event.currentTarget).find(".clicked").show();
+    $(event.currentTarget).find(".activated").hide();
+    $(event.currentTarget).find(".unclicked").hide();
+    $(event.currentTarget).find(".clicked").show();
   },
   
   onCanvasClick: function(event) {
@@ -112,9 +111,20 @@ App = {
     // Clear the mixing area.
     var mixedColorRgb = "rgba(255, 255, 255)";
     var mixedColorTuple = $.xcolor.test(mixedColorRgb);
-    App.dragAndDropFloodFillHelper("#mixing-area-square canvas.deactivated", mixedColorRgb, mixedColorTuple);
+    App.dragAndDropFloodFillHelper("#mixing-area-square canvas.unclicked", mixedColorRgb, mixedColorTuple);
     App.dragAndDropFloodFillHelper("#mixing-area-square canvas.activated", mixedColorRgb, mixedColorTuple);    
+    App.dragAndDropFloodFillHelper("#mixing-area-square canvas.clicked", mixedColorRgb, mixedColorTuple);    
     this.mixingAreaColorList = [];
+    
+    // If the mixing area was clicked then unclick it and 
+    // select red as default like we do at the beginning of the game.
+    if ($("#mixing-area-square canvas.clicked").css("display") != "none") {
+      $("#mixing-area-square .clicked").hide();
+      $("#mixing-area-square .unclicked").show();
+      $("#palette #red canvas.unclicked").hide();
+      $("#palette #red canvas.clicked").show();
+      this.paletteColorTuple = $.xcolor.test("rgba(255, 0, 0, 1)"); // Red.
+    }
   },
   
   getMouseClickCoordinates: function(event) {        
@@ -230,8 +240,9 @@ App = {
     this.setupSinglePalette("rgba(1, 1, 1, 1)", "#black canvas.clicked", imageFiles["clicked"]);
 
     // Mixing Area
-    this.setupSinglePalette("", "#mixing-area-square canvas.deactivated", "images/mixing_area.png");
+    this.setupSinglePalette("", "#mixing-area-square canvas.unclicked", "images/mixing_area.png");
     this.setupSinglePalette("", "#mixing-area-square canvas.activated", "images/mixing_area_dragging.png");
+    this.setupSinglePalette("", "#mixing-area-square canvas.clicked", "images/mixing_area_selected.png");
     
     // Now mark the red one clicked.
     $("#palette .clicked").hide();
@@ -310,32 +321,38 @@ App = {
   },
 
   handleMixingAreaActivateEvent: function(event, ui) {      
-    $(event.target).find(".deactivated").css("display", "none");
+    $(event.target).find(".unclicked").css("display", "none");
     $(event.target).find(".activated").css("display", "");      
   },
 
   handleMixingAreaDeactivateEvent: function(event, ui) {    
     $(event.target).find(".activated").css("display", "none");
-    $(event.target).find(".deactivated").css("display", "");
+    if ($(event.target).find(".clicked").css("display") == "none") {
+      $(event.target).find(".unclicked").css("display", "");
+    }
   },
 
-  handleMixingAreaDropEvent: function(event, ui) {
+  handleMixingAreaDropEvent: function(event, ui) {    
     draggable = ui.draggable;
 
-    // Floodfill both activated and deactivated mixing
-    // area.
+    // Floodfill activated, unclicked and clicked mixing
+    // areas.
     var draggedColor = draggable.find("canvas").attr("color");
     var mixedColorRgb = Util.returnMixedColorRGB(draggedColor);
     var mixedColorTuple = $.xcolor.test(mixedColorRgb);
     
     // Store the mixed color as an attribute.
-    App.dragAndDropFloodFillHelper("#mixing-area-square canvas.deactivated", mixedColorRgb, mixedColorTuple);
+    App.dragAndDropFloodFillHelper("#mixing-area-square canvas.unclicked", mixedColorRgb, mixedColorTuple);
     App.dragAndDropFloodFillHelper("#mixing-area-square canvas.activated", mixedColorRgb, mixedColorTuple);
+    App.dragAndDropFloodFillHelper("#mixing-area-square canvas.clicked", mixedColorRgb, mixedColorTuple);
     
     // Mark this cell as clicked.
     App.paletteColorTuple = mixedColorTuple;
-    $("#palette .clicked").hide();
-    $("#palette .unclicked").show();
+    $("#primary-palette-squares .clicked").hide();
+    $("#primary-palette-squares .unclicked").show();
+    $("#mixing-area-square .activated").hide();
+    $("#mixing-area-square .unclicked").hide();
+    $("#mixing-area-square .clicked").show();
   },
   
   dragAndDropFloodFillHelper: function(canvasId, colorRgb, colorRgbTuple) {

@@ -7,9 +7,9 @@ Debug = {
   isRecording : false,
   showListView: false,
   showTransitionScreen: false,
-  showColorScreen: false,
+  showColorScreen: true,
   showVideoScreen: false,
-  showStartScreen: true,
+  showStartScreen: false,
   showEndScreen: false,
   
   init: function() {
