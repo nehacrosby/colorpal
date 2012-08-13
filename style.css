@@ -133,25 +133,15 @@ body{
   position: relative;
 }
 
-#listScreen .drawing-frame-unavailable .lock {
-  bottom: 33px;
-  left: 5px;
+#listScreen .lock {
+  bottom: 5px;
+  left: 40px;
   position: absolute;
 }
 
 #listScreen .video-watch {
-  background-image:url(images/video_tile.png);
-}
-
-#listScreen .video-watch-unavailable {
   position: relative;
-  background-image:url(images/locked_video_tile.png);
-}
-
-#listScreen .video-watch-unavailable .lock {
-  bottom: 33px;
-  left: 5px;
-  position: absolute;
+  background-image:url(images/video_tile.png);
 }
 
 #videoScreen #video-message {

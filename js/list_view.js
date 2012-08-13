@@ -53,8 +53,8 @@ ListView = {
           backgroundImg = 'url(images/plain_tile_' + rand + '.png)';
         } else {
           // Image is of a level higher than the currentLevel.
-          class_tag = '<div class="drawing-frame drawing-frame-unavailable"> <img src="images/lock.png" class="lock"/>'
-          backgroundImg = 'url(images/locked_tile_' + rand + '.png)';
+          class_tag = '<div class="drawing-frame drawing-frame-unavailable"> <img src="images/lock_orange.png" class="lock"/>'
+          backgroundImg = 'url(images/plain_tile_' + rand + '.png)';
         }
         var imageFilename;
         if (imageDone) { 
@@ -73,7 +73,7 @@ ListView = {
           $('#listScreen').append(newElement);
         } else {
           // The video is not yet available to be watched.
-          $('#listScreen').append('<div class="drawing-frame video-watch-unavailable"><img src="images/lock.png" class="lock"/></div>');
+          $('#listScreen').append('<div class="drawing-frame video-watch"><img src="images/lock_orange.png" class="lock"/></div>');
         }
       }
     }
