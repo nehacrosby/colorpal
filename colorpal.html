@@ -1,7 +1,7 @@
 <html>
 <head>
   <title>Color Pal</title>
-  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" type="text/css" href="style.css?cachebust=1" />
   <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
   <script type="text/javascript" src="js/jquery-ui-1.8.20.custom.min.js"></script>
   <script type="text/javascript" src="js/jquery.xcolor.js"></script>
@@ -19,6 +19,10 @@
   <script type="text/javascript" src="js/end_screen.js"></script>
 </head>
 <body>
+  <div class="screen">
+    <div id="non-webkit-msg"> Browser not supported. <br> Download <a href="https://www.google.com/intl/en/chrome/browser/">chrome</a>!</div>
+    <div class="start-screen-style"><img src="images/start_screen_drawings.png"/></div>
+  </div>
   <div id="page">
     <!-- <div id="colorDump" class="screen">
       <div><img src="drawing_images/bee.png" id="colored-image"></div>

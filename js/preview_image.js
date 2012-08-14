@@ -35,8 +35,6 @@ DrawingPreview = {
       paddingLeft: 50
     }, 1000);
     
-
-    
     // Shrink the main drawing.
     $('#tutorial').animate({
       zoom: '25%',

@@ -2,6 +2,18 @@ body{
   margin: 0;
 }
 
+#non-webkit-msg {
+  font-family: helvetica;
+  font-weight: bold;
+  font-size: 25px;
+  color: black;
+  text-shadow: 2px 2px 1px white;
+  text-align: center;
+  position:absolute;
+  margin-top: 200px;
+  width: 100%;
+}
+
 #page {
   width: 768px;
   height: 1024px;

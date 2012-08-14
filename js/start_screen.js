@@ -16,6 +16,12 @@ Start = {
 };
 
 $(document).ready(function() {
+  // The app only works for webkit browsers.
+  var ua = $.browser;
+  if (!ua.webkit) {
+    $('#page').hide();
+  }
+  
   // The order of init methods matters.
   Debug.init();
   ListView.init();
@@ -26,7 +32,7 @@ $(document).ready(function() {
   Video.init();
   Transition.init();
   End.init();
-  
+
 	// Set up drag n drop handlers.
 	App.initDragAndDrop();
 });
