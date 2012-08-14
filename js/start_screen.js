@@ -20,6 +20,7 @@ $(document).ready(function() {
   var ua = $.browser;
   if (!ua.webkit) {
     $('#page').hide();
+    $('#non-webkit-browsers').show();
   }
   
   // The order of init methods matters.
